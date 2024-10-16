@@ -1,0 +1,36 @@
+@import '@st/variables';
+@import '@st/functions';
+
+.wrapper_bar {
+	width: 100%;
+	padding-top: adapt(20px, 1440px);
+	position: relative;
+}
+
+.block__button {
+	display: flex;
+	gap: adapt(20px, 1440px);
+}
+
+.button__play {
+	background-color: $color_blue;
+	width: adapt(50px, 1440px);
+	height: adapt(50px, 1440px);
+	border-radius: 50%;
+	color: $color_white;
+	font-size: 1.3rem;
+	text-align: center;
+
+	&:hover {
+		cursor: pointer;
+		background-color: rgba($color: $color_blue, $alpha: 0.8);
+	}
+}
+
+.range {
+	width: 100%;
+
+	&:hover {
+		cursor: pointer;
+	}
+}
