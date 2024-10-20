@@ -3,13 +3,12 @@ import HighchartsReact from 'highcharts-react-official';
 import { useMemo, useRef } from 'react';
 import { useSelector } from 'react-redux';
 
-import { funksInformationGraph } from '../../../../../utils/editData';
+import { funksInformationGraph } from '@/utils/editData';
 
 const ScatterChart = () => {
 	const chartComponent = useRef(null);
 	const informationGraphData = useSelector(state => state.informationGraphData);
 
-	// Мемоизация цветов, чтобы не пересоздавать их каждый раз
 	const colors = useMemo(
 		() =>
 			funksInformationGraph.generateColorsForObjects(
@@ -18,14 +17,12 @@ const ScatterChart = () => {
 		[informationGraphData.values],
 	);
 
-	// Устанавливаем опции цветов один раз при изменении данных
 	useMemo(() => {
 		Highcharts.setOptions({
 			colors: colors,
 		});
 	}, [colors]);
 
-	// Преобразование данных, мемоизируем результат
 	const newData = useMemo(() => {
 		return informationGraphData?.values?.map(author => ({
 			name: author.author.fullname,
@@ -43,11 +40,10 @@ const ScatterChart = () => {
 		}));
 	}, [informationGraphData]);
 
-	// Настройки Highcharts, мемоизируем их, чтобы не пересоздавать при каждом рендере
 	const options = useMemo(
 		() => ({
 			accessibility: {
-				enabled: false, // Отключаем модуль доступности
+				enabled: false,
 			},
 			chart: {
 				type: 'scatter',
@@ -90,7 +86,6 @@ const ScatterChart = () => {
 					point: {
 						events: {
 							click: function () {
-								// Используем window.open для открытия ссылки
 								window.open(this.options.url, '_blank');
 							},
 						},

@@ -15,7 +15,7 @@ const InformationGraphs = () => {
 	const { pathname } = useLocation();
 	const [isViewSource, setIsViewSource] = useState(true);
 	const [activeButton, setActiveButton] = useState(
-		'Граф распространения информации',
+		'Граф. распространения информации',
 	);
 
 	const handleDownloadImage = useSaveImageGraph();
@@ -53,7 +53,7 @@ const InformationGraphs = () => {
 				</div>
 			</div>
 			<div className={styles.container__graph} id='graph-for-download'>
-				{activeButton === 'Граф распространения информации' ? (
+				{activeButton === 'Граф. распространения информации' ? (
 					<Suspense fallback={<Loader />}>
 						<Bubbles />
 					</Suspense>

@@ -3,11 +3,12 @@ import { useSelector } from 'react-redux';
 
 import { useCalendarDate } from '@/hooks/useCalendarDate';
 
-import { isInRange, isOutOfRange } from '@/utils/customCalendar';
-import { fromTimestampToNewDateFormat } from '@/utils/timestamp';
-
 import { useActions } from '../../../../../hooks/useActions';
-import { convertFromRegularToTimestamp } from '../../../../../utils/timestamp';
+import { isInRange, isOutOfRange } from '../../../../../utils/customCalendar';
+import {
+	convertFromRegularToTimestamp,
+	fromTimestampToNewDateFormat,
+} from '../../../../../utils/timestamp';
 
 import styles from './Calendar.module.scss';
 import { monthNames, weekNames } from '@/data/calendar.data';
@@ -20,7 +21,6 @@ const Calendar = ({ state }) => {
 		index: baseDate,
 	} = useSelector(state => state.dataForRequest);
 	const { addMinDate, addMaxDate } = useActions();
-	// Преобразуем их в формат Date
 
 	const minDateOut = useMemo(() => fromTimestampToNewDateFormat(min_date), []);
 	const maxDateOut = useMemo(() => fromTimestampToNewDateFormat(max_date), []);
@@ -75,7 +75,6 @@ const Calendar = ({ state }) => {
 		} else {
 			newSelectedDates.push(clickedDate);
 		}
-		// Сортируем выбранные даты по порядку
 		newSelectedDates.sort((a, b) => a - b);
 		setSelectedDates(newSelectedDates);
 		if (newSelectedDates.length === 1) {
@@ -127,12 +126,19 @@ const Calendar = ({ state }) => {
 							// selectedDates[0],
 							// selectedDates[1],
 						);
+						// console.log('selectedDates^ ', selectedDates);
 						const isSelected = selectedDates.some(
 							date =>
 								date.getDate() === day &&
 								date.getMonth() === currentDate.getMonth() &&
 								date.getFullYear() === currentDate.getFullYear(),
 						);
+						// const isSelected = [minDate, maxDate].some(
+						// 	date =>
+						// 		date.getDate() === day &&
+						// 		date.getMonth() === currentDate.getMonth() &&
+						// 		date.getFullYear() === currentDate.getFullYear(),
+						// );
 						const isIntermediate = isInRange(
 							day,
 							currentDate.getMonth(),

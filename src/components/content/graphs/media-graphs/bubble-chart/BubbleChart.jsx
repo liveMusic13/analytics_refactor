@@ -3,7 +3,7 @@ import HighchartsReact from 'highcharts-react-official';
 import { useMemo } from 'react';
 import { useSelector } from 'react-redux';
 
-import { funksMedia } from '../../../../../utils/editData';
+import { funksMedia } from '@/utils/editData';
 
 const BubbleChart = () => {
 	const mediaData = useSelector(state => state.mediaData);
@@ -101,13 +101,11 @@ const BubbleChart = () => {
 	);
 
 	return (
-		<>
-			<HighchartsReact
-				highcharts={Highcharts}
-				options={options}
-				containerProps={{ style: { width: '100%', height: '100%' } }}
-			/>
-		</>
+		<HighchartsReact
+			highcharts={Highcharts}
+			options={options}
+			containerProps={{ style: { width: '100%', height: '100%' } }}
+		/>
 	);
 };
 

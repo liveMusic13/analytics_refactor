@@ -17,6 +17,7 @@ import { useAddBaseAndDate } from '../../../../hooks/useAddBaseAndDate';
 import { useGetDataUsersQuery } from '../../../../services/other.service';
 import { useLazyTopicAnalysisQuery } from '../../../../services/tables.service';
 import TopicAnalysis from '../../../content/tables/topic-analysis/TopicAnalysis';
+import NotFound from '../../not-found/NotFound';
 
 import styles from './TopicAnalysisPage.module.scss';
 
@@ -27,13 +28,15 @@ const TopicAnalysisPage = () => {
 	const dataForRequest = useSelector(state => state.dataForRequest);
 	const { addData, addIndex, addMinDate, addMaxDate } = useActions();
 
-	const { data, isLoading, isSuccess } = useGetDataUsersQuery();
+	const { data, isLoading, isSuccess, isError, error } = useGetDataUsersQuery();
 	const [
 		trigger_topicAnalysis,
 		{
 			data: data_topicAnalysis,
 			isLoading: isLoading_topicAnalysis,
 			isSuccess: isSuccess_topicAnalysis,
+			isError: isError_topicAnalysis,
+			error: error_topicAnalysis,
 		},
 	] = useLazyTopicAnalysisQuery();
 
@@ -51,6 +54,12 @@ const TopicAnalysisPage = () => {
 	const getTopicAnalysis = () => {
 		trigger_topicAnalysis(dataForRequest);
 	};
+
+	if (isError_topicAnalysis || isError) {
+		const error_props = isError ? error : error_topicAnalysis;
+
+		return <NotFound error={error_props} />;
+	}
 
 	return (
 		<Layout>

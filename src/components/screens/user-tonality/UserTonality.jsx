@@ -8,6 +8,7 @@ import TonalityGraphs from '@/components/content/graphs/tonality-graphs/Tonality
 import Layout from '@/components/layout/Layout';
 import BackgroundLoader from '@/components/loading/background-loader/BackgroundLoader';
 import Loader from '@/components/loading/loader/Loader';
+import NotFound from '@/components/screens/not-found/NotFound';
 import Button from '@/components/ui/button/Button';
 import CustomCalendar from '@/components/ui/custom-calendar/CustomCalendar';
 import DataForSearch from '@/components/ui/data-for-search/DataForSearch';
@@ -15,8 +16,7 @@ import LeftMenu from '@/components/ui/left-menu/LeftMenu';
 import LeftMenuActive from '@/components/ui/left-menu/left-menu-active/LeftMenuActive';
 
 import { useActions } from '@/hooks/useActions';
-
-import { useAddBaseAndDate } from '../../../hooks/useAddBaseAndDate';
+import { useAddBaseAndDate } from '@/hooks/useAddBaseAndDate';
 
 import styles from './UserTonality.module.scss';
 import { useLazyUserTonalityQuery } from '@/services/getGraph.service';
@@ -39,11 +39,13 @@ const UserTonality = () => {
 			data: data_tonality,
 			isLoading: isLoading_tonality,
 			isSuccess: isSuccess_tonality,
+			isError: isError_tonality,
+			error: error_tonality,
 		},
 	] = useLazyUserTonalityQuery();
 	const cashingData = useMemo(() => data_tonality, [data_tonality]);
 
-	const { data, isLoading, isSuccess } = useGetDataUsersQuery();
+	const { data, isLoading, isSuccess, isError, error } = useGetDataUsersQuery();
 
 	useAddBaseAndDate(
 		dataUser,
@@ -68,6 +70,12 @@ const UserTonality = () => {
 	const getTonalityData = useCallback(() => {
 		trigger(data_request);
 	}, [data_request]);
+
+	if (isError_tonality || isError) {
+		const error_props = isError ? error : error_tonality;
+
+		return <NotFound error={error_props} />;
+	}
 
 	return (
 		<Layout>

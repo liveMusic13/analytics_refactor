@@ -15,6 +15,7 @@ import DataSet from '../../content/data-set/DataSet';
 import DataInFolder from '../../content/data-set/folder/data-in-folder/DataInFolder';
 import PopupDelete from '../../popups/popup-delete/PopupDelete';
 import PopupInFolder from '../../popups/popup-in-folder/PopupInFolder';
+import NotFound from '../not-found/NotFound';
 
 import styles from './DataSetPage.module.scss';
 
@@ -33,6 +34,8 @@ const DataSetPage = () => {
 			data: data_dataAddFile,
 			isSuccess: isSuccess_dataAddFile,
 			isLoading: isLoading_dataAddFile,
+			isError: isError_dataAddFile,
+			error: error_dataAddFile,
 		},
 	] = useLazyDataAddFileQuery();
 
@@ -65,6 +68,10 @@ const DataSetPage = () => {
 			setFile(null);
 		}
 	}, [file]);
+
+	if (isError_dataAddFile) {
+		return <NotFound error={error_dataAddFile} />;
+	}
 
 	return (
 		<Layout>

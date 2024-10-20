@@ -1,15 +1,12 @@
 import { useNavigate } from 'react-router-dom';
 
-import Button from '../../ui/button/Button';
+import Button from '@/components/ui/button/Button';
 
 import styles from './NotFound.module.scss';
 
-const NotFound = () => {
+const NotFound = ({ error }) => {
 	const nav = useNavigate();
-	// const { error } = useSelector(state => state.errorState);
-	// const validError = error >= 400 && error < 500;
-
-	const validError = true;
+	const validError = error ? error.status >= 400 && error.status < 500 : '404';
 
 	return (
 		<div className={styles.wrapper_notFound}>

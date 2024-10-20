@@ -24,11 +24,9 @@ const Home = () => {
 
 	if (!isAuth) navigate('/');
 
-	const { data, isError, error, isLoading, isSuccess, isFetching } =
-		useGetDataUsersQuery();
+	const { data, isError, error, isLoading, isSuccess } = useGetDataUsersQuery();
 
 	useEffect(() => {
-		console.log('isSuccess', isSuccess, isFetching, data);
 		if (isSuccess && data) {
 			const dataUserJson = JSON.stringify(dataUser);
 			const newDataJson = JSON.stringify(data.values);

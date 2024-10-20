@@ -19,6 +19,6 @@ export function getFirstWordAfterUnderscore(inputString) {
 }
 
 export const formatDates = dates => {
-	return `${dates[0] !== undefined ? convertDateFormat(dates[0]) : 'no date'} - 
+	return `${dates[0] !== undefined ? convertDateFormat(dates[0]) : 'no date'} -
 					${dates[1] !== undefined ? convertDateFormat(dates[1]) : 'no date'}`;
 };

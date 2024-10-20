@@ -95,14 +95,12 @@ const Table = () => {
 	const addNewData = useCallback(
 		event => {
 			const target = event.target.innerText;
-			// addThemesData_topicAnalysisData(categories[target]);
 		},
 		[categories],
 	);
 
 	return (
 		<div className={styles.wrapper_table}>
-			{/* ... Header code remains the same */}
 			<div className={styles.table__header}>
 				<div className={styles.header__topBlock}>
 					<div className={styles.block__globalFilter}>
@@ -213,7 +211,6 @@ const Table = () => {
 					))}
 				</tbody>
 			</table>
-			{/* Pagination, input handling, and other UI logic remain the same */}
 
 			<div className={styles.block__bottom}>
 				<div className={styles.block__select}>

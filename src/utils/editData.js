@@ -295,6 +295,11 @@ export const funksInformationGraph = {
 
 		return colors;
 	},
+	countTextAuthors: array => {
+		return array
+			.map(author => author.reposts.length)
+			.reduce((a, b) => a + b, 0);
+	},
 };
 
 export const funksMedia = {
@@ -309,7 +314,6 @@ export const funksMedia = {
 				newData.push({ name: categor, data: transformedData });
 			}
 		}
-		console.log(newData);
 		return newData;
 	},
 	convertDataForBubbleChart: data => {
@@ -554,7 +558,6 @@ export const funksCompetitive = {
 				x: elem.date,
 				y: elem.rating,
 				z: 20,
-				// name: elem.name.slice(0, 2).toUpperCase(),
 				source: elem.name,
 				url: elem.url,
 			};

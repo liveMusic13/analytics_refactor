@@ -18,9 +18,11 @@ import { useGetDataUsersQuery } from '../../../../services/other.service';
 import {
 	useLazyAiAnalyticsGETQuery,
 	useLazyAiAnalyticsPOSTQuery,
+	useLazyGetIdProgressBarQuery,
 } from '../../../../services/tables.service';
 import AiAnalytics from '../../../content/tables/ai-analytics/AiAnalytics';
 import Input from '../../../ui/fields/input/Input';
+import NotFound from '../../not-found/NotFound';
 
 import styles from './AiAnalyticsPage.module.scss';
 
@@ -31,8 +33,8 @@ const AiAnalyticsPage = () => {
 	const dataForRequest = useSelector(state => state.dataForRequest);
 	const { get } = useSelector(state => state.aiData);
 	const { addData, addIndex, addMinDate, addMaxDate, addPromt } = useActions();
-
-	const { data, isLoading, isSuccess } = useGetDataUsersQuery();
+	const { idProgressBar } = useSelector(state => state.aiData);
+	const { data, isLoading, isSuccess, isError, error } = useGetDataUsersQuery();
 
 	useAddBaseAndDate(
 		dataUser,
@@ -51,6 +53,8 @@ const AiAnalyticsPage = () => {
 			data: data_aiAnalyticsGET,
 			isLoading: isLoading_aiAnalyticsGET,
 			isSuccess: isSuccess_aiAnalyticsGET,
+			isError: isError_aiAnalyticsGET,
+			error: error_aiAnalyticsGET,
 		},
 	] = useLazyAiAnalyticsGETQuery();
 	const [
@@ -59,8 +63,20 @@ const AiAnalyticsPage = () => {
 			data: data_aiAnalyticsPOST,
 			isLoading: isLoading_aiAnalyticsPOST,
 			isSuccess: isSuccess_aiAnalyticsPOST,
+			isError: isError_aiAnalyticsPOST,
+			error: error_aiAnalyticsPOST,
 		},
 	] = useLazyAiAnalyticsPOSTQuery();
+	const [
+		trigger_getIdProgressBar,
+		{
+			data: data_getIdProgressBar,
+			isLoading: isLoading_getIdProgressBar,
+			isSuccess: isSuccess_getIdProgressBar,
+			isError: isError_getIdProgressBar,
+			error: error_getIdProgressBar,
+		},
+	] = useLazyGetIdProgressBarQuery();
 
 	const graf = localStorage.getItem('isGraf');
 
@@ -72,8 +88,29 @@ const AiAnalyticsPage = () => {
 		trigger_aiAnalyticsGET(dataForRequest);
 	};
 	const getAiAnalyticsPOST = () => {
-		trigger_aiAnalyticsPOST(dataForRequest);
+		if (idProgressBar === null) {
+			trigger_getIdProgressBar();
+		} else {
+			trigger_aiAnalyticsPOST(dataForRequest);
+		}
 	};
+
+	if (
+		isError_getIdProgressBar ||
+		isError ||
+		isError_aiAnalyticsPOST ||
+		isError_aiAnalyticsGET
+	) {
+		const error_props = isError
+			? error
+			: isError_aiAnalyticsPOST
+				? error_aiAnalyticsPOST
+				: isError_getIdProgressBar
+					? error_getIdProgressBar
+					: error_aiAnalyticsGET;
+
+		return <NotFound error={error_props} />;
+	}
 
 	return (
 		<Layout>
