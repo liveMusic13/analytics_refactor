@@ -24,7 +24,7 @@ const TonalityGraphs = () => {
 	);
 
 	const [activeButton, setActiveButton] = useState('Негативные упоминания');
-	const [isViewSource, setIsViewSource] = useState(true);
+	const [isViewSource, setIsViewSource] = useState(false);
 	const [isViewAuthors, setIsViewAuthors] = useState(false);
 
 	const handleClick = useCallback(button => {
@@ -83,7 +83,6 @@ const TonalityGraphs = () => {
 					</button>
 					<button
 						className={styles.button__settings}
-						// onClick={saveDiagramAsPDF}
 						onClick={() => handleDownloadImage('graph-for-download')}
 					>
 						<img src='/images/icons/setting/upload_active.svg' alt='icon' />

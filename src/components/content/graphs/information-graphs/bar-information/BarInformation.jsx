@@ -3,11 +3,11 @@ import HighchartsReact from 'highcharts-react-official';
 import { useEffect, useRef, useState } from 'react';
 import { useSelector } from 'react-redux';
 
-import { funksInformationGraph } from '../../../../../utils/editData';
+import { funksInformationGraph } from '@/utils/editData';
 import {
 	convertDateFormat,
 	convertFromTimestampToRegular,
-} from '../../../../../utils/timestamp';
+} from '@/utils/timestamp';
 
 import styles from './BarInformation.module.scss';
 

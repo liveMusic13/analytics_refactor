@@ -106,10 +106,12 @@ export const tablesService = createApi({
 		}),
 		getStateProgressBar: builder.query({
 			query: task_id => `/progress/${task_id}/`,
-			keepUnusedDataFor: 600,
+			// query: task_id => `/progress/llm_task_18/`,
+			// keepUnusedDataFor: 600,
 			async onQueryStarted(arg, { dispatch, queryFulfilled }) {
 				try {
 					const { data } = await queryFulfilled; // Дожидаемся выполнения запроса
+					console.log(data, typeof data);
 					dispatch(aiDataAction.addStateLoad_aiData(data)); // Диспатчим результат в другой срез
 				} catch (error) {
 					console.log('Ошибка запроса:', error);
@@ -124,4 +126,5 @@ export const {
 	useLazyAiAnalyticsGETQuery,
 	useLazyGetIdProgressBarQuery,
 	useLazyAiAnalyticsPOSTQuery,
+	useLazyGetStateProgressBarQuery,
 } = tablesService;

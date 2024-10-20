@@ -10,6 +10,7 @@ const Content = ({ children, graph }) => {
 	const { isPopup, description, link, time } = useSelector(
 		state => state.popupNormal,
 	);
+	const { active_menu } = useSelector(store => store.booleanValues);
 	const { default_popupNormal, defaultActiveMenu } = useActions();
 
 	const isDataSetPath = /^\/data-set(\/processed)?\/[^/]+$/.test(
@@ -28,7 +29,9 @@ const Content = ({ children, graph }) => {
 		<div
 			className={styles.wrapper_content}
 			style={style}
-			onClick={() => defaultActiveMenu('')}
+			onClick={() => {
+				if (active_menu) defaultActiveMenu('');
+			}}
 		>
 			{isPopup && (
 				<>

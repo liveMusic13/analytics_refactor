@@ -1,14 +1,14 @@
 import { Suspense, useCallback, useState } from 'react';
 
 import Loader from '@/components/loading/loader/Loader';
+import PanelTargetGraph from '@/components/ui/panel-target-graph/PanelTargetGraph';
 
-import { mediaButtons } from '../../../../data/panel.data';
-import { useSaveImageGraph } from '../../../../hooks/useSaveImageGraph';
-import PanelTargetGraph from '../../../ui/panel-target-graph/PanelTargetGraph';
+import { useSaveImageGraph } from '@/hooks/useSaveImageGraph';
 
 import styles from './MediaGraphs.module.scss';
 import BubbleChart from './bubble-chart/BubbleChart';
 import SplitBubble from './split-bubble/SplitBubble';
+import { mediaButtons } from '@/data/panel.data';
 
 const MediaGraphs = () => {
 	const handleDownloadImage = useSaveImageGraph();

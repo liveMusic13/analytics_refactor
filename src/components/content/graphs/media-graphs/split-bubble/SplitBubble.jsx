@@ -4,9 +4,8 @@ import packedbubble from 'highcharts/highcharts-more';
 import { useMemo } from 'react';
 import { useSelector } from 'react-redux';
 
-import { funksMedia } from '../../../../../utils/editData';
+import { funksMedia } from '@/utils/editData';
 
-// Инициализируйте модуль
 if (typeof Highcharts === 'object') {
 	packedbubble(Highcharts);
 }
@@ -15,16 +14,14 @@ const SplitBubble = () => {
 	const mediaData = useSelector(state => state.mediaData);
 	const cashingMediaData = useMemo(() => mediaData, [mediaData]);
 
-	// Преобразуем данные и добавляем цвета
 	const seriesData = useMemo(() => {
 		return funksMedia
 			.convertDataForSplitBubble(cashingMediaData.first_graph)
 			.map((series, index) => {
-				// Список цветов, который можно настроить
 				const colors = ['#8B0000', '#006400'];
 				return {
 					...series,
-					color: colors[index % colors.length], // Задаем цвет каждой серии
+					color: colors[index % colors.length],
 				};
 			});
 	}, [cashingMediaData]);
@@ -80,13 +77,11 @@ const SplitBubble = () => {
 	);
 
 	return (
-		<>
-			<HighchartsReact
-				highcharts={Highcharts}
-				options={options}
-				containerProps={{ style: { width: '100%' } }}
-			/>
-		</>
+		<HighchartsReact
+			highcharts={Highcharts}
+			options={options}
+			containerProps={{ style: { width: '100%' } }}
+		/>
 	);
 };
 

@@ -3,6 +3,8 @@ import HighchartsReact from 'highcharts-react-official';
 import sunburst from 'highcharts/modules/sunburst';
 import { useMemo } from 'react';
 
+import { funksTonality } from '@/utils/editData';
+
 import styles from './AuthorsGraph.module.scss';
 
 sunburst(Highcharts);
@@ -48,7 +50,6 @@ const AuthorsGraph = ({ cashingData, isViewSource }) => {
 				enabled: false,
 			},
 			chart: {
-				// height: '46%',
 				height: 'calc(800/1440*100vw)',
 			},
 			colors: ['transparent'].concat(Highcharts.getOptions().colors),

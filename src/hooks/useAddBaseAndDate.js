@@ -35,16 +35,23 @@ export const useAddBaseAndDate = (
 		[addMinDate, addMaxDate],
 	);
 
-	// Обновление индекса и дат
+	// // Обновление индекса и дат
+	// useEffect(() => {
+	// 	if (baseData !== null) {
+	// 		const targetBaseData = dataUser.filter(
+	// 			el => el.index_number === baseData,
+	// 		);
+	// 		updateDates(targetBaseData);
+	// 	} else if (dataUser.length > 0) {
+	// 		addIndex(dataUser[0].index_number);
+	// 		updateDates([dataUser[0]]);
+	// 	}
+	// }, [dataUser, baseData, addIndex, updateDates]);
+
 	useEffect(() => {
-		if (baseData !== null) {
-			const targetBaseData = dataUser.filter(
-				el => el.index_number === baseData,
-			);
-			updateDates(targetBaseData);
-		} else if (dataUser.length > 0) {
+		if (dataUser.length > 0) {
 			addIndex(dataUser[0].index_number);
 			updateDates([dataUser[0]]);
 		}
-	}, [dataUser, baseData, addIndex, updateDates]);
+	}, [dataUser]);
 };

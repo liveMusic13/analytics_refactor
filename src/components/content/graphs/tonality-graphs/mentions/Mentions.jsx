@@ -1,7 +1,7 @@
 import { useCallback, useMemo, useState } from 'react';
 import { Cell, Pie, PieChart, ResponsiveContainer } from 'recharts';
 
-import { useCheckWidth } from '../../../../../hooks/useCheckWidth';
+import { useCheckWidth } from '@/hooks/useCheckWidth';
 
 import styles from './Mentions.module.scss';
 import { renderActiveShape } from './RenderActiveShape';
@@ -9,7 +9,6 @@ import { renderActiveShape } from './RenderActiveShape';
 const Mentions = ({ isViewSource, data, setData }) => {
 	const { windowSize } = useCheckWidth();
 
-	// Мемоизация для расчета радиусов
 	const innerRadius = useMemo(
 		() => windowSize.width * 0.055,
 		[windowSize.width],
@@ -22,7 +21,6 @@ const Mentions = ({ isViewSource, data, setData }) => {
 	const [activeIndex, setActiveIndex] = useState(0);
 	const [deletedData, setDeletedData] = useState([]);
 
-	// Мемоизация обработчиков событий
 	const onPieEnter = useCallback((_, index) => {
 		setActiveIndex(index);
 	}, []);
@@ -56,7 +54,7 @@ const Mentions = ({ isViewSource, data, setData }) => {
 				<PieChart>
 					<Pie
 						activeIndex={activeIndex}
-						activeShape={renderActiveShape} // Упрощение рендера
+						activeShape={renderActiveShape}
 						data={data}
 						cx='50%'
 						cy='50%'

@@ -20,7 +20,8 @@ export const aiData = createSlice({
 			state.viewTable = payload;
 		},
 		addStateLoad_aiData: (state, { payload }) => {
-			state.stateLoad = payload;
+			console.log('in redux');
+			state.stateLoad = payload.toString();
 		},
 		addIdProgressBar_aiData: (state, { payload }) => {
 			state.idProgressBar = payload;

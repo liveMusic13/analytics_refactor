@@ -1,27 +1,30 @@
-import { Suspense } from 'react';
+import { Suspense, useCallback } from 'react';
 import { useSelector } from 'react-redux';
 import { useLocation } from 'react-router-dom';
 
 import Content from '@/components/content/Content';
 import BeforeSearch from '@/components/content/before-search/BeforeSearch';
+import InformationGraphs from '@/components/content/graphs/information-graphs/InformationGraphs';
 import Layout from '@/components/layout/Layout';
 import BackgroundLoader from '@/components/loading/background-loader/BackgroundLoader';
 import Loader from '@/components/loading/loader/Loader';
+import NotFound from '@/components/screens/not-found/NotFound';
+import AdditionalParameters from '@/components/ui/additional-parameters/AdditionalParameters';
 import Button from '@/components/ui/button/Button';
 import CustomCalendar from '@/components/ui/custom-calendar/CustomCalendar';
 import DataForSearch from '@/components/ui/data-for-search/DataForSearch';
+import Input from '@/components/ui/fields/input/Input';
 import LeftMenu from '@/components/ui/left-menu/LeftMenu';
 import LeftMenuActive from '@/components/ui/left-menu/left-menu-active/LeftMenuActive';
 
-import { useActions } from '../../../hooks/useActions';
-import { useAddBaseAndDate } from '../../../hooks/useAddBaseAndDate';
-import { useLazyInformationGraphQuery } from '../../../services/getGraph.service';
-import { useGetDataUsersQuery } from '../../../services/other.service';
-import InformationGraphs from '../../content/graphs/information-graphs/InformationGraphs';
-import AdditionalParameters from '../../ui/additional-parameters/AdditionalParameters';
-import Input from '../../ui/fields/input/Input';
+import { useActions } from '@/hooks/useActions';
+import { useAddBaseAndDate } from '@/hooks/useAddBaseAndDate';
+
+import { funksInformationGraph } from '@/utils/editData';
 
 import styles from './Information.module.scss';
+import { useLazyInformationGraphQuery } from '@/services/getGraph.service';
+import { useGetDataUsersQuery } from '@/services/other.service';
 
 const Information = () => {
 	const { pathname } = useLocation();
@@ -30,7 +33,7 @@ const Information = () => {
 	const { active_menu } = useSelector(store => store.booleanValues);
 	const { values: dataUser } = useSelector(store => store.dataUsersSlice);
 	const dataForRequest = useSelector(state => state.dataForRequest);
-	const { data, isLoading, isSuccess } = useGetDataUsersQuery();
+	const { data, isLoading, isSuccess, isError, error } = useGetDataUsersQuery();
 
 	useAddBaseAndDate(
 		dataUser,
@@ -49,16 +52,24 @@ const Information = () => {
 			data: data_information,
 			isLoading: isLoading_information,
 			isSuccess: isSuccess_information,
+			isError: isError_information,
+			error: error_information,
 		},
 	] = useLazyInformationGraphQuery();
 
-	const getInformationData = () => {
+	const getInformationData = useCallback(() => {
 		trigger(dataForRequest);
-	};
+	}, [dataForRequest]);
 
 	const onChange = e => {
 		addQueryStr(e.target.value);
 	};
+
+	if (isError_information || isError) {
+		const error_props = isError ? error : error_information;
+
+		return <NotFound error={error_props} />;
+	}
 
 	return (
 		<Layout>
@@ -78,13 +89,13 @@ const Information = () => {
 						<>
 							<h3 className={styles.pageName__title}>Информационный граф</h3>
 							<p>
-								{/* {informationGraphData?.values?.length === 0
-							? ''
-							: `${countTextAuthors(
-									informationGraphData?.values,
-								)} текста(ов) и ${
-									informationGraphData?.values?.length
-								} автора(ов)`} */}
+								{data_information?.values?.length === 0
+									? ''
+									: `${funksInformationGraph.countTextAuthors(
+											data_information?.values,
+										)} текста(ов) и ${
+											data_information?.values?.length
+										} автора(ов)`}
 							</p>
 						</>
 					) : (
@@ -125,12 +136,6 @@ const Information = () => {
 						Запуск
 					</Button>
 				</div>
-				{/* 
-				{isGraph.isGraph ? (
-					<InformationGraphs />
-				) : (
-					<BeforeSearch title='Информационный граф' />
-				)} */}
 				{isSuccess_information && (
 					<Suspense fallback={<Loader />}>
 						<InformationGraphs />

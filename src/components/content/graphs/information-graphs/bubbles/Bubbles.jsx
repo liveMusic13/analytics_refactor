@@ -1,24 +1,27 @@
 import * as am5 from '@amcharts/amcharts5';
 import * as am5hierarchy from '@amcharts/amcharts5/hierarchy';
 import am5themes_Animated from '@amcharts/amcharts5/themes/Animated';
-import { useEffect, useRef } from 'react';
+import { useEffect, useMemo, useRef } from 'react';
 import { useSelector } from 'react-redux';
 import { TransformComponent, TransformWrapper } from 'react-zoom-pan-pinch';
 
 import styles from './Bubbles.module.scss';
 
 const Bubbles = () => {
-	const chartRef = useRef(null); // Используем useRef для хранения ссылки на chart
+	const chartRef = useRef(null);
 	const informationGraphData = useSelector(state => state.informationGraphData);
+	const cashingInformationGraphData = useMemo(
+		() => informationGraphData,
+		[informationGraphData],
+	);
 
 	useEffect(() => {
 		if (
-			!informationGraphData.values ||
-			informationGraphData.values.length === 0
+			!cashingInformationGraphData.values ||
+			cashingInformationGraphData.values.length === 0
 		)
 			return;
 
-		// Уничтожаем предыдущий график, если он существует
 		if (chartRef.current) {
 			chartRef.current.dispose();
 		}
@@ -47,7 +50,6 @@ const Bubbles = () => {
 			}),
 		);
 
-		// Открытие URL при двойном клике
 		series.nodes.template.events.on('dblclick', function (ev) {
 			const data = ev.target.dataItem.dataContext;
 			const url = data.url;
@@ -56,13 +58,12 @@ const Bubbles = () => {
 			}
 		});
 
-		// Настройка данных
 		series.data.setAll([
 			{
-				name: informationGraphData.values[0].author.fullname,
-				url: informationGraphData.values[0].author.url || '',
+				name: cashingInformationGraphData.values[0].author.fullname,
+				url: cashingInformationGraphData.values[0].author.url || '',
 				value: 0,
-				children: informationGraphData.values.map(author => ({
+				children: cashingInformationGraphData.values.map(author => ({
 					name: author.author.fullname,
 					url: author.author.url || '',
 					type: 'values',
@@ -82,17 +83,15 @@ const Bubbles = () => {
 
 		series.set('selectedDataItem', series.dataItems[0]);
 
-		// Сохраняем ссылку на график
 		chartRef.current = root;
 
-		// Очистка при размонтировании компонента
 		return () => {
 			if (chartRef.current) {
 				chartRef.current.dispose();
 				chartRef.current = null;
 			}
 		};
-	}, [informationGraphData]); // Обновляем график, если изменяется информация
+	}, [cashingInformationGraphData]);
 
 	return (
 		<TransformWrapper>

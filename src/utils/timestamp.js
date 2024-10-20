@@ -36,6 +36,14 @@ export function fromTimestampToNewDateFormat(timestamp) {
 	return date;
 }
 
+export function formatDateToDDMMYY(date) {
+	const day = String(date.getDate()).padStart(2, '0');
+	const month = String(date.getMonth() + 1).padStart(2, '0'); // Месяцы с 0-11, поэтому прибавляем 1
+	const year = String(date.getFullYear()).slice(2); // Берем последние две цифры года
+
+	return `${day}/${month}/${year}`;
+}
+
 export function convertUnixTimestampToDate(unixTimestamp) {
 	// Создаем объект Date из Unix timestamp (в миллисекундах)
 	const date = new Date(unixTimestamp * 1000);
