@@ -1,9 +1,8 @@
 import Button from '@/components/ui/button/Button';
 
-import { colors } from '../../../../app.constants';
-
 import styles from './BlockCalendar.module.scss';
 import Calendar from './calendar/Calendar';
+import { colors } from '@/app.constants';
 
 const BlockCalendar = ({ states, setViewCalendar }) => {
 	const {

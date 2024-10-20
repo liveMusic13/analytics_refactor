@@ -5,10 +5,10 @@ import HighchartsSolidGauge from 'highcharts/modules/solid-gauge';
 import { useCallback, useMemo, useState } from 'react';
 import { useSelector } from 'react-redux';
 
-import { colors } from '../../../../../app.constants';
-import { funksVoice } from '../../../../../utils/editData';
+import { funksVoice } from '@/utils/editData';
 
 import styles from './RadialBar.module.scss';
+import { colors } from '@/app.constants';
 
 HighchartsMore(Highcharts);
 HighchartsSolidGauge(Highcharts);

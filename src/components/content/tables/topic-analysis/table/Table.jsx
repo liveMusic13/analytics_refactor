@@ -9,8 +9,9 @@ import {
 import { useCallback, useMemo, useState } from 'react';
 import { useSelector } from 'react-redux';
 
-import { useActions } from '../../../../../hooks/useActions';
-import Categories from '../../../../ui/categories/Categories';
+import Categories from '@/components/ui/categories/Categories';
+
+import { useActions } from '@/hooks/useActions';
 
 import styles from './Table.module.scss';
 

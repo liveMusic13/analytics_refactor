@@ -1,9 +1,10 @@
 import { useCallback, useEffect, useMemo, useState } from 'react';
 
-import { useActions } from '../../../hooks/useActions';
-import { truncateDescription } from '../../../utils/editText';
-import { generateCalc, generateCalcString } from '../../../utils/styles';
-import { convertUnixTimestampToDate } from '../../../utils/timestamp';
+import { useActions } from '@/hooks/useActions';
+
+import { truncateDescription } from '@/utils/editText';
+import { generateCalc, generateCalcString } from '@/utils/styles';
+import { convertUnixTimestampToDate } from '@/utils/timestamp';
 
 import styles from './Categories.module.scss';
 

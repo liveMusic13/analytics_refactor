@@ -1,15 +1,17 @@
 import { Suspense, useCallback, useEffect, useMemo, useState } from 'react';
 import { useSelector } from 'react-redux';
 
-import { tonalityButtons } from '../../../../data/panel.data';
-import { useSaveImageGraph } from '../../../../hooks/useSaveImageGraph';
-import { funksTonality } from '../../../../utils/editData';
-import Loader from '../../../loading/loader/Loader';
-import PanelTargetGraph from '../../../ui/panel-target-graph/PanelTargetGraph';
+import Loader from '@/components/loading/loader/Loader';
+import PanelTargetGraph from '@/components/ui/panel-target-graph/PanelTargetGraph';
+
+import { useSaveImageGraph } from '@/hooks/useSaveImageGraph';
+
+import { funksTonality } from '@/utils/editData';
 
 import styles from './TonalityGraphs.module.scss';
 import AuthorsGraph from './authors-graph/AuthorsGraph';
 import Mentions from './mentions/Mentions';
+import { tonalityButtons } from '@/data/panel.data';
 
 const TonalityGraphs = () => {
 	const tonalityData = useSelector(state => state.tonalityData);

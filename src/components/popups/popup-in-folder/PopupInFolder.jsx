@@ -1,13 +1,13 @@
 import { useState } from 'react';
 import { useSelector } from 'react-redux';
 
-import { useActions } from '../../../hooks/useActions';
+import { useActions } from '@/hooks/useActions';
+
+import styles from './PopupInFolder.module.scss';
 import {
 	useLazyCreateFolderQuery,
 	useLazyFileRenameQuery,
-} from '../../../services/dataSet.service';
-
-import styles from './PopupInFolder.module.scss';
+} from '@/services/dataSet.service';
 
 const PopupInFolder = () => {
 	const {

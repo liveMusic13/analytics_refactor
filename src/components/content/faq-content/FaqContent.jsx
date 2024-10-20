@@ -1,7 +1,6 @@
-import { faqData } from '../../../data/faq.data';
-
 import styles from './FaqContent.module.scss';
 import Question from './question/Question';
+import { faqData } from '@/data/faq.data';
 
 const FaqContent = () => {
 	return (

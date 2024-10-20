@@ -1,9 +1,8 @@
 import { useState } from 'react';
 import { Link, useLocation } from 'react-router-dom';
 
+import { useActions } from '@/hooks/useActions';
 import { useLogout } from '@/hooks/useLogout';
-
-import { useActions } from '../../../../hooks/useActions';
 
 import styles from './LeftMenuActive.module.scss';
 import { menuPageData, menuSettings } from '@/data/menuPage.data';

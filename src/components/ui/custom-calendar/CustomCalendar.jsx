@@ -1,11 +1,11 @@
 import { useEffect, useState } from 'react';
 import { useSelector } from 'react-redux';
 
-import { formatDates } from '@/utils/editText';
+import { useActions } from '@/hooks/useActions';
 
-import { useActions } from '../../../hooks/useActions';
-import { convertDataMultiCalendar } from '../../../utils/editData';
-import { fromTimestampToNewDateFormat } from '../../../utils/timestamp';
+import { convertDataMultiCalendar } from '@/utils/editData';
+import { formatDates } from '@/utils/editText';
+import { fromTimestampToNewDateFormat } from '@/utils/timestamp';
 
 import styles from './CustomCalendar.module.scss';
 import BlockCalendar from './block-calendar/BlockCalendar';

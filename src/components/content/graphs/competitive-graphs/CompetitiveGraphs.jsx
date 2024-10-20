@@ -1,15 +1,15 @@
 import { Suspense, useCallback, useState } from 'react';
 
 import Loader from '@/components/loading/loader/Loader';
+import PanelTargetGraph from '@/components/ui/panel-target-graph/PanelTargetGraph';
 
-import { competitiveButtons } from '../../../../data/panel.data';
-import { useSaveImageGraph } from '../../../../hooks/useSaveImageGraph';
-import PanelTargetGraph from '../../../ui/panel-target-graph/PanelTargetGraph';
+import { useSaveImageGraph } from '@/hooks/useSaveImageGraph';
 
 import styles from './CompetitiveGraphs.module.scss';
 import BubbleComparison from './bubble-comparison/BubbleComparison';
 import BubbleLineComparison from './bubble-line-comparison/BubbleLineComparison';
 import LineDynamic from './line-dynamic/LineDynamic';
+import { competitiveButtons } from '@/data/panel.data';
 
 const CompetitiveGraphs = () => {
 	const [activeButton, setActiveButton] = useState('Динамика сообщений');
@@ -95,30 +95,6 @@ const CompetitiveGraphs = () => {
 						<BubbleLineComparison activeSubcategory={activeSubcategory} />
 					</Suspense>
 				)}
-
-				{/* {activeButton === 'dynamic' ? (
-					<LineDynamic isViewSource={isViewSource} />
-				) : activeButton === 'bubble' ? (
-					<>
-						<BubbleComparison
-							isViewSource={isViewSource}
-							one={true}
-							activeSubcategory={activeSubcategory}
-						/>
-						<BubbleComparison
-							isViewSource={isViewSource}
-							one={false}
-							activeSubcategory={activeSubcategory}
-						/>
-					</>
-				) : (
-					<>
-						<BubbleLineComparison
-							isViewSource={isViewSource}
-							activeSubcategory={activeSubcategory}
-						/>
-					</>
-				)} */}
 			</div>
 		</div>
 	);

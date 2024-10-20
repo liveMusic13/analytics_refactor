@@ -1,6 +1,7 @@
 import { useForm } from 'react-hook-form';
-import { authService } from '../services/auth.service';
+
 import { useAuth } from './useAuth';
+import { authService } from '@/services/auth.service';
 
 export const useAuthPage = () => {
 	const { setIsAuth } = useAuth();

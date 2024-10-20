@@ -1,14 +1,14 @@
 import { Suspense, useCallback, useState } from 'react';
 
 import Loader from '@/components/loading/loader/Loader';
+import PanelTargetGraph from '@/components/ui/panel-target-graph/PanelTargetGraph';
 
-import { voiceButtons } from '../../../../data/panel.data';
-import { useSaveImageGraph } from '../../../../hooks/useSaveImageGraph';
-import PanelTargetGraph from '../../../ui/panel-target-graph/PanelTargetGraph';
+import { useSaveImageGraph } from '@/hooks/useSaveImageGraph';
 
 import styles from './VoiceGraph.module.scss';
 import RadialBar from './radial-bar/RadialBar';
 import Sankey from './sankey/Sankey';
+import { voiceButtons } from '@/data/panel.data';
 
 const VoiceGraph = () => {
 	const [activeButton, setActiveButton] = useState('Источники');

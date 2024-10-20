@@ -1,10 +1,10 @@
 import { useEffect, useState } from 'react';
 import { useSelector } from 'react-redux';
 
-import { truncateDescription } from '@/utils/editText';
+import { useActions } from '@/hooks/useActions';
 
-import { useActions } from '../../../hooks/useActions';
-import { groupByFirstWord } from '../../../utils/editData';
+import { groupByFirstWord } from '@/utils/editData';
+import { truncateDescription } from '@/utils/editText';
 
 import styles from './DataForSearch.module.scss';
 

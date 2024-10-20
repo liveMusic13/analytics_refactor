@@ -1,16 +1,15 @@
 import Auth from '@/components/screens/auth/Auth';
+import Clustering from '@/components/screens/clustering/Clustering';
+import Competitive from '@/components/screens/competitive/Competitive';
+import DataSetPage from '@/components/screens/data-set-page/DataSetPage';
 import Faq from '@/components/screens/faq/Faq';
 import Home from '@/components/screens/home/Home';
 import Information from '@/components/screens/information/Information';
 import MediaRating from '@/components/screens/media-rating/MediaRating';
+import AiAnalyticsPage from '@/components/screens/tables/ai-analytics-page/AiAnalyticsPage';
+import TopicAnalysisPage from '@/components/screens/tables/topic-analysis-page/TopicAnalysisPage';
 import UserTonality from '@/components/screens/user-tonality/UserTonality';
-
-import Clustering from '../components/screens/clustering/Clustering';
-import Competitive from '../components/screens/competitive/Competitive';
-import DataSetPage from '../components/screens/data-set-page/DataSetPage';
-import AiAnalyticsPage from '../components/screens/tables/ai-analytics-page/AiAnalyticsPage';
-import TopicAnalysisPage from '../components/screens/tables/topic-analysis-page/TopicAnalysisPage';
-import VoiceOfCustomer from '../components/screens/voice-of-customer/VoiceOfCustomer';
+import VoiceOfCustomer from '@/components/screens/voice-of-customer/VoiceOfCustomer';
 
 export const routes = [
 	{

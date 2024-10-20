@@ -1,15 +1,16 @@
 import { Suspense, useCallback, useState } from 'react';
 import { useLocation } from 'react-router-dom';
 
-import { informationButtons } from '../../../../data/panel.data';
-import { useSaveImageGraph } from '../../../../hooks/useSaveImageGraph';
-import Loader from '../../../loading/loader/Loader';
-import PanelTargetGraph from '../../../ui/panel-target-graph/PanelTargetGraph';
+import Loader from '@/components/loading/loader/Loader';
+import PanelTargetGraph from '@/components/ui/panel-target-graph/PanelTargetGraph';
+
+import { useSaveImageGraph } from '@/hooks/useSaveImageGraph';
 
 import styles from './InformationGraphs.module.scss';
 import BarInformation from './bar-information/BarInformation';
 import Bubbles from './bubbles/Bubbles';
 import ScatterChart from './scatter-chart/ScatterChart';
+import { informationButtons } from '@/data/panel.data';
 
 const InformationGraphs = () => {
 	const { pathname } = useLocation();

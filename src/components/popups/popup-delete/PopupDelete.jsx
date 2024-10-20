@@ -1,9 +1,9 @@
 import { useSelector } from 'react-redux';
 
-import { useActions } from '../../../hooks/useActions';
-import { useLazyDataDeleteQuery } from '../../../services/dataSet.service';
+import { useActions } from '@/hooks/useActions';
 
 import styles from './PopupDelete.module.scss';
+import { useLazyDataDeleteQuery } from '@/services/dataSet.service';
 
 const PopupDelete = () => {
 	const {
