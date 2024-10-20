@@ -1,7 +1,7 @@
 import styles from './BackgroundLoader.module.scss';
 
-const BackgroundLoader = () => {
-	return <div className={styles.background__loader}></div>;
+const BackgroundLoader = ({ onClick }) => {
+	return <div className={styles.background__loader} onClick={onClick}></div>;
 };
 
 export default BackgroundLoader;

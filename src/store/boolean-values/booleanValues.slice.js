@@ -11,6 +11,9 @@ export const booleanValues = createSlice({
 		toggleActiveMenu: (state, { payload }) => {
 			state.active_menu = !state.active_menu;
 		},
+		defaultActiveMenu: (state, { payload }) => {
+			state.active_menu = false;
+		},
 	},
 });
 

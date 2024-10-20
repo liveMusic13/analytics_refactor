@@ -77,3 +77,16 @@ export const competitiveButtons = [
 		title: 'Рейтинг СМИ и Соцмедиа в динамике',
 	},
 ];
+
+export const dataSetButtons = [
+	{
+		id: 0,
+		isCount: false,
+		title: 'Файлы данных',
+	},
+	{
+		id: 1,
+		isCount: false,
+		title: 'Файлы кластеризации авторов',
+	},
+];

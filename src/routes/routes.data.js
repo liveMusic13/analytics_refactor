@@ -5,7 +5,11 @@ import Information from '@/components/screens/information/Information';
 import MediaRating from '@/components/screens/media-rating/MediaRating';
 import UserTonality from '@/components/screens/user-tonality/UserTonality';
 
+import Clustering from '../components/screens/clustering/Clustering';
 import Competitive from '../components/screens/competitive/Competitive';
+import DataSetPage from '../components/screens/data-set-page/DataSetPage';
+import AiAnalyticsPage from '../components/screens/tables/ai-analytics-page/AiAnalyticsPage';
+import TopicAnalysisPage from '../components/screens/tables/topic-analysis-page/TopicAnalysisPage';
 import VoiceOfCustomer from '../components/screens/voice-of-customer/VoiceOfCustomer';
 
 export const routes = [
@@ -42,6 +46,36 @@ export const routes = [
 	{
 		path: '/competitive',
 		component: Competitive,
+		isAuth: true,
+	},
+	{
+		path: '/data-set',
+		component: DataSetPage,
+		isAuth: true,
+	},
+	{
+		path: '/data-set/:id',
+		component: DataSetPage,
+		isAuth: true,
+	},
+	{
+		path: '/data-set/processed/:id',
+		component: DataSetPage,
+		isAuth: true,
+	},
+	{
+		path: '/topic-analysis',
+		component: TopicAnalysisPage,
+		isAuth: true,
+	},
+	{
+		path: '/ai-analytics',
+		component: AiAnalyticsPage,
+		isAuth: true,
+	},
+	{
+		path: '/clustering',
+		component: Clustering,
 		isAuth: true,
 	},
 	{

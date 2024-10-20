@@ -1,15 +1,19 @@
-import { useCallback, useEffect, useState } from 'react';
+import { Suspense, useCallback, useState } from 'react';
+
+import Loader from '@/components/loading/loader/Loader';
 
 import { competitiveButtons } from '../../../../data/panel.data';
 import { useSaveImageGraph } from '../../../../hooks/useSaveImageGraph';
 import PanelTargetGraph from '../../../ui/panel-target-graph/PanelTargetGraph';
 
 import styles from './CompetitiveGraphs.module.scss';
+import BubbleComparison from './bubble-comparison/BubbleComparison';
+import BubbleLineComparison from './bubble-line-comparison/BubbleLineComparison';
+import LineDynamic from './line-dynamic/LineDynamic';
 
 const CompetitiveGraphs = () => {
 	const [activeButton, setActiveButton] = useState('Динамика сообщений');
 	const [activeSubcategory, setActiveSubcategory] = useState('Socmedia');
-	const [isViewSource, setIsViewSource] = useState(false);
 
 	const handleDownloadImage = useSaveImageGraph();
 
@@ -21,10 +25,6 @@ const CompetitiveGraphs = () => {
 		setActiveSubcategory(button);
 	}, []);
 
-	useEffect(() => {
-		console.log(activeSubcategory);
-	}, [activeSubcategory]);
-
 	return (
 		<div className={styles.block__graph}>
 			<div className={styles.block__title}>
@@ -33,45 +33,6 @@ const CompetitiveGraphs = () => {
 					dataButtons={competitiveButtons}
 					activeButton={activeButton}
 				/>
-
-				{/* <div className={styles.block__subcategory}>
-					<input type='radio'/>
-					<button
-						className={
-							activeSubcategory === 'SMI'
-								? styles.activeSubcategory
-								: styles.button
-						}
-						style={
-							activeButton === 'Динамика сообщений' ? { display: 'none' } : {}
-						}
-						onClick={() =>
-							activeButton === 'Динамика сообщений'
-								? undefined
-								: handleClickSubcategory('SMI')
-						}
-					>
-						SMI
-					</button>
-					<button
-						className={
-							activeSubcategory === 'Socmedia'
-								? styles.activeSubcategory
-								: styles.button
-						}
-						style={
-							activeButton === 'Динамика сообщений' ? { display: 'none' } : {}
-						}
-						onClick={() =>
-							activeButton === 'Динамика сообщений'
-								? undefined
-								: handleClickSubcategory('Socmedia')
-						}
-					>
-						Socmedia
-					</button>
-				</div> */}
-
 				<div className={styles.block__settings}>
 					<button
 						className={styles.button__settings}
@@ -114,6 +75,27 @@ const CompetitiveGraphs = () => {
 				</div>
 			</div>
 			<div className={styles.container__graph} id='graph-for-download'>
+				{activeButton === 'Динамика сообщений' ? (
+					<Suspense fallback={<Loader />}>
+						<LineDynamic />
+					</Suspense>
+				) : activeButton === 'Сравнение в СМИ и Соцмедиа' ? (
+					<Suspense fallback={<Loader />}>
+						<BubbleComparison
+							one={true}
+							activeSubcategory={activeSubcategory}
+						/>
+						<BubbleComparison
+							one={false}
+							activeSubcategory={activeSubcategory}
+						/>
+					</Suspense>
+				) : (
+					<Suspense fallback={<Loader />}>
+						<BubbleLineComparison activeSubcategory={activeSubcategory} />
+					</Suspense>
+				)}
+
 				{/* {activeButton === 'dynamic' ? (
 					<LineDynamic isViewSource={isViewSource} />
 				) : activeButton === 'bubble' ? (

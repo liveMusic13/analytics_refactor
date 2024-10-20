@@ -28,11 +28,6 @@ const Competitive = () => {
 	const { active_menu } = useSelector(store => store.booleanValues);
 	const dataForRequest = useSelector(state => state.dataForRequest);
 	const { values: dataUser } = useSelector(store => store.dataUsersSlice);
-	const {
-		index: baseData,
-		min_date,
-		max_date,
-	} = useSelector(state => state.dataForRequest);
 
 	const { data, isLoading, isSuccess } = useGetDataUsersQuery();
 
@@ -40,7 +35,7 @@ const Competitive = () => {
 		dataUser,
 		data,
 		isSuccess,
-		baseData,
+		dataForRequest.index,
 		addData,
 		addMinDate,
 		addMaxDate,
@@ -55,7 +50,7 @@ const Competitive = () => {
 	}, [dataUser]);
 
 	const [
-		trigger,
+		trigger_competitive,
 		{
 			data: data_competitive,
 			isLoading: isLoading_competitive,
@@ -64,7 +59,7 @@ const Competitive = () => {
 	] = useLazyCompetitiveGraphQuery();
 
 	const getCompetitiveData = () => {
-		trigger(dataForRequest);
+		trigger_competitive(dataForRequest);
 	};
 
 	return (

@@ -32,19 +32,6 @@ export const dataForRequest = createSlice({
 				}
 			}
 		},
-		// addThemesInd: (state, { payload }) => {
-		// 	// Если элемент уже есть в массиве, убираем его (чтобы не было дублирования)
-		// 	if (state.themes_ind.includes(payload)) {
-		// 		state.themes_ind = state.themes_ind.filter(id => id !== payload);
-		// 	} else {
-		// 		// Добавляем новый элемент
-		// 		state.themes_ind.push(payload);
-		// 		// Если больше двух элементов, удаляем первый
-		// 		if (state.themes_ind.length > 2) {
-		// 			state.themes_ind.shift();
-		// 		}
-		// 	}
-		// },
 		clearThemesInd: (state, { payload }) => {
 			state.themes_ind = [];
 		},

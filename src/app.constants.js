@@ -1,5 +1,6 @@
 // export const API_URL = 'http://194.146.113.123:8005';
-export const API_URL = 'https://tsapi.headsmade.com';
+export const API_URL = 'http://194.146.113.124:8005';
+// export const API_URL = 'https://tsapi.headsmade.com';
 
 export const TOKEN = 'token';
 
@@ -14,4 +15,6 @@ export const colors = {
 	red_graph: '#D92D20',
 	green_graph: '#039855',
 	grey_graph: '#667085',
+	blue_bubble: '#2E90FA',
+	purple_bubble: '#7A5AF8',
 };

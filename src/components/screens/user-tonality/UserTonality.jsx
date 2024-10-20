@@ -1,4 +1,4 @@
-import { Suspense, useMemo } from 'react';
+import { Suspense, useCallback, useMemo } from 'react';
 import { useSelector } from 'react-redux';
 import { useLocation } from 'react-router-dom';
 
@@ -56,15 +56,18 @@ const UserTonality = () => {
 		addIndex,
 	);
 
-	const data_request = {
-		index: baseData,
-		min_date,
-		max_date,
-	};
+	const data_request = useMemo(
+		() => ({
+			index: baseData,
+			min_date,
+			max_date,
+		}),
+		[baseData, min_date, max_date],
+	);
 
-	const getTonalityData = () => {
+	const getTonalityData = useCallback(() => {
 		trigger(data_request);
-	};
+	}, [data_request]);
 
 	return (
 		<Layout>

@@ -1,0 +1,64 @@
+@import '@st/variables';
+@import '@st/functions';
+
+.block__pageName {
+	display: flex;
+	align-items: flex-end;
+	justify-content: space-between;
+	align-self: flex-start;
+	width: 100%;
+
+	> .pageName__title {
+		font-size: 1.12rem;
+		font-weight: 500;
+		line-height: 1.18;
+	}
+}
+
+.background__loader {
+	position: absolute;
+	z-index: 8999;
+	top: 0;
+	bottom: 0;
+	left: 0;
+	right: 0;
+	background-color: rgba($color: $color_full_black, $alpha: 0.3);
+}
+
+.button__title {
+	width: adapt(132px, 1440px);
+	height: adapt(30px, 1440px);
+	border-radius: adapt(8px, 1440px);
+	background-color: $color_blue;
+	font-size: 0.66rem;
+	font-weight: 400;
+	line-height: 1.4;
+	color: $color_white;
+
+	&:hover {
+		cursor: pointer;
+	}
+}
+
+.download {
+	width: adapt(144.91px, 1440px);
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	position: relative;
+
+	> .file {
+		position: absolute;
+		opacity: 0;
+
+		&:hover {
+			cursor: pointer;
+		}
+	}
+
+	> .upload {
+		width: adapt(10.91px, 1440px);
+		height: adapt(12px, 1440px);
+		margin-right: adapt(5px, 1440px);
+	}
+}

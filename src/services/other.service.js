@@ -3,8 +3,8 @@ import Cookies from 'js-cookie';
 
 import { API_URL, TOKEN } from '../app.constants';
 
-export const dataUsers = createApi({
-	reducerPath: 'dataUsers',
+export const dataUsersService = createApi({
+	reducerPath: 'dataUsersService',
 	baseQuery: fetchBaseQuery({
 		baseUrl: API_URL,
 		prepareHeaders: headers => {
@@ -22,4 +22,4 @@ export const dataUsers = createApi({
 	}),
 });
 
-export const { useGetDataUsersQuery } = dataUsers;
+export const { useGetDataUsersQuery } = dataUsersService;

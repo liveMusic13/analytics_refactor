@@ -9,8 +9,8 @@ import { actions as tonalityDataAction } from '../store/tonality-data/tonalityDa
 import { actions as voiceDataAction } from '../store/voice-data/voiceData.slice';
 import { funksInformationGraph } from '../utils/editData';
 
-export const getGraph = createApi({
-	reducerPath: 'getGraph',
+export const getGraphService = createApi({
+	reducerPath: 'getGraphService',
 	baseQuery: fetchBaseQuery({
 		baseUrl: API_URL,
 		prepareHeaders: headers => {
@@ -112,4 +112,4 @@ export const {
 	useLazyMediaGraphQuery,
 	useLazyVoiceGraphQuery,
 	useLazyCompetitiveGraphQuery,
-} = getGraph;
+} = getGraphService;

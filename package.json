@@ -12,6 +12,7 @@
   "dependencies": {
     "@amcharts/amcharts5": "^5.10.6",
     "@reduxjs/toolkit": "^2.2.7",
+    "@tanstack/react-table": "^8.20.5",
     "@trivago/prettier-plugin-sort-imports": "^4.3.0",
     "axios": "^1.7.7",
     "highcharts": "^11.4.8",
