@@ -2,15 +2,17 @@ import { useState } from 'react';
 import { useSelector } from 'react-redux';
 import { useNavigate } from 'react-router-dom';
 
-import { useActions } from '../../../../../hooks/useActions';
+import Pagination from '@/components/ui/pagination/Pagination';
+
+import { useActions } from '@/hooks/useActions';
+
+import { downloadFile } from '@/utils/downloadData';
+
+import styles from './DataInFolder.module.scss';
 import {
 	useLazyDataAddFileQuery,
 	useLazyFileLoadQuery,
-} from '../../../../../services/dataSet.service';
-import { downloadFile } from '../../../../../utils/downloadData';
-import Pagination from '../../../../ui/pagination/Pagination';
-
-import styles from './DataInFolder.module.scss';
+} from '@/services/dataSet.service';
 
 const DataInFolder = () => {
 	const {

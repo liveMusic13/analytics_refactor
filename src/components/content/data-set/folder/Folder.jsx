@@ -2,11 +2,12 @@ import { useState } from 'react';
 import { useSelector } from 'react-redux';
 import { useNavigate } from 'react-router-dom';
 
-import { useActions } from '../../../../hooks/useActions';
-import { useLazyFileLoadQuery } from '../../../../services/dataSet.service';
-import { downloadJSON } from '../../../../utils/downloadData';
+import { useActions } from '@/hooks/useActions';
+
+import { downloadJSON } from '@/utils/downloadData';
 
 import styles from './Folder.module.scss';
+import { useLazyFileLoadQuery } from '@/services/dataSet.service';
 
 const Folder = ({ folder, processedFolder, buttonTarget }) => {
 	const { data: targetData } = useSelector(state => state.folderTarget);

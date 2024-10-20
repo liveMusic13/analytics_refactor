@@ -1,8 +1,9 @@
 import { useSelector } from 'react-redux';
 
-import { useActions } from '../../hooks/useActions';
-import BackgroundLoader from '../loading/background-loader/BackgroundLoader';
-import PopupNormal from '../popups/popup-normal/PopupNormal';
+import BackgroundLoader from '@/components/loading/background-loader/BackgroundLoader';
+import PopupNormal from '@/components/popups/popup-normal/PopupNormal';
+
+import { useActions } from '@/hooks/useActions';
 
 import styles from './Content.module.scss';
 

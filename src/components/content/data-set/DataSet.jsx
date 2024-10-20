@@ -1,17 +1,18 @@
 import { useEffect, useMemo, useRef, useState } from 'react';
 import { useSelector } from 'react-redux';
 
-import { dataSetButtons } from '../../../data/panel.data';
-import { useActions } from '../../../hooks/useActions';
-import {
-	useLazyGetDataFoldersQuery,
-	useLazyGetProcessedFilesQuery,
-} from '../../../services/dataSet.service';
-import PanelTargetGraph from '../../ui/panel-target-graph/PanelTargetGraph';
+import PanelTargetGraph from '@/components/ui/panel-target-graph/PanelTargetGraph';
+
+import { useActions } from '@/hooks/useActions';
 
 import styles from './DataSet.module.scss';
 import Folder from './folder/Folder';
 import NoData from './no-data/NoData';
+import { dataSetButtons } from '@/data/panel.data';
+import {
+	useLazyGetDataFoldersQuery,
+	useLazyGetProcessedFilesQuery,
+} from '@/services/dataSet.service';
 
 const DataSet = () => {
 	const { addButtonTarget_PopupDelete } = useActions();
