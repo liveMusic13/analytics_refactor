@@ -8,7 +8,7 @@ export const authService = {
 		try {
 			const { data } = await axios.post(
 				`${API_URL}/auth/jwt/login`,
-				`grant_type=&username=${email}&password=${password}&scope=&client_id=&client_secret=`,
+				`grant_type=password&username=${email}&password=${password}&scope=&client_id=&client_secret=`,
 				// {
 				// 	username: email,
 				// 	password,

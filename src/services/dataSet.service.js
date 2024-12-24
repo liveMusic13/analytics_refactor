@@ -121,6 +121,7 @@ export const dataSetService = createApi({
 				}
 			},
 		}),
+
 		createFolder: builder.query({
 			query: folder => `/create-folder?name=${folder}`,
 			keepUnusedDataFor: 600,
@@ -132,6 +133,7 @@ export const {
 	useLazyFileRenameQuery,
 	useLazyCreateFolderQuery,
 	useLazyDataAddFileQuery,
+	useDataAddFileMutation,
 	useLazyDataDeleteQuery,
 	useLazyGetDataFoldersQuery,
 	useLazyGetProcessedFilesQuery,

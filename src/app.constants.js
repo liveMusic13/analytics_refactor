@@ -1,5 +1,5 @@
-// export const API_URL = 'http://194.146.113.123:8005';
-export const API_URL = 'http://194.146.113.124:8005';
+export const API_URL = 'https://194.146.113.123/api';
+// export const API_URL = 'https://194.146.113.123:5000';
 // export const API_URL = 'https://tsapi.headsmade.com';
 
 export const TOKEN = 'token';

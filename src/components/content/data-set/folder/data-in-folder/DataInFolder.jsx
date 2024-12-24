@@ -6,15 +6,14 @@ import Pagination from '@/components/ui/pagination/Pagination';
 
 import { useActions } from '@/hooks/useActions';
 
-import { downloadFile } from '@/utils/downloadData';
+import { useDataInFolder } from '../../../../../hooks/useDataInFolder';
+import { useLazyDataAddFileQuery } from '../../../../../services/dataSet.service';
 
 import styles from './DataInFolder.module.scss';
-import {
-	useLazyDataAddFileQuery,
-	useLazyFileLoadQuery,
-} from '@/services/dataSet.service';
+import { useLazyFileLoadQuery } from '@/services/dataSet.service';
 
 const DataInFolder = () => {
+	const navigate = useNavigate();
 	const {
 		addText_PopupInFolder,
 		toggle_PopupInFolder,
@@ -30,9 +29,7 @@ const DataInFolder = () => {
 		isPopupDelete,
 		buttonTarget,
 	} = useSelector(state => state.popupDelete);
-	const navigate = useNavigate();
 	const [filterText, setFilterText] = useState('');
-	// const { dataDelete, addFile, getFileLoad } = useDataFolders();
 
 	const [
 		trigger_fileLoad,
@@ -60,35 +57,35 @@ const DataInFolder = () => {
 		location.pathname,
 	);
 
-	const onClick = async (file, button) => {
-		if (button === 'edit') {
-			addText_PopupInFolder({
-				title: 'Редактирование файла',
-				name_file: file,
-			});
+	// const onClick = async (file, button) => {
+	// 	if (button === 'edit') {
+	// 		addText_PopupInFolder({
+	// 			title: 'Редактирование файла',
+	// 			name_file: file,
+	// 		});
 
-			toggle_PopupInFolder('');
-		} else if (button === 'delete') {
-			const dataForRequest = {
-				isFolder: false,
-				name: '',
-			};
+	// 		toggle_PopupInFolder('');
+	// 	} else if (button === 'delete') {
+	// 		const dataForRequest = {
+	// 			isFolder: false,
+	// 			name: '',
+	// 		};
 
-			addTitle_PopupDelete({
-				folder: file,
-				title: 'Файл',
-				processed: isDataSetPath ? true : false,
-			});
-			toggle_PopupDelete('');
-		} else {
-			trigger_fileLoad({
-				folder_name: data.name,
-				file_name: file,
-			});
+	// 		addTitle_PopupDelete({
+	// 			folder: file,
+	// 			title: 'Файл',
+	// 			processed: isDataSetPath ? true : false,
+	// 		});
+	// 		toggle_PopupDelete('');
+	// 	} else {
+	// 		trigger_fileLoad({
+	// 			folder_name: data.name,
+	// 			file_name: file,
+	// 		});
 
-			downloadFile(file, data_fileLoad);
-		}
-	};
+	// 		downloadFile(file, data_fileLoad);
+	// 	}
+	// };
 
 	const renderFiles = (data, allData) => {
 		const folderIndex = allData.values.findIndex(
@@ -130,56 +127,66 @@ const DataInFolder = () => {
 		display: isPopupDelete && folderName === name ? 'none' : 'flex',
 	});
 
-	const handleDragOver = event => {
-		event.preventDefault();
-		setDragging(true);
-	};
+	const {
+		onClick,
+		handleInputChange,
+		handlePageChange,
+		handleFileChange,
+		handleDrop,
+		handleDragLeave,
+		handleDragOver,
+	} = useDataInFolder();
 
-	const handleDragLeave = () => {
-		setDragging(false);
-	};
+	// const handleDragOver = event => {
+	// 	event.preventDefault();
+	// 	setDragging(true);
+	// };
 
-	const handleDrop = event => {
-		event.preventDefault();
-		setDragging(false);
+	// const handleDragLeave = () => {
+	// 	setDragging(false);
+	// };
 
-		const droppedFiles = event.dataTransfer.files;
-		if (droppedFiles.length) {
-			const formData = new FormData();
-			formData.append('uploaded_file', droppedFiles[0]);
-			// Предполагается, что у вас есть функция addFile для передачи файла на сервер
-			trigger_dataAddFile(formData, data.name, droppedFiles[0].name);
-		}
-	};
+	// const handleDrop = event => {
+	// 	event.preventDefault();
+	// 	setDragging(false);
 
-	const handleFileChange = event => {
-		const selectedFile = event.target.files[0];
-		if (selectedFile) {
-			// const formData = new FormData();
-			// formData.append('uploaded_file', selectedFile);
-			const formData = {
-				uploaded_file: selectedFile,
-			};
+	// 	const droppedFiles = event.dataTransfer.files;
+	// 	if (droppedFiles.length) {
+	// 		const formData = new FormData();
+	// 		formData.append('uploaded_file', droppedFiles[0]);
+	// 		// Предполагается, что у вас есть функция addFile для передачи файла на сервер
+	// 		trigger_dataAddFile(formData, data.name, droppedFiles[0].name);
+	// 	}
+	// };
 
-			console.log('in onClick', formData, data.name);
+	// const handleFileChange = event => {
+	// 	const selectedFile = event.target.files[0];
+	// 	if (selectedFile) {
+	// 		// const formData = new FormData();
+	// 		// formData.append('uploaded_file', selectedFile);
+	// 		const formData = {
+	// 			uploaded_file: selectedFile,
+	// 		};
 
-			// Передача файла на сервер
-			// trigger_dataAddFile(formData, data.name, selectedFile.name);
-			trigger_dataAddFile({
-				data: formData,
-				name: data.name,
-				fileName: selectedFile.name,
-			});
-		}
-	};
+	// 		console.log('in onClick', formData, data.name);
 
-	const handlePageChange = page => {
-		setCurrentPage(page);
-	};
+	// 		// Передача файла на сервер
+	// 		// trigger_dataAddFile(formData, data.name, selectedFile.name);
+	// 		trigger_dataAddFile({
+	// 			data: formData,
+	// 			name: data.name,
+	// 			fileName: selectedFile.name,
+	// 		});
+	// 	}
+	// };
 
-	const handleInputChange = event => {
-		setFilterText(event.target.value);
-	};
+	// const handlePageChange = page => {
+	// 	setCurrentPage(page);
+	// };
+
+	// const handleInputChange = event => {
+	// 	setFilterText(event.target.value);
+	// };
 
 	return (
 		<div className={styles.wrapper_dataInFolder}>
