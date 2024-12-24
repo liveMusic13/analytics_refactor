@@ -10,7 +10,7 @@ import LeftMenu from '@/components/ui/left-menu/LeftMenu';
 import LeftMenuActive from '@/components/ui/left-menu/left-menu-active/LeftMenuActive';
 
 import { useActions } from '../../../hooks/useActions';
-import { useDataAddFileMutation } from '../../../services/dataSet.service';
+import { useLazyDataAddFileQuery } from '../../../services/dataSet.service';
 import DataSet from '../../content/data-set/DataSet';
 import DataInFolder from '../../content/data-set/folder/data-in-folder/DataInFolder';
 import PopupDelete from '../../popups/popup-delete/PopupDelete';
@@ -37,7 +37,7 @@ const DataSetPage = () => {
 			isError: isError_dataAddFile,
 			error: error_dataAddFile,
 		},
-	] = useDataAddFileMutation();
+	] = useLazyDataAddFileQuery();
 
 	const [fileName, setFileName] = useState('');
 	const [file, setFile] = useState(null);

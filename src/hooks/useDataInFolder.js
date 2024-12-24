@@ -1,6 +1,6 @@
 import { useSelector } from 'react-redux';
 
-import { useDataAddFileMutation } from '../services/dataSet.service';
+import { useLazyDataAddFileQuery } from '../services/dataSet.service';
 
 import { useActions } from './useActions';
 import { useLazyFileLoadQuery } from '@/services/dataSet.service';
@@ -29,7 +29,7 @@ export const useDataInFolder = () => {
 			isSuccess: isSuccess_dataAddFile,
 			isLoading: isLoading_dataAddFile,
 		},
-	] = useDataAddFileMutation();
+	] = useLazyDataAddFileQuery();
 
 	const onClick = async (file, button) => {
 		if (button === 'edit') {
