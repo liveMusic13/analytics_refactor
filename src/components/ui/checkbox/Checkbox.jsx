@@ -1,6 +1,6 @@
 import { useSelector } from 'react-redux';
 
-import { useActions } from '../../../hooks/useActions';
+import { useActions } from '@/hooks/useActions';
 
 import styles from './Checkbox.module.scss';
 

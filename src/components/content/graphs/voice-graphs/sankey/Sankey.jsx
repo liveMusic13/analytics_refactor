@@ -4,8 +4,9 @@ import HighchartsSankey from 'highcharts/modules/sankey';
 import { useMemo } from 'react';
 import { useSelector } from 'react-redux';
 
-import { colors as colorsConstant } from '../../../../../app.constants';
-import { funksVoice } from '../../../../../utils/editData';
+import { funksVoice } from '@/utils/editData';
+
+import { colors as colorsConstant } from '@/app.constants';
 
 HighchartsSankey(Highcharts);
 
@@ -17,10 +18,8 @@ const Sankey = () => {
 		cashingVoiceData,
 	);
 
-	// Генерация цветов для узлов
 	const colors = funksVoice.generateColorsForObjects(nodes);
 
-	// Присвоение цветов узлам
 	for (let i = 0; i < nodes.length; i++) {
 		nodes[i].color = colors[i];
 	}

@@ -3,8 +3,9 @@ import HighchartsReact from 'highcharts-react-official';
 import { useMemo } from 'react';
 import { useSelector } from 'react-redux';
 
-import { colors } from '../../../../../app.constants';
-import { funksCompetitive } from '../../../../../utils/editData';
+import { funksCompetitive } from '@/utils/editData';
+
+import { colors } from '@/app.constants';
 
 const BubbleLineComparison = ({ activeSubcategory }) => {
 	const { third_graph } = useSelector(state => state.competitiveData);
@@ -63,7 +64,6 @@ const BubbleLineComparison = ({ activeSubcategory }) => {
 				headerFormat: '<table>',
 				pointFormat:
 					'<tr><th colspan="2"><h3>{point.source}</h3></th></tr>' +
-					// '<tr><th>Rating:</th><td>{point.x}</td></tr>' +
 					'<tr><th>Rating:</th><td>{point.y}</td></tr>' +
 					'<tr><th>Size:</th><td>{point.z}</td></tr>',
 				footerFormat: '</table>',
@@ -71,7 +71,7 @@ const BubbleLineComparison = ({ activeSubcategory }) => {
 			},
 			plotOptions: {
 				bubble: {
-					minSize: 0.1, // Минимальный размер пузырька
+					minSize: 0.1,
 					maxSize: 20,
 				},
 				series: {

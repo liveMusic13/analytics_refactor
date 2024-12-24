@@ -3,25 +3,23 @@ import HighchartsReact from 'highcharts-react-official';
 import { useMemo } from 'react';
 import { useSelector } from 'react-redux';
 
-import { colors } from '../../../../../app.constants';
-import { funksCompetitive } from '../../../../../utils/editData';
+import { funksCompetitive } from '@/utils/editData';
+
+import { colors } from '@/app.constants';
 
 const BubbleComparison = ({ one, activeSubcategory }) => {
 	const { second_graph } = useSelector(state => state.competitiveData);
 
-	// Кэшируем данные из second_graph
 	const cashingSecond_graph = useMemo(() => second_graph, [second_graph]);
 
-	// Выбираем объект для отображения в зависимости от значения one
 	const selectedGraphData = one
 		? cashingSecond_graph[0]
 		: cashingSecond_graph[1];
 
-	// Создаем настройки графика
 	const options = useMemo(
 		() => ({
 			accessibility: {
-				enabled: false, // Отключаем модуль доступности
+				enabled: false,
 			},
 			chart: {
 				type: 'packedbubble',
@@ -62,7 +60,6 @@ const BubbleComparison = ({ one, activeSubcategory }) => {
 					},
 				},
 			},
-			// Используем функцию transformBubbleData для трансформации данных
 			series: [
 				{
 					...funksCompetitive.transformBubbleData(
@@ -71,13 +68,13 @@ const BubbleComparison = ({ one, activeSubcategory }) => {
 							Socmedia: selectedGraphData.Socmedia,
 							index_name: selectedGraphData.index_name,
 						},
-						activeSubcategory === 'SMI', // Если 'SMI', то используем данные из SMI
+						activeSubcategory === 'SMI',
 					),
-					color: one ? colors.blue_bubble : colors.purple_bubble, // Цвет меняется в зависимости от значения one
+					color: one ? colors.blue_bubble : colors.purple_bubble,
 				},
 			],
 		}),
-		[selectedGraphData, activeSubcategory, one], // Добавляем необходимые зависимости
+		[selectedGraphData, activeSubcategory, one],
 	);
 
 	return (

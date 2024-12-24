@@ -1,14 +1,14 @@
 import React, { useMemo } from 'react';
 import { useSelector } from 'react-redux';
 
+import { useActions } from '@/hooks/useActions';
 import { useCalendarDate } from '@/hooks/useCalendarDate';
 
-import { useActions } from '../../../../../hooks/useActions';
-import { isInRange, isOutOfRange } from '../../../../../utils/customCalendar';
+import { isInRange, isOutOfRange } from '@/utils/customCalendar';
 import {
 	convertFromRegularToTimestamp,
 	fromTimestampToNewDateFormat,
-} from '../../../../../utils/timestamp';
+} from '@/utils/timestamp';
 
 import styles from './Calendar.module.scss';
 import { monthNames, weekNames } from '@/data/calendar.data';

@@ -3,7 +3,7 @@ import HighchartsReact from 'highcharts-react-official';
 import { useMemo } from 'react';
 import { useSelector } from 'react-redux';
 
-import { funksCompetitive } from '../../../../../utils/editData';
+import { funksCompetitive } from '@/utils/editData';
 
 const LineDynamic = () => {
 	const { first_graph } = useSelector(state => state.competitiveData);
