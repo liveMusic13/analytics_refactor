@@ -21,7 +21,9 @@ const CustomCalendar = ({ multi }) => {
 		index: baseData,
 		themes_ind,
 	} = useSelector(state => state.dataForRequest);
-	const { values: dataUser } = useSelector(store => store.dataUsersSlice);
+	const { json_files_directory: dataUser } = useSelector(
+		store => store.dataUsersSlice,
+	);
 	const { addMinDate, addMaxDate } = useActions();
 
 	const MultiDate = convertDataMultiCalendar(
@@ -40,8 +42,11 @@ const CustomCalendar = ({ multi }) => {
 		setLastModified('to');
 	};
 
+	const allData = Object.values(dataUser).flat();
+
 	useEffect(() => {
-		const targetBaseData = dataUser.filter(el => el.index_number === baseData);
+		// const targetBaseData = dataUser.filter(el => el.index_number === baseData);
+		const targetBaseData = allData.filter(el => el.index_number === baseData);
 
 		if (multi) {
 			handleSetSelectedDatesFrom([

@@ -5,6 +5,8 @@ import { useSelector } from 'react-redux';
 
 import { funksMedia } from '@/utils/editData';
 
+import { convertFromTimestampToTime } from '../../../../../utils/timestamp';
+
 const BubbleChart = () => {
 	const mediaData = useSelector(state => state.mediaData);
 	const cashingMediaData = useMemo(() => mediaData, [mediaData]);
@@ -60,11 +62,21 @@ const BubbleChart = () => {
 			tooltip: {
 				useHTML: true,
 				headerFormat: '<table>',
-				pointFormat:
-					'<tr><th colspan="2"><h3>{point.source}</h3></th></tr>' +
-					'<tr><th>Index:</th><td>{point.x}</td></tr>' +
-					'<tr><th>Time:</th><td>{point.y}</td></tr>' +
-					'<tr><th>Size:</th><td>{point.z}</td></tr>',
+				pointFormatter: function () {
+					// const time = convertFromTimestampToRegular(this.x);
+					const time = convertFromTimestampToTime(this.x);
+					return (
+						'<tr><th colspan="2"><h3>' +
+						this.source +
+						'</h3></th></tr>' +
+						'<tr><th>Рейтинг:</th><td>' +
+						this.y +
+						'</td></tr>' +
+						'<tr><th>Время:</th><td>' +
+						time +
+						'</td></tr>'
+					);
+				},
 				footerFormat: '</table>',
 				followPointer: true,
 			},

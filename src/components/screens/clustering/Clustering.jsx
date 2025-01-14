@@ -6,11 +6,15 @@ import Layout from '@/components/layout/Layout';
 import LeftMenu from '@/components/ui/left-menu/LeftMenu';
 import LeftMenuActive from '@/components/ui/left-menu/left-menu-active/LeftMenuActive';
 
+import { useCheckAuth } from '../../../hooks/useCheckAuth';
+
 import styles from './Clustering.module.scss';
 
 const Clustering = () => {
 	const { pathname } = useLocation();
 	const { active_menu } = useSelector(store => store.booleanValues);
+
+	useCheckAuth();
 
 	return (
 		<Layout>

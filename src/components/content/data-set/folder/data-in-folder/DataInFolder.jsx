@@ -4,10 +4,12 @@ import { useNavigate } from 'react-router-dom';
 
 import Pagination from '@/components/ui/pagination/Pagination';
 
-import { useActions } from '@/hooks/useActions';
-
 import { useDataInFolder } from '../../../../../hooks/useDataInFolder';
-import { useLazyDataAddFileQuery } from '../../../../../services/dataSet.service';
+import { useDataAddFileMutation } from '../../../../../services/dataSet.service';
+import {
+	useGetUserFoldersQuery,
+	useGetUserIdQuery,
+} from '../../../../../services/other.service';
 
 import styles from './DataInFolder.module.scss';
 import { useLazyFileLoadQuery } from '@/services/dataSet.service';
@@ -15,14 +17,10 @@ import { useLazyFileLoadQuery } from '@/services/dataSet.service';
 const DataInFolder = () => {
 	const navigate = useNavigate();
 	const {
-		addText_PopupInFolder,
-		toggle_PopupInFolder,
-		toggle_PopupDelete,
-		addTitle_PopupDelete,
-	} = useActions();
-	const { data, allData, processedData } = useSelector(
-		state => state.folderTarget,
-	);
+		data: name_folder,
+		allData,
+		processedData,
+	} = useSelector(state => state.folderTarget);
 	const {
 		title,
 		folder: folderName,
@@ -47,9 +45,17 @@ const DataInFolder = () => {
 			isSuccess: isSuccess_dataAddFile,
 			isLoading: isLoading_dataAddFile,
 		},
-	] = useLazyDataAddFileQuery();
+	] = useDataAddFileMutation();
 
-	const [dragging, setDragging] = useState(false);
+	const {
+		data: data_getUserId,
+		isError: isError_getUserId,
+		error: error_getUserId,
+		isLoading: isLoading_getUserId,
+	} = useGetUserIdQuery();
+	const { data, isError, error, isLoading, isSuccess } =
+		useGetUserFoldersQuery(data_getUserId);
+
 	const [currentPage, setCurrentPage] = useState(1);
 	const filesPerPage = 9;
 
@@ -57,57 +63,43 @@ const DataInFolder = () => {
 		location.pathname,
 	);
 
-	// const onClick = async (file, button) => {
-	// 	if (button === 'edit') {
-	// 		addText_PopupInFolder({
-	// 			title: 'Редактирование файла',
-	// 			name_file: file,
-	// 		});
-
-	// 		toggle_PopupInFolder('');
-	// 	} else if (button === 'delete') {
-	// 		const dataForRequest = {
-	// 			isFolder: false,
-	// 			name: '',
-	// 		};
-
-	// 		addTitle_PopupDelete({
-	// 			folder: file,
-	// 			title: 'Файл',
-	// 			processed: isDataSetPath ? true : false,
-	// 		});
-	// 		toggle_PopupDelete('');
-	// 	} else {
-	// 		trigger_fileLoad({
-	// 			folder_name: data.name,
-	// 			file_name: file,
-	// 		});
-
-	// 		downloadFile(file, data_fileLoad);
-	// 	}
-	// };
-
-	const renderFiles = (data, allData) => {
-		const folderIndex = allData.values.findIndex(
-			folder => folder.name === data.name,
-		);
-
-		if (folderIndex !== -1) {
-			return allData.values[folderIndex];
+	const renderFiles = (name_folder, allData) => {
+		if (!name_folder || typeof name_folder === 'object' || !allData)
+			return { json_files_directory: [] };
+		if (isDataSetPath) {
+			if (name_folder.trim() in allData.projector_files_directory) {
+				return {
+					json_files_directory: allData.projector_files_directory[name_folder],
+				};
+			} else {
+				return { json_files_directory: [] };
+			}
 		} else {
-			return { values: [] };
+			if (name_folder.trim() in allData.json_files_directory) {
+				return {
+					json_files_directory: allData.json_files_directory[name_folder],
+				};
+			} else {
+				return { json_files_directory: [] };
+			}
 		}
 	};
-	const files = renderFiles(
-		data,
-		isDataSetPath ? processedData : allData,
-	).values.filter(file =>
-		file.toLowerCase().includes(filterText.toLowerCase()),
+
+	const dynamicDirectoryFile = isDataSetPath
+		? ['tsv-file', 'txt-file']
+		: ['file'];
+
+	const files = renderFiles(name_folder, data).json_files_directory.filter(
+		file => {
+			return dynamicDirectoryFile.some(
+				key =>
+					file[key] &&
+					file[key].toLowerCase().includes(filterText.toLowerCase()),
+			);
+		},
 	);
-	const allFiles = renderFiles(
-		data,
-		isDataSetPath ? processedData : allData,
-	).values;
+
+	const allFiles = renderFiles(name_folder, data).json_files_directory;
 
 	const totalPages = Math.ceil(files.length / filesPerPage);
 
@@ -135,58 +127,12 @@ const DataInFolder = () => {
 		handleDrop,
 		handleDragLeave,
 		handleDragOver,
+		dragging,
 	} = useDataInFolder();
 
-	// const handleDragOver = event => {
-	// 	event.preventDefault();
-	// 	setDragging(true);
-	// };
-
-	// const handleDragLeave = () => {
-	// 	setDragging(false);
-	// };
-
-	// const handleDrop = event => {
-	// 	event.preventDefault();
-	// 	setDragging(false);
-
-	// 	const droppedFiles = event.dataTransfer.files;
-	// 	if (droppedFiles.length) {
-	// 		const formData = new FormData();
-	// 		formData.append('uploaded_file', droppedFiles[0]);
-	// 		// Предполагается, что у вас есть функция addFile для передачи файла на сервер
-	// 		trigger_dataAddFile(formData, data.name, droppedFiles[0].name);
-	// 	}
-	// };
-
-	// const handleFileChange = event => {
-	// 	const selectedFile = event.target.files[0];
-	// 	if (selectedFile) {
-	// 		// const formData = new FormData();
-	// 		// formData.append('uploaded_file', selectedFile);
-	// 		const formData = {
-	// 			uploaded_file: selectedFile,
-	// 		};
-
-	// 		console.log('in onClick', formData, data.name);
-
-	// 		// Передача файла на сервер
-	// 		// trigger_dataAddFile(formData, data.name, selectedFile.name);
-	// 		trigger_dataAddFile({
-	// 			data: formData,
-	// 			name: data.name,
-	// 			fileName: selectedFile.name,
-	// 		});
-	// 	}
-	// };
-
-	// const handlePageChange = page => {
-	// 	setCurrentPage(page);
-	// };
-
-	// const handleInputChange = event => {
-	// 	setFilterText(event.target.value);
-	// };
+	if (!data || !allData || !processedData) {
+		return <p>Загрузка данных...</p>;
+	}
 
 	return (
 		<div className={styles.wrapper_dataInFolder}>
@@ -218,38 +164,99 @@ const DataInFolder = () => {
 								(currentPage - 1) * filesPerPage,
 								currentPage * filesPerPage,
 							)
-							.map(file => (
-								<div key={file} className={styles.file} style={viewStyle(file)}>
-									<p className={styles.name}>{file}</p>
-									<div className={styles.block__buttons}>
-										{isDataSetPath ? (
-											<button
-												className={styles.button__upload}
-												onClick={() => onClick(file, 'upload')}
-											>
-												<img
-													src='/images/icons/setting/upload.svg'
-													alt='upload'
-												/>
-											</button>
-										) : (
-											<button
-												className={styles.button__edit}
-												onClick={() => onClick(file, 'edit')}
-											>
-												<img src='/images/icons/setting/edit.svg' alt='edit' />
-											</button>
-										)}
-										<button
-											className={styles.button__delete}
-											onClick={() => onClick(file, 'delete')}
+							.map((file, ind) => (
+								<div
+									key={ind}
+									className={styles.file__group}
+									style={viewStyle(file)}
+								>
+									{isDataSetPath && file['tsv-file'] && (
+										<div
+											key={`${ind}-tsv`}
+											className={styles.file}
+											style={viewStyle(file)}
 										>
-											<img
-												src='/images/icons/setting/delete.svg'
-												alt='delete'
-											/>
-										</button>
-									</div>
+											<p className={styles.name}>{file['tsv-file']}</p>
+											<div className={styles.block__buttons}>
+												<button
+													className={styles.button__upload}
+													onClick={() => onClick(file['tsv-file'], 'upload')}
+												>
+													<img
+														src='/images/icons/setting/upload.svg'
+														alt='upload'
+													/>
+												</button>
+												<button
+													className={styles.button__delete}
+													onClick={() => onClick(file['tsv-file'], 'delete')}
+												>
+													<img
+														src='/images/icons/setting/delete.svg'
+														alt='delete'
+													/>
+												</button>
+											</div>
+										</div>
+									)}
+									{isDataSetPath && file['txt-file'] && (
+										<div
+											key={`${ind}-txt`}
+											className={styles.file}
+											style={viewStyle(file)}
+										>
+											<p className={styles.name}>{file['txt-file']}</p>
+											<div className={styles.block__buttons}>
+												<button
+													className={styles.button__upload}
+													onClick={() => onClick(file['txt-file'], 'upload')}
+												>
+													<img
+														src='/images/icons/setting/upload.svg'
+														alt='upload'
+													/>
+												</button>
+												<button
+													className={styles.button__delete}
+													onClick={() => onClick(file['txt-file'], 'delete')}
+												>
+													<img
+														src='/images/icons/setting/delete.svg'
+														alt='delete'
+													/>
+												</button>
+											</div>
+										</div>
+									)}
+									{!isDataSetPath && (
+										<div
+											key={ind}
+											className={styles.file}
+											style={viewStyle(file)}
+										>
+											<p className={styles.name}>{file.file}</p>
+											<div className={styles.block__buttons}>
+												<button
+													className={styles.button__edit}
+													onClick={() => onClick(file, 'edit')}
+												>
+													<img
+														src='/images/icons/setting/edit.svg'
+														alt='edit'
+													/>
+												</button>
+												<button
+													className={styles.button__delete}
+													onClick={() => onClick(file, 'delete')}
+												>
+													<img
+														src='/images/icons/setting/delete.svg'
+														alt='delete'
+													/>
+												</button>
+											</div>
+										</div>
+									)}
 								</div>
 							))}
 						<Pagination

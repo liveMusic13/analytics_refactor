@@ -39,6 +39,7 @@ export const dataForRequest = createSlice({
 			state.infoAboutPost = !state.infoAboutPost;
 		},
 		addIndex: (state, { payload }) => {
+			console.log('addIndex', payload);
 			return { ...state, index: payload };
 		},
 		addMinDate: (state, { payload }) => {

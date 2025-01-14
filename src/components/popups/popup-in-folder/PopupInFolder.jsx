@@ -3,16 +3,16 @@ import { useSelector } from 'react-redux';
 
 import { useActions } from '@/hooks/useActions';
 
+import { useGetUserIdQuery } from '../../../services/other.service';
+
 import styles from './PopupInFolder.module.scss';
-import {
-	useLazyCreateFolderQuery,
-	useLazyFileRenameQuery,
-} from '@/services/dataSet.service';
+import { useLazyCreateFolderQuery } from '@/services/dataSet.service';
 
 const PopupInFolder = () => {
 	const {
 		addNewText,
 		createFolder,
+		createFolderJson,
 		addText_PopupInFolder,
 		toggle_PopupInFolder,
 	} = useActions();
@@ -22,10 +22,13 @@ const PopupInFolder = () => {
 		popupInFolder.title === 'Новая папка' ? '' : popupInFolder.name_file,
 	);
 
-	const [
-		trigger_fileRename,
-		{ data: data_fileRename, isSuccess: isSuccess_fileRename },
-	] = useLazyFileRenameQuery();
+	const {
+		data: data_getUserId,
+		isError: isError_getUserId,
+		error: error_getUserId,
+		isLoading: isLoading_getUserId,
+	} = useGetUserIdQuery();
+
 	const [
 		trigger_createFolder,
 		{ data: data_createFolder, isSuccess: isSuccess_createFolder },
@@ -36,7 +39,12 @@ const PopupInFolder = () => {
 	};
 
 	const onClick = () => {
-		trigger_fileRename(value);
+		// trigger_fileRename(value);
+		// trigger_fileRename({
+		// 	folder_name: data.name,
+		// 	current_file_name: popupInFolder.name_file,
+		// 	new_file_name: value,
+		// });
 		addNewText({
 			value,
 			name_folder: data.name,
@@ -50,11 +58,12 @@ const PopupInFolder = () => {
 	};
 
 	const onClick_folder = () => {
-		trigger_createFolder(value);
-
-		createFolder({
-			name: value,
+		trigger_createFolder({
+			user: data_getUserId,
+			folder: value,
 		});
+
+		createFolderJson(value);
 
 		toggle_PopupInFolder('');
 	};

@@ -11,61 +11,13 @@ export const groupByFirstWord = dataArray => {
 	}, {});
 };
 
-export const convertDataMultiCalendar = (index1, index2, dataArray) => {
+export const convertDataMultiCalendar = (index1, index2, dataObject) => {
+	// Преобразуем объект в массив всех элементов из всех вложенных массивов
+	const allItems = Object.values(dataObject).flat(); // Собираем все элементы из вложенных массивов
+
 	// Находим объекты по значениям index_number
-
-	const obj1 = dataArray.find(item => item.index_number === index1);
-	const obj2 = dataArray.find(item => item.index_number === index2);
-
-	// if (!obj1 && obj2) {
-	// 	const { min_data: minData2, max_data: maxData2 } = obj2;
-	// 	return {
-	// 		obj1: {
-	// 			min_date: 0,
-	// 			max_date: 0,
-	// 		},
-	// 		obj2: {
-	// 			min_date: minData2,
-	// 			max_date: maxData2,
-	// 		},
-	// 	};
-	// } else if (obj1 && !obj2) {
-	// 	const { min_data: minData1, max_data: maxData1 } = obj1;
-	// 	return {
-	// 		obj1: {
-	// 			min_date: minData1,
-	// 			max_date: maxData1,
-	// 		},
-	// 		obj2: {
-	// 			min_date: 0,
-	// 			max_date: 0,
-	// 		},
-	// 	};
-	// } else if (obj1 && obj2) {
-	// 	const { min_data: minData1, max_data: maxData1 } = obj1;
-	// 	const { min_data: minData2, max_data: maxData2 } = obj2;
-	// 	return {
-	// 		obj1: {
-	// 			min_date: minData1,
-	// 			max_date: maxData1,
-	// 		},
-	// 		obj2: {
-	// 			min_date: minData2,
-	// 			max_date: maxData2,
-	// 		},
-	// 	};
-	// } else {
-	// 	return {
-	// 		obj1: {
-	// 			min_date: 0,
-	// 			max_date: 0,
-	// 		},
-	// 		obj2: {
-	// 			min_date: 0,
-	// 			max_date: 0,
-	// 		},
-	// 	};
-	// }
+	const obj1 = allItems.find(item => item.index_number === index1);
+	const obj2 = allItems.find(item => item.index_number === index2);
 
 	// Проверяем, существуют ли оба объекта
 	if (!obj1 || !obj2) {
@@ -74,6 +26,7 @@ export const convertDataMultiCalendar = (index1, index2, dataArray) => {
 			max_data: 0,
 		};
 	}
+
 	const { min_data: minData1, max_data: maxData1 } = obj1;
 	const { min_data: minData2, max_data: maxData2 } = obj2;
 
@@ -83,10 +36,6 @@ export const convertDataMultiCalendar = (index1, index2, dataArray) => {
 
 	// Проверяем, есть ли пересечение
 	if (overlapStart <= overlapEnd) {
-		// console.log({
-		// 	overlapStart,
-		// 	overlapEnd,
-		// });
 		return {
 			min_data: overlapStart,
 			max_data: overlapEnd,
@@ -98,6 +47,40 @@ export const convertDataMultiCalendar = (index1, index2, dataArray) => {
 		};
 	}
 };
+
+// export const convertDataMultiCalendar = (index1, index2, dataArray) => {
+// 	// Находим объекты по значениям index_number
+
+// 	const obj1 = dataArray.find(item => item.index_number === index1);
+// 	const obj2 = dataArray.find(item => item.index_number === index2);
+
+// 	// Проверяем, существуют ли оба объекта
+// 	if (!obj1 || !obj2) {
+// 		return {
+// 			min_data: 0,
+// 			max_data: 0,
+// 		};
+// 	}
+// 	const { min_data: minData1, max_data: maxData1 } = obj1;
+// 	const { min_data: minData2, max_data: maxData2 } = obj2;
+
+// 	// Находим пересечение временных промежутков
+// 	const overlapStart = Math.max(minData1, minData2);
+// 	const overlapEnd = Math.min(maxData1, maxData2);
+
+// 	// Проверяем, есть ли пересечение
+// 	if (overlapStart <= overlapEnd) {
+// 		return {
+// 			min_data: overlapStart,
+// 			max_data: overlapEnd,
+// 		};
+// 	} else {
+// 		return {
+// 			min_data: 0,
+// 			max_data: 0,
+// 		};
+// 	}
+// };
 
 export const funksTonality = {
 	addColor: (arr, color) => {
@@ -300,6 +283,18 @@ export const funksInformationGraph = {
 			.map(author => author.reposts.length)
 			.reduce((a, b) => a + b, 0);
 	},
+	getDomainFromUrl: url => {
+		let hostname;
+		if (url.indexOf('//') > -1) {
+			hostname = url.split('/')[2];
+		} else {
+			hostname = url.split('/')[0];
+		}
+		hostname = hostname.split(':')[0];
+		hostname = hostname.split('?')[0];
+		hostname = hostname.replace('www.', '');
+		return hostname;
+	},
 };
 
 export const funksMedia = {
@@ -311,7 +306,10 @@ export const funksMedia = {
 				let transformedData = data[categor].map(item => {
 					return { name: item.name, value: item.index };
 				});
-				newData.push({ name: categor, data: transformedData });
+				newData.push({
+					name: categor === 'positive_smi' ? 'Позитив СМИ' : 'Негатив СМИ',
+					data: transformedData,
+				});
 			}
 		}
 		return newData;

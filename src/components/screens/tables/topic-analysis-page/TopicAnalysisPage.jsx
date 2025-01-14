@@ -14,7 +14,10 @@ import LeftMenuActive from '@/components/ui/left-menu/left-menu-active/LeftMenuA
 
 import { useActions } from '../../../../hooks/useActions';
 import { useAddBaseAndDate } from '../../../../hooks/useAddBaseAndDate';
-import { useGetDataUsersQuery } from '../../../../services/other.service';
+import {
+	useGetUserFoldersQuery,
+	useGetUserIdQuery,
+} from '../../../../services/other.service';
 import { useLazyTopicAnalysisQuery } from '../../../../services/tables.service';
 import TopicAnalysis from '../../../content/tables/topic-analysis/TopicAnalysis';
 import NotFound from '../../not-found/NotFound';
@@ -24,11 +27,23 @@ import styles from './TopicAnalysisPage.module.scss';
 const TopicAnalysisPage = () => {
 	const { pathname } = useLocation();
 	const { active_menu } = useSelector(store => store.booleanValues);
-	const { values: dataUser } = useSelector(store => store.dataUsersSlice);
+	const { json_files_directory: dataUser } = useSelector(
+		store => store.dataUsersSlice,
+	);
 	const dataForRequest = useSelector(state => state.dataForRequest);
 	const { addData, addIndex, addMinDate, addMaxDate } = useActions();
 
-	const { data, isLoading, isSuccess, isError, error } = useGetDataUsersQuery();
+	// const { data, isLoading, isSuccess, isError, error } = useGetDataUsersQuery();
+
+	const {
+		data: data_getUserId,
+		isError: isError_getUserId,
+		error: error_getUserId,
+		isLoading: isLoading_getUserId,
+	} = useGetUserIdQuery();
+	const { data, isError, error, isLoading, isSuccess } =
+		useGetUserFoldersQuery(data_getUserId);
+
 	const [
 		trigger_topicAnalysis,
 		{
@@ -86,8 +101,14 @@ const TopicAnalysisPage = () => {
 					className={styles.block__configureSearch}
 					style={isSuccess_topicAnalysis ? {} : { alignSelf: 'center' }}
 				>
-					<DataForSearch />
-					<CustomCalendar />
+					{isSuccess && Object.keys(dataUser ? dataUser : {}).length > 0 && (
+						<DataForSearch />
+					)}
+					{isSuccess &&
+						dataForRequest.index !== null &&
+						Object.keys(dataUser ? dataUser : {}).length > 0 && (
+							<CustomCalendar />
+						)}
 					<Button
 						style={{
 							width: 'calc(220/1440*100vw)',

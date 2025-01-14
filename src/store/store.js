@@ -40,13 +40,8 @@ const reducers = combineReducers({
 	[dataSetService.reducerPath]: dataSetService.reducer,
 	[tablesService.reducerPath]: tablesService.reducer,
 });
-
 export const store = configureStore({
-	// reducer: {
-	// 	reducers,
-	// },
 	reducer: reducers,
-
 	middleware: getDefaultMiddleware =>
 		getDefaultMiddleware()
 			.concat(getGraphService.middleware)

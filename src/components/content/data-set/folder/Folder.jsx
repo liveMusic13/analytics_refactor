@@ -18,7 +18,7 @@ const Folder = ({ folder, processedFolder, buttonTarget }) => {
 		folder: folderName,
 		isPopupDelete,
 	} = useSelector(state => state.popupDelete);
-	const { addTargetFolder, addTitle_PopupDelete, toggle_PopupDelete } =
+	const { addTargetFolder, addTitle_PopupDelete, SetPopupDelete } =
 		useActions();
 
 	const [
@@ -30,27 +30,37 @@ const Folder = ({ folder, processedFolder, buttonTarget }) => {
 		},
 	] = useLazyFileLoadQuery();
 
+	// const handleClick = () => {
+	// 	addTargetFolder(folder);
+	// 	if (buttonTarget === 'Файлы данных') {
+	// 		navigate(`/data-set/${folder.name}`);
+	// 	} else if (buttonTarget === 'Файлы кластеризации авторов') {
+	// 		navigate(`/data-set/processed/${folder.name}`);
+	// 	}
+	// };
+
 	const handleClick = () => {
 		addTargetFolder(folder);
 		if (buttonTarget === 'Файлы данных') {
-			navigate(`/data-set/${folder.name}`);
+			navigate(`/data-set/${folder}`);
 		} else if (buttonTarget === 'Файлы кластеризации авторов') {
-			navigate(`/data-set/processed/${folder.name}`);
+			navigate(`/data-set/processed/${folder}`);
 		}
 	};
 
 	const onClick = () => {
 		const data = {
 			isFolder: true,
-			name: folder.name,
+			name: folder,
 		};
 
 		addTitle_PopupDelete({
-			folder: folder.name,
+			folder: folder,
 			title: 'Папка',
 		});
 
-		toggle_PopupDelete('');
+		// toggle_PopupDelete('');
+		SetPopupDelete(true);
 	};
 
 	const onClickProcessed = async action => {
@@ -62,7 +72,8 @@ const Folder = ({ folder, processedFolder, buttonTarget }) => {
 
 			addTitle_PopupDelete({ folder: folder.name, title: 'Папка' });
 
-			toggle_PopupDelete('');
+			// toggle_PopupDelete('');
+			SetPopupDelete(true);
 		} else {
 			trigger_fileLoad({
 				folder_name: targetData.name,
@@ -85,8 +96,8 @@ const Folder = ({ folder, processedFolder, buttonTarget }) => {
 				onClick={handleClick}
 			/>
 			<div className={styles.data}>
-				<h3 className={styles.title}>{folder.name}</h3>
-				{processedFolder ? (
+				<h3 className={styles.title}>{folder}</h3>
+				{/* {processedFolder ? (
 					<button
 						className={`${styles.button__delete} ${
 							processedFolder ? styles.processed : ''
@@ -102,15 +113,15 @@ const Folder = ({ folder, processedFolder, buttonTarget }) => {
 							alt='delete'
 						/>
 					</button>
-				) : (
-					<button className={styles.button__delete} onClick={onClick}>
-						<img
-							className={styles.delete}
-							src='/images/icons/setting/delete.svg'
-							alt='delete'
-						/>
-					</button>
-				)}
+				) : ( */}
+				<button className={styles.button__delete} onClick={onClick}>
+					<img
+						className={styles.delete}
+						src='/images/icons/setting/delete.svg'
+						alt='delete'
+					/>
+				</button>
+				{/* )} */}
 				{isViewButtons && (
 					<div className={styles.block__buttons}>
 						<button

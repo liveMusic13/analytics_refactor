@@ -195,6 +195,8 @@
 		gap: adapt(8px, 1440px);
 		margin-top: adapt(24px, 1440px);
 		align-self: flex-start;
+		position: relative;
+		z-index: 3;
 	}
 
 	.block__pageName {
@@ -212,6 +214,37 @@
 			font-size: 0.75rem;
 			line-height: 1.4;
 			color: rgba($color: $color_black, $alpha: 0.6);
+		}
+	}
+}
+
+@mixin file_for_dataInFolder {
+	width: 100%;
+	display: flex;
+	align-items: center;
+	justify-content: space-between;
+	border-bottom: 1px solid rgba($color: $color_black, $alpha: 0.04);
+	padding: adapt(16px, 1440px) 0px;
+
+	> .name {
+	}
+	> .block__buttons {
+		display: flex;
+		gap: adapt(4px, 1440px);
+
+		> button {
+			background-color: transparent;
+			width: adapt(16px, 1440px);
+			height: adapt(16px, 1440px);
+
+			&:hover {
+				cursor: pointer;
+			}
+
+			> img {
+				width: adapt(16px, 1440px);
+				height: adapt(16px, 1440px);
+			}
 		}
 	}
 }

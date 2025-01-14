@@ -14,7 +14,10 @@ import LeftMenuActive from '@/components/ui/left-menu/left-menu-active/LeftMenuA
 
 import { useActions } from '../../../../hooks/useActions';
 import { useAddBaseAndDate } from '../../../../hooks/useAddBaseAndDate';
-import { useGetDataUsersQuery } from '../../../../services/other.service';
+import {
+	useGetUserFoldersQuery,
+	useGetUserIdQuery,
+} from '../../../../services/other.service';
 import {
 	useLazyAiAnalyticsGETQuery,
 	useLazyAiAnalyticsPOSTQuery,
@@ -29,12 +32,22 @@ import styles from './AiAnalyticsPage.module.scss';
 const AiAnalyticsPage = () => {
 	const { pathname } = useLocation();
 	const { active_menu } = useSelector(store => store.booleanValues);
-	const { values: dataUser } = useSelector(store => store.dataUsersSlice);
+	const { json_files_directory: dataUser } = useSelector(
+		store => store.dataUsersSlice,
+	);
 	const dataForRequest = useSelector(state => state.dataForRequest);
 	const { get } = useSelector(state => state.aiData);
 	const { addData, addIndex, addMinDate, addMaxDate, addPromt } = useActions();
 	const { idProgressBar } = useSelector(state => state.aiData);
-	const { data, isLoading, isSuccess, isError, error } = useGetDataUsersQuery();
+	// const { data, isLoading, isSuccess, isError, error } = useGetDataUsersQuery();
+	const {
+		data: data_getUserId,
+		isError: isError_getUserId,
+		error: error_getUserId,
+		isLoading: isLoading_getUserId,
+	} = useGetUserIdQuery();
+	const { data, isError, error, isLoading, isSuccess } =
+		useGetUserFoldersQuery(data_getUserId);
 
 	useAddBaseAndDate(
 		dataUser,
@@ -88,11 +101,11 @@ const AiAnalyticsPage = () => {
 		trigger_aiAnalyticsGET(dataForRequest);
 	};
 	const getAiAnalyticsPOST = () => {
-		if (idProgressBar === null) {
-			trigger_getIdProgressBar();
-		} else {
-			trigger_aiAnalyticsPOST(dataForRequest);
-		}
+		// if (idProgressBar === null) {
+		// 	trigger_getIdProgressBar();
+		// } else {
+		trigger_aiAnalyticsPOST(dataForRequest);
+		// }
 	};
 
 	if (
@@ -137,8 +150,14 @@ const AiAnalyticsPage = () => {
 					className={styles.block__configureSearch}
 					style={isSuccess_aiAnalyticsGET ? {} : { alignSelf: 'center' }}
 				>
-					<DataForSearch />
-					<CustomCalendar />
+					{isSuccess && Object.keys(dataUser ? dataUser : {}).length > 0 && (
+						<DataForSearch />
+					)}
+					{isSuccess &&
+						dataForRequest.index !== null &&
+						Object.keys(dataUser ? dataUser : {}).length > 0 && (
+							<CustomCalendar />
+						)}
 					<Button
 						style={{
 							width: 'calc(220/1440*100vw)',
@@ -166,14 +185,16 @@ const AiAnalyticsPage = () => {
 									width: 'calc(220/1440*100vw)',
 									height: 'calc(56/1440*100vw)',
 								}}
-								onClick={getAiAnalyticsPOST}
+								onClick={() => {
+									console.log('я здесь');
+									getAiAnalyticsPOST();
+								}}
 							>
 								ИИ анализ
 							</Button>
 						</>
 					)}
 				</div>
-				{/* {graf === 'true' && <TableAnalytics />} */}
 				{isSuccess_aiAnalyticsGET && <AiAnalytics />}
 			</Content>
 		</Layout>

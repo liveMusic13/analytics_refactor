@@ -5,14 +5,15 @@ import PanelTargetGraph from '@/components/ui/panel-target-graph/PanelTargetGrap
 
 import { useActions } from '@/hooks/useActions';
 
+import {
+	useGetUserFoldersQuery,
+	useGetUserIdQuery,
+} from '../../../services/other.service';
+
 import styles from './DataSet.module.scss';
 import Folder from './folder/Folder';
 import NoData from './no-data/NoData';
 import { dataSetButtons } from '@/data/panel.data';
-import {
-	useLazyGetDataFoldersQuery,
-	useLazyGetProcessedFilesQuery,
-} from '@/services/dataSet.service';
 
 const DataSet = () => {
 	const { addButtonTarget_PopupDelete } = useActions();
@@ -24,33 +25,23 @@ const DataSet = () => {
 		two: 0,
 		three: 0,
 	});
-	// const [buttonTarget, setButtonTarget] = useState('one');
 	const [activeButton, setActiveButton] = useState('Файлы данных');
-	const [
-		trigger_getDataFolders,
-		{
-			data: data_getDataFolders,
-			isSuccess: isSuccess_getDataFolders,
-			isLoading: isLoading_getDataFolders,
-		},
-	] = useLazyGetDataFoldersQuery();
-	const [
-		trigger_getProcessedFiles,
-		{
-			data: data_getProcessedFiles,
-			isSuccess: isSuccess_getProcessedFiles,
-			isLoading: isLoading_getProcessedFiles,
-		},
-	] = useLazyGetProcessedFilesQuery();
 
-	const { allData, processedData } = useSelector(state => state.folderTarget);
+	const {
+		data: data_getUserId,
+		isError: isError_getUserId,
+		error: error_getUserId,
+		isLoading: isLoading_getUserId,
+	} = useGetUserIdQuery();
+	const { data, isError, error, isLoading, isSuccess } =
+		useGetUserFoldersQuery(data_getUserId);
+
+	const { processedData } = useSelector(state => state.folderTarget);
 
 	useEffect(() => {
 		if (activeButton === 'Файлы данных') {
-			trigger_getDataFolders();
 			addButtonTarget_PopupDelete(activeButton);
 		} else if (activeButton === 'Файлы кластеризации авторов') {
-			trigger_getProcessedFiles();
 			addButtonTarget_PopupDelete(activeButton);
 		} else {
 			addButtonTarget_PopupDelete(activeButton);
@@ -91,13 +82,20 @@ const DataSet = () => {
 		}
 	};
 
+	const {
+		json_files_directory: dataUser,
+		projector_files_directory: dataUser_Projector,
+	} = useSelector(store => store.dataUsersSlice);
+	const allData = Object.keys(
+		activeButton === 'Файлы данных' ? dataUser : dataUser_Projector,
+	);
+
 	const [filterText, setFilterText] = useState('');
 	const getFilteredData = (data, filterText) => {
 		return (
 			data &&
-			data.values &&
-			data.values.filter(folder =>
-				folder.name.toLowerCase().includes(filterText.toLowerCase()),
+			data.filter(folder =>
+				folder.toLowerCase().includes(filterText.toLowerCase()),
 			)
 		);
 	};
@@ -106,7 +104,7 @@ const DataSet = () => {
 		if (activeButton === 'Файлы данных') {
 			return getFilteredData(allData, filterText);
 		} else if (activeButton === 'Файлы кластеризации авторов') {
-			return getFilteredData(processedData, filterText);
+			return getFilteredData(allData, filterText);
 		} else {
 			return [];
 		}
@@ -165,10 +163,8 @@ const DataSet = () => {
 	};
 
 	const styleContent = {
-		justifyContent:
-			allData && allData.values && allData.values.length !== 0 ? '' : 'center',
-		alignItems:
-			allData && allData.values && allData.values.length !== 0 ? '' : 'center',
+		justifyContent: allData && allData.length !== 0 ? '' : 'center',
+		alignItems: allData && allData.length !== 0 ? '' : 'center',
 		paddingTop:
 			activeButton === 'three' ? 'calc(24/1440*100vw)' : 'calc(92/1440*100vw)',
 		paddingRight: activeButton === 'three' ? '0px' : 'calc(44/1440*100vw)',

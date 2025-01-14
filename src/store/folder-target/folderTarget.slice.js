@@ -36,26 +36,26 @@ export const folderTarget = createSlice({
 		addAllDataFolder: (state, { payload }) => {
 			state.allData = payload;
 		},
-		createFolder: (state, { payload }) => {
-			state.allData.values.push({
-				name: payload.name,
-				values: [],
-			});
-		},
+		// createFolder: (state, { payload }) => {
+		// 	state.allData.values.push({
+		// 		name: payload.name,
+		// 		values: [],
+		// 	});
+		// },
 		deleteFolder: (state, { payload }) => {
 			state.allData.values = state.allData.values.filter(
 				folder => folder.name !== payload.name_folder,
 			);
 		},
-		addNewFile: (state, { payload }) => {
-			const folderIndex = state.allData.values.findIndex(
-				folder => folder.name === payload.name_folder,
-			);
+		// addNewFile: (state, { payload }) => {
+		// 	const folderIndex = state.allData.values.findIndex(
+		// 		folder => folder.name === payload.name_folder,
+		// 	);
 
-			if (folderIndex !== -1) {
-				state.allData.values[folderIndex].values.push(payload.name_file);
-			}
-		},
+		// 	if (folderIndex !== -1) {
+		// 		state.allData.values[folderIndex].values.push(payload.name_file);
+		// 	}
+		// },
 		deleteDataFolder: (state, { payload }) => {
 			const folderIndex = state.allData.values.findIndex(
 				folder => folder.name === payload.name_folder,

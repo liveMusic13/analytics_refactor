@@ -18,11 +18,18 @@ import LeftMenuActive from '@/components/ui/left-menu/left-menu-active/LeftMenuA
 import { useActions } from '@/hooks/useActions';
 import { useAddBaseAndDate } from '@/hooks/useAddBaseAndDate';
 
+import { useCheckAuth } from '../../../hooks/useCheckAuth';
+import {
+	useGetUserFoldersQuery,
+	useGetUserIdQuery,
+} from '../../../services/other.service';
+
 import styles from './Competitive.module.scss';
 import { useLazyCompetitiveGraphQuery } from '@/services/getGraph.service';
-import { useGetDataUsersQuery } from '@/services/other.service';
 
 const Competitive = () => {
+	useCheckAuth();
+
 	const { pathname } = useLocation();
 	const { addData, addIndex, addMinDate, addMaxDate, addThemesInd } =
 		useActions();
@@ -30,7 +37,15 @@ const Competitive = () => {
 	const dataForRequest = useSelector(state => state.dataForRequest);
 	const { values: dataUser } = useSelector(store => store.dataUsersSlice);
 
-	const { data, isLoading, isSuccess, isError, error } = useGetDataUsersQuery();
+	// const { data, isLoading, isSuccess, isError, error } = useGetDataUsersQuery();
+	const {
+		data: data_getUserId,
+		isError: isError_getUserId,
+		error: error_getUserId,
+		isLoading: isLoading_getUserId,
+	} = useGetUserIdQuery();
+	const { data, isError, error, isLoading, isSuccess } =
+		useGetUserFoldersQuery(data_getUserId);
 
 	useAddBaseAndDate(
 		dataUser,
@@ -43,10 +58,44 @@ const Competitive = () => {
 		addIndex,
 	);
 
+	// useEffect(() => {
+	// 	const arrayData =
+	// 		dataUser && Object.keys(dataUser).length > 0 ? dataUser : {};
+
+	// 	if (arrayData && Object.keys(arrayData).length > 0) {
+	// 		let value;
+	// 		const convertArr = Object.keys(arrayData);
+
+	// 		if (Object.keys(arrayData).length > 0) {
+	// 			const firstEl = convertArr[0];
+
+	// 			if (firstEl in dataUser) {
+	// 				value = dataUser[firstEl];
+	// 			}
+	// 		}
+
+	// 		addThemesInd(value[0].index_number);
+	// 		addThemesInd(value[1].index_number);
+	// 	}
+
+	// 	// if (dataUser.length > 0) {
+	// 	// 	addThemesInd(dataUser[0].index_number);
+	// 	// 	addThemesInd(dataUser[1].index_number);
+	// 	// }
+	// }, [dataUser]);
+
 	useEffect(() => {
-		if (dataUser.length > 0) {
-			addThemesInd(dataUser[0].index_number);
-			addThemesInd(dataUser[1].index_number);
+		//TODO: ДОЖДАТЬСЯ ОТВЕТА ОТ ГРАФИКА И ПРОТЕСТИТЬ
+		const arrayData =
+			dataUser && Object.keys(dataUser).length > 0 ? dataUser : {};
+
+		if (arrayData && Object.keys(arrayData).length > 0) {
+			const flatValues = Object.values(arrayData).flat();
+
+			if (flatValues.length > 0) {
+				addThemesInd(flatValues[0].index_number);
+				addThemesInd(flatValues[1].index_number);
+			}
 		}
 	}, [dataUser]);
 

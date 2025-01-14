@@ -1,5 +1,6 @@
 @import '@st/variables';
 @import '@st/functions';
+@import '@st/mixins';
 
 .wrapper_dataInFolder {
 	margin-top: adapt(24px, 1440px);
@@ -71,35 +72,7 @@
 	position: relative;
 
 	> .file {
-		width: 100%;
-		display: flex;
-		align-items: center;
-		justify-content: space-between;
-		border-bottom: 1px solid rgba($color: $color_black, $alpha: 0.04);
-		padding: adapt(16px, 1440px) 0px;
-
-		> .name {
-		}
-
-		> .block__buttons {
-			display: flex;
-			gap: adapt(4px, 1440px);
-
-			> button {
-				background-color: transparent;
-				width: adapt(16px, 1440px);
-				height: adapt(16px, 1440px);
-
-				&:hover {
-					cursor: pointer;
-				}
-
-				> img {
-					width: adapt(16px, 1440px);
-					height: adapt(16px, 1440px);
-				}
-			}
-		}
+		@include file_for_dataInFolder();
 	}
 }
 
@@ -182,5 +155,15 @@
 				color: $color_blue;
 			}
 		}
+	}
+}
+
+.file__group {
+	display: flex;
+	flex-direction: column;
+	width: 100%;
+
+	> .file {
+		@include file_for_dataInFolder();
 	}
 }

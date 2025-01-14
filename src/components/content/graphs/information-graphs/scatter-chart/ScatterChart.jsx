@@ -117,7 +117,7 @@ const ScatterChart = () => {
 			tooltip: {
 				formatter: function () {
 					const { url, name, y: audienceCount } = this.point.options;
-					return `Источник: <a href="${url}" target="_blank">${url}</a><br/>Автор: ${name}<br/>Аудитория: ${audienceCount}`;
+					return `Источник: <a href="${url}" target="_blank">${funksInformationGraph.getDomainFromUrl(url)}</a><br/>Автор: ${name}<br/>Аудитория: ${audienceCount}`;
 				},
 				useHTML: true,
 			},

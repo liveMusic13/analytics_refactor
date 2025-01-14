@@ -40,7 +40,8 @@ const SplitBubble = () => {
 			},
 			tooltip: {
 				useHTML: true,
-				pointFormat: '<b>{point.name}:</b> {point.value}',
+				pointFormat:
+					'<b>Источник:</b> {point.name} </br> <b>Рейтинг:</b> {point.value}',
 			},
 			plotOptions: {
 				packedbubble: {

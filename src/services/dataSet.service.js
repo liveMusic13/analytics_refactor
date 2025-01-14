@@ -2,7 +2,44 @@ import { createApi, fetchBaseQuery } from '@reduxjs/toolkit/query/react';
 import Cookies from 'js-cookie';
 
 import { API_URL, TOKEN } from '../app.constants';
-import { actions as folderTargetAction } from '../store/folder-target/folderTarget.slice';
+import { actions as dataUsersAction } from '../store/data-users/dataUsers.slice';
+
+const customBaseQuery = async args => {
+	const { url, headers = new Headers(), responseType = 'json', ...rest } = args;
+
+	// Добавляем токен авторизации
+	const token = Cookies.get('TOKEN');
+	if (token) {
+		headers.set('Authorization', `Bearer ${token}`);
+	}
+
+	try {
+		const response = await fetch(`${API_URL}${url}`, { headers, ...rest });
+
+		if (!response.ok) {
+			throw new Error('Ошибка загрузки');
+		}
+
+		// Проверяем Content-Type
+		const contentType = response.headers.get('Content-Type');
+
+		if (responseType === 'blob') {
+			return { data: await response.blob() };
+		} else if (contentType && contentType.includes('application/json')) {
+			return { data: await response.json() };
+		} else {
+			// Если не JSON, возвращаем текст
+			return { data: await response.text() };
+		}
+	} catch (error) {
+		return {
+			error: {
+				status: error.status || 'FETCH_ERROR',
+				message: error.message,
+			},
+		};
+	}
+};
 
 export const dataSetService = createApi({
 	reducerPath: 'dataSetService',
@@ -16,91 +53,75 @@ export const dataSetService = createApi({
 			return headers;
 		},
 	}),
+	// baseQuery: customBaseQuery,
 	endpoints: builder => ({
+		// fileRename: builder.query({
+		// 	query: data => {
+		// 		const params = new URLSearchParams({
+		// 			folder_name: data.folder_name,
+		// 			current_file_name: data.current_file_name,
+		// 			new_file_name: data.new_file_name,
+		// 		}).toString();
+		// 		return `/file-rename?${params}`;
+		// 	},
+		// 	keepUnusedDataFor: 600,
+		// }),
 		fileLoad: builder.query({
-			query: data => {
-				let params;
-				if (data.file_name) {
-					params = new URLSearchParams({
-						folder_name: data.folder_name,
-						file_name: data.file_name,
-					}).toString();
-				} else {
-					params = new URLSearchParams({
-						folder_name: data.folder_name,
-						file_name: '',
-					}).toString();
-				}
-				return `/file-load/?${params}`;
-			},
-			keepUnusedDataFor: 600,
-		}),
-		getProcessedFiles: builder.query({
-			query: () => '/projector-files',
-			keepUnusedDataFor: 600,
+			query: ({ user, directory, folder_name, file_name }) => ({
+				url: `/file-load/${user}/${directory}/${folder_name}/${file_name}`,
+				method: 'GET',
+				headers: {
+					accept: 'application/octet-stream',
+				},
+				responseHandler: response => response.blob(),
+			}),
 			async onQueryStarted(arg, { dispatch, queryFulfilled }) {
 				try {
-					const { data } = await queryFulfilled; // Дожидаемся выполнения запроса
-					dispatch(folderTargetAction.addProcessedDataFolder(data));
+					const { data } = await queryFulfilled;
+					// Здесь вы можете обработать Blob напрямую
+					console.log('Файл получен:', data);
 				} catch (error) {
-					console.log('Ошибка запроса:', error);
+					console.error('Ошибка при загрузке файла:', error);
 				}
 			},
+			// Отключаем кеширование
+			keepUnusedDataFor: 0,
+			providesTags: () => [],
 		}),
-		getDataFolders: builder.query({
-			query: () => '/data-folders',
-			keepUnusedDataFor: 600,
-			async onQueryStarted(arg, { dispatch, queryFulfilled }) {
-				try {
-					const { data } = await queryFulfilled; // Дожидаемся выполнения запроса
-					dispatch(folderTargetAction.addAllDataFolder(data));
-				} catch (error) {
-					console.log('Ошибка запроса:', error);
-				}
-			},
-		}),
-		fileRename: builder.query({
-			query: data => {
-				const params = new URLSearchParams({
-					folder_name: data.folder_name,
-					current_file_name: data.current_file_name,
-					new_file_name: data.new_file_name,
-				}).toString();
-				return `/file-rename?${params}`;
-			},
-			keepUnusedDataFor: 600,
-		}),
-		dataDelete: builder.query({
-			query: data => {
-				let params;
-
-				if (data.file_name !== null) {
-					params = new URLSearchParams({
-						folder_name: data.folder_name,
-						file_name: data.file_name,
-					}).toString();
-				} else {
-					params = new URLSearchParams({
-						folder_name: data.folder_name,
-						base_files: data.base_files,
-					}).toString();
-				}
-
-				return `/data-delete?${params}`;
-			},
-			keepUnusedDataFor: 600,
-		}),
-		dataAddFile: builder.query({
-			query: (data, name, fileName) => {
-				console.log('name', name);
-				console.log('data', data);
+		deleteFolder: builder.mutation({
+			query: ({ user, folder_name, directory }) => {
 				return {
-					url: `/upload-file/?folder_name=${encodeURIComponent(data.name)}`,
+					url: `/delete-folder/${user}/${directory}/${encodeURIComponent(folder_name)}`,
+					method: 'DELETE',
+				};
+			},
+		}),
+		deleteFile: builder.mutation({
+			query: ({ user, folder_name, directory, file_name }) => {
+				return {
+					url: `/delete-file/${user}/${directory}/${encodeURIComponent(folder_name)}/${file_name}`,
+					method: 'DELETE',
+				};
+			},
+		}),
+		dataAddFile: builder.mutation({
+			query: ({ data, name, user }) => {
+				console.log(data, name, user);
+				if (!data || !name || !user) {
+					console.error('Ошибка: data или name или user не переданы в query');
+					return;
+				}
+
+				const formData = new FormData();
+				formData.append('uploaded_file', data.uploaded_file); // 'uploaded_file' — ключ, ожидаемый сервером
+
+				return {
+					url: `/add-file/${user}/${encodeURIComponent(name)}`,
 					method: 'POST',
-					body: data.data.uploaded_file,
-					// headers: {
-					// 	'Content-Type': 'multipart/form-data',
-					// },
+					body: formData,
+					headers: {
+						Accept: 'application/json',
+					},
 				};
 			},
 			keepUnusedDataFor: 600,
@@ -110,8 +131,9 @@ export const dataSetService = createApi({
 			) {
 				try {
 					const { data: data_request } = await queryFulfilled; // Дожидаемся выполнения запроса
+					console.log('data, name, fileName', data, name, fileName);
 					dispatch(
-						folderTargetAction.addNewFile({
+						dataUsersAction.addNewFileJson({
 							name_folder: name,
 							name_file: fileName,
 						}),
@@ -121,9 +143,8 @@ export const dataSetService = createApi({
 				}
 			},
 		}),
-
 		createFolder: builder.query({
-			query: folder => `/create-folder?name=${folder}`,
+			query: ({ user, folder }) => `/add-folder/${user}/${folder}`,
 			keepUnusedDataFor: 600,
 		}),
 	}),
@@ -135,6 +156,8 @@ export const {
 	useLazyDataAddFileQuery,
 	useDataAddFileMutation,
 	useLazyDataDeleteQuery,
+	useDeleteFolderMutation,
+	useDeleteFileMutation,
 	useLazyGetDataFoldersQuery,
 	useLazyGetProcessedFilesQuery,
 	useLazyFileLoadQuery,

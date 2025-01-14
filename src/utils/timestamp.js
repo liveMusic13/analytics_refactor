@@ -2,6 +2,13 @@ export function convertFromTimestampToRegular(timestamp) {
 	return new Date(timestamp * 1000);
 }
 
+export function convertFromTimestampToTime(timestamp) {
+	const date = new Date(timestamp);
+	const hours = String(date.getHours()).padStart(2, '0');
+	const minutes = String(date.getMinutes()).padStart(2, '0');
+	return `${hours}:${minutes}`;
+}
+
 export function convertDateFormat(dateString) {
 	const date = new Date(dateString);
 	const year = date.getFullYear();

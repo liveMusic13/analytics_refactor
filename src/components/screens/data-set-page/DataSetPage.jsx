@@ -10,7 +10,12 @@ import LeftMenu from '@/components/ui/left-menu/LeftMenu';
 import LeftMenuActive from '@/components/ui/left-menu/left-menu-active/LeftMenuActive';
 
 import { useActions } from '../../../hooks/useActions';
-import { useLazyDataAddFileQuery } from '../../../services/dataSet.service';
+import { useCheckAuth } from '../../../hooks/useCheckAuth';
+import { useDataAddFileMutation } from '../../../services/dataSet.service';
+import {
+	useGetUserFoldersQuery,
+	useGetUserIdQuery,
+} from '../../../services/other.service';
 import DataSet from '../../content/data-set/DataSet';
 import DataInFolder from '../../content/data-set/folder/data-in-folder/DataInFolder';
 import PopupDelete from '../../popups/popup-delete/PopupDelete';
@@ -20,14 +25,26 @@ import NotFound from '../not-found/NotFound';
 import styles from './DataSetPage.module.scss';
 
 const DataSetPage = () => {
+	useCheckAuth();
+
 	const { addText_PopupInFolder, toggle_PopupInFolder } = useActions();
 	const { pathname } = useLocation();
 	const { active_menu } = useSelector(store => store.booleanValues);
 	const { isPopupInFolder } = useSelector(state => state.popupInFolder);
 
 	const { data } = useSelector(state => state.folderTarget);
-	const { isPopupDelete } = useSelector(state => state.popupDelete);
+	const { isPopupDelete, buttonTarget } = useSelector(
+		state => state.popupDelete,
+	);
 
+	const {
+		data: data_getUserId,
+		isError: isError_getUserId,
+		error: error_getUserId,
+		isLoading: isLoading_getUserId,
+	} = useGetUserIdQuery();
+	const { refetch, isError, error, isLoading, isSuccess } =
+		useGetUserFoldersQuery(data_getUserId);
 	const [
 		trigger_dataAddFile,
 		{
@@ -37,7 +54,7 @@ const DataSetPage = () => {
 			isError: isError_dataAddFile,
 			error: error_dataAddFile,
 		},
-	] = useLazyDataAddFileQuery();
+	] = useDataAddFileMutation();
 
 	const [fileName, setFileName] = useState('');
 	const [file, setFile] = useState(null);
@@ -61,11 +78,22 @@ const DataSetPage = () => {
 
 	useEffect(() => {
 		if (file) {
-			const formData = new FormData();
-			formData.append('uploaded_file', file);
+			const formData = {
+				uploaded_file: file,
+			};
 
-			trigger_dataAddFile(formData, data.name, fileName);
-			setFile(null);
+			const async_requests = async () => {
+				await trigger_dataAddFile({
+					data: formData,
+					name: data,
+					user: data_getUserId,
+					fileName: fileName,
+					// directory: buttonTarget,
+				}).unwrap();
+				setFile(null);
+				refetch();
+			};
+			async_requests();
 		}
 	}, [file]);
 

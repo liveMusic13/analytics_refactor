@@ -18,15 +18,24 @@ import LeftMenuActive from '@/components/ui/left-menu/left-menu-active/LeftMenuA
 import { useActions } from '@/hooks/useActions';
 import { useAddBaseAndDate } from '@/hooks/useAddBaseAndDate';
 
+import { useCheckAuth } from '../../../hooks/useCheckAuth';
+import {
+	useGetUserFoldersQuery,
+	useGetUserIdQuery,
+} from '../../../services/other.service';
+
 import styles from './UserTonality.module.scss';
 import { useLazyUserTonalityQuery } from '@/services/getGraph.service';
-import { useGetDataUsersQuery } from '@/services/other.service';
 
 const UserTonality = () => {
+	useCheckAuth();
+
 	const { pathname } = useLocation();
 	const { addData, addIndex, addMinDate, addMaxDate } = useActions();
 	const { active_menu } = useSelector(store => store.booleanValues);
-	const { values: dataUser } = useSelector(store => store.dataUsersSlice);
+	const { json_files_directory: dataUser } = useSelector(
+		store => store.dataUsersSlice,
+	);
 	const {
 		index: baseData,
 		min_date,
@@ -45,7 +54,15 @@ const UserTonality = () => {
 	] = useLazyUserTonalityQuery();
 	const cashingData = useMemo(() => data_tonality, [data_tonality]);
 
-	const { data, isLoading, isSuccess, isError, error } = useGetDataUsersQuery();
+	// const { data, isLoading, isSuccess, isError, error } = useGetDataUsersQuery();
+	const {
+		data: data_getUserId,
+		isError: isError_getUserId,
+		error: error_getUserId,
+		isLoading: isLoading_getUserId,
+	} = useGetUserIdQuery();
+	const { data, isError, error, isLoading, isSuccess } =
+		useGetUserFoldersQuery(data_getUserId);
 
 	useAddBaseAndDate(
 		dataUser,
@@ -110,10 +127,14 @@ const UserTonality = () => {
 					className={styles.block__configureSearch}
 					style={isSuccess_tonality ? {} : { alignSelf: 'center' }}
 				>
-					{isSuccess && dataUser.length > 0 && <DataForSearch />}
-					{isSuccess && baseData !== null && dataUser.length > 0 && (
-						<CustomCalendar />
+					{isSuccess && Object.keys(dataUser ? dataUser : {}).length > 0 && (
+						<DataForSearch />
 					)}
+					{isSuccess &&
+						baseData !== null &&
+						Object.keys(dataUser ? dataUser : {}).length > 0 && (
+							<CustomCalendar />
+						)}
 					<Button
 						style={{
 							width: 'calc(220/1440*100vw)',

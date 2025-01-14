@@ -22,18 +22,35 @@ import { useAddBaseAndDate } from '@/hooks/useAddBaseAndDate';
 
 import { funksInformationGraph } from '@/utils/editData';
 
+import { useCheckAuth } from '../../../hooks/useCheckAuth';
+import {
+	useGetUserFoldersQuery,
+	useGetUserIdQuery,
+} from '../../../services/other.service';
+
 import styles from './Information.module.scss';
 import { useLazyInformationGraphQuery } from '@/services/getGraph.service';
-import { useGetDataUsersQuery } from '@/services/other.service';
 
 const Information = () => {
+	useCheckAuth();
+
 	const { pathname } = useLocation();
 	const { addData, addMinDate, addMaxDate, addIndex, addQueryStr } =
 		useActions();
 	const { active_menu } = useSelector(store => store.booleanValues);
-	const { values: dataUser } = useSelector(store => store.dataUsersSlice);
+	const { json_files_directory: dataUser } = useSelector(
+		store => store.dataUsersSlice,
+	);
 	const dataForRequest = useSelector(state => state.dataForRequest);
-	const { data, isLoading, isSuccess, isError, error } = useGetDataUsersQuery();
+	// const { data, isLoading, isSuccess, isError, error } = useGetDataUsersQuery();
+	const {
+		data: data_getUserId,
+		isError: isError_getUserId,
+		error: error_getUserId,
+		isLoading: isLoading_getUserId,
+	} = useGetUserIdQuery();
+	const { data, isError, error, isLoading, isSuccess } =
+		useGetUserFoldersQuery(data_getUserId);
 
 	useAddBaseAndDate(
 		dataUser,
@@ -106,10 +123,14 @@ const Information = () => {
 					className={styles.block__configureSearch}
 					style={isSuccess_information ? {} : { alignSelf: 'center' }}
 				>
-					<DataForSearch multi={false} />
+					{isSuccess && Object.keys(dataUser ? dataUser : {}).length > 0 && (
+						<DataForSearch multi={false} />
+					)}
 					{isSuccess &&
 						dataForRequest.index !== null &&
-						dataUser.length > 0 && <CustomCalendar />}
+						Object.keys(dataUser ? dataUser : {}).length > 0 && (
+							<CustomCalendar />
+						)}
 					<AdditionalParameters />
 					<Input
 						placeholder='Поиск по тексту'

@@ -12,8 +12,8 @@ export const popupDelete = createSlice({
 	name: 'popupDelete',
 	initialState,
 	reducers: {
-		toggle_PopupDelete: (state, { payload }) => {
-			state.isPopupDelete = !state.isPopupDelete;
+		SetPopupDelete: (state, { payload }) => {
+			state.isPopupDelete = payload;
 		},
 		addButtonTarget_PopupDelete: (state, { payload }) => {
 			return {
