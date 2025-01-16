@@ -1,14 +1,16 @@
 import { useState } from 'react';
 
+import useClickOutside from '../../../hooks/useClickOutside';
 import Checkbox from '../checkbox/Checkbox';
 
 import styles from './AdditionalParameters.module.scss';
 
 const AdditionalParameters = () => {
 	const [isViewOptions, setViewOptions] = useState(false);
+	const wrapperRef = useClickOutside(() => setViewOptions(false));
 
 	return (
-		<div className={styles.wrapper_param}>
+		<div className={styles.wrapper_param} ref={wrapperRef}>
 			<div
 				className={styles.block__param}
 				onClick={() => setViewOptions(!isViewOptions)}

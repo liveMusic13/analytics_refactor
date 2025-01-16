@@ -43,7 +43,7 @@ export const routes = [
 		isAuth: true,
 	},
 	{
-		path: '/competitive',
+		path: '/competitors',
 		component: Competitive,
 		isAuth: true,
 	},

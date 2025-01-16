@@ -5,6 +5,8 @@ import { useSelector } from 'react-redux';
 
 import { funksInformationGraph } from '@/utils/editData';
 
+import { truncateDescription } from '../../../../../utils/editText';
+
 const ScatterChart = () => {
 	const chartComponent = useRef(null);
 	const informationGraphData = useSelector(state => state.informationGraphData);
@@ -79,6 +81,9 @@ const ScatterChart = () => {
 			},
 			legend: {
 				enabled: true,
+				labelFormatter: function () {
+					return truncateDescription(this.name, 10); // Сокращаем имя только для легенды
+				},
 			},
 			plotOptions: {
 				series: {
@@ -93,7 +98,7 @@ const ScatterChart = () => {
 				},
 				scatter: {
 					marker: {
-						radius: 2.5,
+						radius: 4.5,
 						symbol: 'circle',
 						states: {
 							hover: {

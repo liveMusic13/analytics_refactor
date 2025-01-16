@@ -12,6 +12,23 @@
 	display: flex;
 	flex-direction: column;
 
+	// Соотношение 1:1 (Квадратный экран)
+	@media (max-aspect-ratio: 1/1) {
+		height: adapt(810px, 1440px);
+	}
+	// Соотношение 4:3
+	@media (min-aspect-ratio: 4/3) {
+		height: adapt(810px, 1440px);
+	}
+	// Соотношение 16:9
+	@media (min-aspect-ratio: 16/9) {
+		height: adapt(610px, 1440px);
+	}
+	// Соотношение 16:10 (экраны ноутбуков)
+	@media (min-aspect-ratio: 16/10) {
+		height: adapt(440px, 1440px);
+	}
+
 	> .block__title {
 		display: flex;
 		justify-content: space-between;

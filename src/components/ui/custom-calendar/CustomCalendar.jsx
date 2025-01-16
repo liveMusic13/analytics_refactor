@@ -7,6 +7,8 @@ import { convertDataMultiCalendar } from '@/utils/editData';
 import { formatDates } from '@/utils/editText';
 import { fromTimestampToNewDateFormat } from '@/utils/timestamp';
 
+import useClickOutside from '../../../hooks/useClickOutside';
+
 import styles from './CustomCalendar.module.scss';
 import BlockCalendar from './block-calendar/BlockCalendar';
 
@@ -25,6 +27,7 @@ const CustomCalendar = ({ multi }) => {
 		store => store.dataUsersSlice,
 	);
 	const { addMinDate, addMaxDate } = useActions();
+	const wrapperRef = useClickOutside(() => setViewCalendar(false));
 
 	const MultiDate = convertDataMultiCalendar(
 		themes_ind[0],
@@ -70,7 +73,7 @@ const CustomCalendar = ({ multi }) => {
 	}, [baseData, themes_ind]);
 
 	return (
-		<div className={styles.wrapper_calendar}>
+		<div className={styles.wrapper_calendar} ref={wrapperRef}>
 			<div
 				className={styles.block__data}
 				onClick={() => setViewCalendar(!isViewCalendar)}

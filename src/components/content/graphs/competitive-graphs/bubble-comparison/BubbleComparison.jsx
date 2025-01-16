@@ -16,6 +16,8 @@ const BubbleComparison = ({ one, activeSubcategory }) => {
 		? cashingSecond_graph[0]
 		: cashingSecond_graph[1];
 
+	console.log('activeSubcategory', activeSubcategory);
+
 	const options = useMemo(
 		() => ({
 			accessibility: {

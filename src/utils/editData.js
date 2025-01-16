@@ -304,7 +304,11 @@ export const funksMedia = {
 		for (let categor in data) {
 			if (data.hasOwnProperty(categor)) {
 				let transformedData = data[categor].map(item => {
-					return { name: item.name, value: item.index };
+					return {
+						name: item.name,
+						value: item.index,
+						message_count: item.message_count,
+					};
 				});
 				newData.push({
 					name: categor === 'positive_smi' ? 'Позитив СМИ' : 'Негатив СМИ',
@@ -532,21 +536,39 @@ export const funksCompetitive = {
 	},
 	transformBubbleData: (inputObject, useSMI) => {
 		const { SMI, Socmedia, index_name } = inputObject;
-		let result;
+		const category = useSMI ? SMI : Socmedia;
 
-		const sourceArray = useSMI ? SMI : Socmedia;
+		// Проверка на случай, если данные отсутствуют
+		if (!category || (!category.neg && !category.pos)) {
+			console.warn('Нет данных для построения графика:', index_name);
+			return {
+				name: index_name,
+				data: [], // Пустой массив данных, чтобы избежать ошибки Highcharts
+			};
+		}
 
+		const { neg = [], pos = [] } = category;
+		const sourceArray = [...(neg || []), ...(pos || [])];
+
+		// Если массив пуст, возвращаем пустой график
+		if (sourceArray.length === 0) {
+			console.warn('Пустой массив данных для графика:', index_name);
+			return {
+				name: index_name,
+				data: [],
+			};
+		}
+
+		// Трансформация данных
 		const transformedData = sourceArray.map(item => ({
-			name: item.name,
-			value: item.rating,
+			name: item?.hub || 'Unknown',
+			value: item?.rating || 0, // Установка значения по умолчанию
 		}));
 
-		result = {
+		return {
 			name: index_name,
 			data: transformedData,
 		};
-
-		return result;
 	},
 	convertDataForBubbleLine: (data, array) => {
 		let newData = [];
