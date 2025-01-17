@@ -27,11 +27,25 @@ const Auth = () => {
 	return (
 		<Layout>
 			<div className={styles.block__auth}>
-				<img
+				{/* <img
 					className={styles.logo__image}
 					src='/images/full_logo.svg'
 					alt='logo'
-				/>
+				/> */}
+				<div className={styles.block__logo}>
+					<img
+						className={styles.logo__image}
+						src='/images/logo.svg'
+						alt='logo'
+					/>
+					<p className={styles.description}>
+						<span className={styles.max}>Аналитика</span>
+						<br />
+						Соцмедиа & СМИ
+						<br />
+						<span className={styles.mini}>С применением ИИ</span>
+					</p>
+				</div>
 				<h2 className={styles.title}>Авторизация</h2>
 				<form onSubmit={handleSubmit(onSubmit)} className={styles.form}>
 					{/* <form className={styles.form}> */}
