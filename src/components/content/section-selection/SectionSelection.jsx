@@ -12,10 +12,11 @@ const SectionSelection = () => {
 			/>
 			{/* <p className={styles.description}>Powered by using machine learning</p> */}
 			<p className={styles.description}>
-				<span>Аналитика</span>
+				<span className={styles.max}>Аналитика</span>
 				<br />
 				Соцмедиа & СМИ
-				<br /> С применением ИИ
+				<br />
+				<span className={styles.mini}>С применением ИИ</span>
 			</p>
 			<h2 className={styles.title}>Выберите нужный раздел</h2>
 			<div className={styles.block__choice}>

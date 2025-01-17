@@ -14,12 +14,16 @@
 	color: rgba($color: $color_black, $alpha: 0.7);
 	margin-bottom: adapt(33px, 1440px);
 	text-align: center;
+}
 
-	> span {
-		font-size: 1rem;
-		color: $color_blue;
-		font-weight: 500;
-	}
+.max {
+	font-size: 1rem;
+	color: $color_blue;
+	font-weight: 500;
+}
+
+.mini {
+	font-size: 0.65rem;
 }
 
 .title {
