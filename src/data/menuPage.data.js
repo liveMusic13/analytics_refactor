@@ -48,14 +48,6 @@ export const menuPageData = [
 	// 	path: '/none',
 	// },
 	{
-		id: 6,
-		title: 'Набор данных',
-		text: 'Набор данных',
-		src: '/images/icons/menu/show_data.svg',
-		src_active: '/images/icons/menu/show_data_active.svg',
-		path: '/data-set',
-	},
-	{
 		id: 7,
 		title: 'Кластеризация авторов',
 		text: 'Кластеризация авторов',
@@ -85,6 +77,14 @@ export const menuPageData = [
 		src: '/images/icons/menu/AI.svg',
 		src_active: '/images/icons/menu/AI_active.svg',
 		path: '/ai-analytics',
+	},
+	{
+		id: 6,
+		title: 'Набор данных',
+		text: 'Набор данных',
+		src: '/images/icons/menu/show_data.svg',
+		src_active: '/images/icons/menu/show_data_active.svg',
+		path: '/data-set',
 	},
 ];
 
