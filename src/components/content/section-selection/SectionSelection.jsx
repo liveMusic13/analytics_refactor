@@ -10,7 +10,11 @@ const SectionSelection = () => {
 				src='/images/full_logo.svg'
 				alt='full_logo'
 			/>
-			<p className={styles.description}>Powered by using machine learning</p>
+			{/* <p className={styles.description}>Powered by using machine learning</p> */}
+			<p className={styles.description}>
+				<span>Аналитика Соцмедиа & СМИ</span>
+				<br /> С применением ИИ
+			</p>
 			<h2 className={styles.title}>Выберите нужный раздел</h2>
 			<div className={styles.block__choice}>
 				{menuPageData.map(elemInfo => {

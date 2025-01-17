@@ -13,6 +13,12 @@
 	font-weight: 400;
 	color: rgba($color: $color_black, $alpha: 0.7);
 	margin-bottom: adapt(33px, 1440px);
+	text-align: center;
+
+	> span {
+		font-size: 0.85rem;
+		// color: $color_black;
+	}
 }
 
 .title {
