@@ -62,17 +62,17 @@ export const useDataInFolder = () => {
 
 			toggle_PopupInFolder('');
 		} else if (button === 'delete') {
-			const dataForRequest = {
-				isFolder: false,
-				name: '',
-			};
+			// const dataForRequest = {
+			// 	isFolder: false,
+			// 	name: '',
+			// };
 
 			addTitle_PopupDelete({
 				folder: file,
 				title: 'Файл',
 				processed: isDataSetPath ? true : false,
 			});
-			// toggle_PopupDelete('');
+
 			SetPopupDelete(true);
 		} else {
 			// const convertDirectory =
@@ -107,18 +107,25 @@ export const useDataInFolder = () => {
 			// 	console.log('Data:', data_fileLoad);
 			// 	console.log('error_fileLoad', error_fileLoad);
 			// }
-			const user = 1; // Пример данных
-			const directory = 'projector_files_directory';
-			const folder_name = 'test_2';
-			const file_name =
-				'geekbrains_08.12.2024-07.01.2025_1_authors_name_2025-01-11_14-06-09.txt';
+			const convertDirectory =
+				buttonTarget === 'Файлы данных'
+					? 'json_files_directory'
+					: buttonTarget === 'Файлы кластеризации авторов'
+						? 'projector_files_directory'
+						: 'bertopic_files_directory';
+			// const user = 1; // Пример данных
+			// const directory = 'projector_files_directory';
+			// const folder_name = 'test_2';
+			// const file_name =
+			// 	'geekbrains_08.12.2024-07.01.2025_1_authors_name_2025-01-11_14-06-09.txt';
 
 			// Выполняем запрос
 			const response = await trigger_fileLoad({
-				user,
-				directory,
-				folder_name,
-				file_name,
+				user: data_getUserId,
+
+				directory: convertDirectory,
+				folder_name: data,
+				file_name: file,
 				responseType: 'blob', // Указываем тип ответа
 			});
 
@@ -128,7 +135,7 @@ export const useDataInFolder = () => {
 					const url = window.URL.createObjectURL(response.data); // data должна быть Blob
 					const a = document.createElement('a');
 					a.href = url;
-					a.download = file_name; // Имя файла для скачивания
+					a.download = file; // Имя файла для скачивания
 					document.body.appendChild(a);
 					a.click();
 					document.body.removeChild(a);
