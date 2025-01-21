@@ -50,6 +50,10 @@
 	}
 }
 
+.registrations {
+	height: adapt(492px, 1440px);
+}
+
 .description {
 	font-size: 0.75rem;
 	line-height: 1.4;
@@ -80,4 +84,16 @@
 	width: adapt(38px, 1440px);
 	height: adapt(40px, 1440px);
 	margin-bottom: adapt(5px, 1440px);
+}
+
+.switch__button {
+	background-color: transparent;
+	text-decoration: underline;
+	font-style: italic;
+	color: $color_blue;
+	font-size: 0.9rem;
+
+	&:hover {
+		cursor: pointer;
+	}
 }

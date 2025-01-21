@@ -1,4 +1,4 @@
-import { useEffect } from 'react';
+import { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 
 import Layout from '@/components/layout/Layout';
@@ -13,9 +13,17 @@ import { colors } from '../../../app.constants';
 import styles from './Auth.module.scss';
 
 const Auth = () => {
-	const { onSubmit, register, handleSubmit, errors } = useAuthPage();
+	const {
+		onSubmit,
+		register,
+		handleSubmit,
+		errors,
+		validatePasswordRepeat,
+		onSubmitRegistr,
+	} = useAuthPage();
 	const { isAuth } = useAuth();
 	const navigate = useNavigate();
+	const [isViewAuth, setIsViewAuth] = useState(true);
 
 	useEffect(() => {
 		if (isAuth) navigate('/home');
@@ -23,10 +31,13 @@ const Auth = () => {
 
 	const emailError = errors.email?.message;
 	const errorPassword = errors.password;
+	const errorPasswordRepeat = errors.password_repeat;
 
 	return (
 		<Layout>
-			<div className={styles.block__auth}>
+			<div
+				className={`${styles.block__auth} ${isViewAuth ? '' : styles.registrations}`}
+			>
 				{/* <img
 					className={styles.logo__image}
 					src='/images/full_logo.svg'
@@ -46,9 +57,13 @@ const Auth = () => {
 						<span className={styles.mini}>С применением ИИ</span>
 					</p>
 				</div>
-				<h2 className={styles.title}>Авторизация</h2>
-				<form onSubmit={handleSubmit(onSubmit)} className={styles.form}>
-					{/* <form className={styles.form}> */}
+				<h2 className={styles.title}>
+					{isViewAuth ? 'Авторизация' : 'Регистрация'}
+				</h2>
+				<form
+					onSubmit={handleSubmit(isViewAuth ? onSubmit : onSubmitRegistr)}
+					className={styles.form}
+				>
 					<div className={styles.block__field}>
 						<InputAuth
 							type='text'
@@ -78,9 +93,32 @@ const Auth = () => {
 							</span>
 						)}
 					</div>
-
-					<Button>Войти</Button>
+					{!isViewAuth && (
+						<div className={styles.block__field}>
+							<InputAuth
+								label='Повторите пароль'
+								id='password_repeat'
+								type='password'
+								placeholder='Введите пароль'
+								register={register}
+								styleInput={
+									errorPassword ? { borderColor: colors.color_red } : {}
+								}
+								validate={validatePasswordRepeat}
+							/>
+							{errorPasswordRepeat && (
+								<span>{errors.password_repeat?.message}</span>
+							)}
+						</div>
+					)}
+					<Button>{isViewAuth ? 'Войти' : 'Зарегистрироваться'}</Button>
 				</form>
+				<button
+					onClick={() => setIsViewAuth(!isViewAuth)}
+					className={styles.switch__button}
+				>
+					{isViewAuth ? 'Регистрация' : 'Авторизация'}
+				</button>
 			</div>
 		</Layout>
 	);

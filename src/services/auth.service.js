@@ -25,4 +25,22 @@ export const authService = {
 			console.log(error);
 		}
 	},
+	registration: async (email, password) => {
+		try {
+			const { data } = await axios.post(`${API_URL}/auth/register`, {
+				email: email,
+				password: password,
+				is_active: true,
+				is_superuser: false,
+				is_verified: false,
+				username: 'string',
+				role_id: 0,
+				comments: 'string',
+			});
+
+			return data;
+		} catch (error) {
+			console.log(error);
+		}
+	},
 };

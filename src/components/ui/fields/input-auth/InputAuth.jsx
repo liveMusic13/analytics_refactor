@@ -2,7 +2,15 @@ import { useState } from 'react';
 
 import styles from './InputAuth.module.scss';
 
-const InputAuth = ({ type, placeholder, register, id, label, styleInput }) => {
+const InputAuth = ({
+	type,
+	placeholder,
+	register,
+	id,
+	label,
+	styleInput,
+	validate,
+}) => {
 	const [isViewPassword, setIsViePassword] = useState(false);
 
 	return (
@@ -26,6 +34,7 @@ const InputAuth = ({ type, placeholder, register, id, label, styleInput }) => {
 							}
 						: {
 								required: true,
+								validate,
 							},
 				)}
 				type={isViewPassword ? 'text' : type}
@@ -33,10 +42,11 @@ const InputAuth = ({ type, placeholder, register, id, label, styleInput }) => {
 				placeholder={placeholder}
 			/>
 
-			{label === 'Пароль' && (
+			{(label === 'Пароль' || label === 'Повторите пароль') && (
 				<button
 					className={styles.button__view}
 					onClick={() => setIsViePassword(!isViewPassword)}
+					type='button'
 				>
 					<img
 						src='/images/icons/input_button/view_password.svg'

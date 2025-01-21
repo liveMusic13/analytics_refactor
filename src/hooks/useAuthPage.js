@@ -9,6 +9,7 @@ export const useAuthPage = () => {
 	const {
 		register,
 		handleSubmit,
+		watch,
 		formState: { errors },
 	} = useForm({
 		mode: 'onChange',
@@ -19,10 +20,21 @@ export const useAuthPage = () => {
 		authService.login(data.email, data.password, setIsAuth);
 	};
 
+	const onSubmitRegistr = async data => {
+		console.log(data);
+		authService.registration(data.email, data.password);
+	};
+
+	const validatePasswordRepeat = value => {
+		return value === watch('password') || 'Пароли не совпадают';
+	};
+
 	return {
 		onSubmit,
 		register,
 		handleSubmit,
 		errors,
+		validatePasswordRepeat,
+		onSubmitRegistr,
 	};
 };
