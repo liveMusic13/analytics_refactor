@@ -97,3 +97,22 @@
 		cursor: pointer;
 	}
 }
+
+.message {
+	position: absolute;
+	z-index: 10;
+	top: 50%;
+	left: 50%;
+	transform: translate(-50%, -50%);
+	padding: adapt(15px, 1440px) adapt(30px, 1440px);
+	border-radius: adapt(8px, 1440px);
+	box-shadow: 0px 4px 10px 0px rgba(0, 0, 0, 0.05);
+	font-size: 1rem;
+	background-color: $color_very_light_blue;
+	border: 1px solid rgba($color: $color_black, $alpha: 0.12);
+	color: $color_red;
+}
+
+.good {
+	color: $color_green;
+}

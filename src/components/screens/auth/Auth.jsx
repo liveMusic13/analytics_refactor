@@ -13,6 +13,9 @@ import { colors } from '../../../app.constants';
 import styles from './Auth.module.scss';
 
 const Auth = () => {
+	const [message, setMessage] = useState('');
+	const [viewMessage, setViewMessage] = useState(false);
+	const [isViewAuth, setIsViewAuth] = useState(true);
 	const {
 		onSubmit,
 		register,
@@ -20,10 +23,9 @@ const Auth = () => {
 		errors,
 		validatePasswordRepeat,
 		onSubmitRegistr,
-	} = useAuthPage();
+	} = useAuthPage(setMessage, setViewMessage, setIsViewAuth);
 	const { isAuth } = useAuth();
 	const navigate = useNavigate();
-	const [isViewAuth, setIsViewAuth] = useState(true);
 
 	useEffect(() => {
 		if (isAuth) navigate('/home');
@@ -119,6 +121,13 @@ const Auth = () => {
 				>
 					{isViewAuth ? 'Регистрация' : 'Авторизация'}
 				</button>
+				{viewMessage && (
+					<span
+						className={`${styles.message} ${message === 'Регистрация прошла успешно!' ? styles.good : ''}`}
+					>
+						{message}
+					</span>
+				)}
 			</div>
 		</Layout>
 	);

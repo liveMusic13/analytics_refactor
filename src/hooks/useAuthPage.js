@@ -3,7 +3,7 @@ import { useForm } from 'react-hook-form';
 import { useAuth } from './useAuth';
 import { authService } from '@/services/auth.service';
 
-export const useAuthPage = () => {
+export const useAuthPage = (setMessage, setViewMessage, setIsViewAuth) => {
 	const { setIsAuth } = useAuth();
 
 	const {
@@ -21,8 +21,18 @@ export const useAuthPage = () => {
 	};
 
 	const onSubmitRegistr = async data => {
-		console.log(data);
-		authService.registration(data.email, data.password);
+		setViewMessage(true);
+		try {
+			console.log(data);
+			await authService.registration(data.email, data.password);
+			setMessage('Регистрация прошла успешно!');
+			setIsViewAuth(true);
+		} catch (error) {
+			console.error(error); // Добавьте это для отладки ошибки
+			setMessage('Ошибка регистрации, попробуйте еще раз.');
+		} finally {
+			setTimeout(() => setViewMessage(false), 3000);
+		}
 	};
 
 	const validatePasswordRepeat = value => {

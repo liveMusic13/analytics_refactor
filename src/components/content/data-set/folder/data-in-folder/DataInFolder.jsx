@@ -238,7 +238,7 @@ const DataInFolder = () => {
 											<div className={styles.block__buttons}>
 												<button
 													className={styles.button__upload}
-													onClick={() => onClick(file['txt-file'], 'upload')}
+													onClick={() => onClick(file.file, 'upload')}
 												>
 													<img
 														src='/images/icons/setting/upload.svg'

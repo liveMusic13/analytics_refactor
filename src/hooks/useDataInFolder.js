@@ -75,54 +75,15 @@ export const useDataInFolder = () => {
 
 			SetPopupDelete(true);
 		} else {
-			// const convertDirectory =
-			// 	buttonTarget === 'Файлы данных'
-			// 		? 'json_files_directory'
-			// 		: buttonTarget === 'Файлы кластеризации авторов'
-			// 			? 'projector_files_directory'
-			// 			: 'bertopic_files_directory';
-			// console.log('test', {
-			// 	user: data_getUserId,
-			// 	directory: convertDirectory,
-			// 	folder_name: data,
-			// 	file_name: file,
-			// });
-
-			// await trigger_fileLoad({
-			// 	user: data_getUserId,
-			// 	directory: convertDirectory,
-			// 	folder_name: data,
-			// 	file_name: file,
-			// }).unwrap();
-
-			// // Проверяем успешность загрузки через isSuccess_fileLoad
-			// if (isSuccess_fileLoad && data_fileLoad) {
-			// 	console.log('data_fileLoad', data_fileLoad);
-			// 	downloadFile(file, data_fileLoad);
-			// } else {
-			// 	console.error('Ошибка загрузки файла или данные еще не доступны');
-			// 	console.log('Loading:', isLoading_fileLoad);
-			// 	console.log('Success:', isSuccess_fileLoad);
-			// 	console.log('Error:', isError_fileLoad);
-			// 	console.log('Data:', data_fileLoad);
-			// 	console.log('error_fileLoad', error_fileLoad);
-			// }
 			const convertDirectory =
 				buttonTarget === 'Файлы данных'
 					? 'json_files_directory'
 					: buttonTarget === 'Файлы кластеризации авторов'
 						? 'projector_files_directory'
 						: 'bertopic_files_directory';
-			// const user = 1; // Пример данных
-			// const directory = 'projector_files_directory';
-			// const folder_name = 'test_2';
-			// const file_name =
-			// 	'geekbrains_08.12.2024-07.01.2025_1_authors_name_2025-01-11_14-06-09.txt';
-
 			// Выполняем запрос
 			const response = await trigger_fileLoad({
 				user: data_getUserId,
-
 				directory: convertDirectory,
 				folder_name: data,
 				file_name: file,
@@ -130,12 +91,15 @@ export const useDataInFolder = () => {
 			});
 
 			if (response.data) {
+				// Определяем имя файла
+				const fileName =
+					convertDirectory === 'json_files_directory' ? `${file}.json` : file;
 				try {
 					// Создаем ссылку для скачивания файла
 					const url = window.URL.createObjectURL(response.data); // data должна быть Blob
 					const a = document.createElement('a');
 					a.href = url;
-					a.download = file; // Имя файла для скачивания
+					a.download = fileName; // Имя файла для скачивания
 					document.body.appendChild(a);
 					a.click();
 					document.body.removeChild(a);
