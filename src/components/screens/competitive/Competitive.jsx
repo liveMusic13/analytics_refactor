@@ -10,7 +10,7 @@ import BackgroundLoader from '@/components/loading/background-loader/BackgroundL
 import Loader from '@/components/loading/loader/Loader';
 import NotFound from '@/components/screens/not-found/NotFound';
 import Button from '@/components/ui/button/Button';
-import CustomCalendar from '@/components/ui/custom-calendar/CustomCalendar';
+import CustomCalendar from '@/components/ui/custom-calendar/OldCustomCalendar';
 import DataForSearch from '@/components/ui/data-for-search/DataForSearch';
 import LeftMenu from '@/components/ui/left-menu/LeftMenu';
 import LeftMenuActive from '@/components/ui/left-menu/left-menu-active/LeftMenuActive';
@@ -35,9 +35,10 @@ const Competitive = () => {
 		useActions();
 	const { active_menu } = useSelector(store => store.booleanValues);
 	const dataForRequest = useSelector(state => state.dataForRequest);
-	const { values: dataUser } = useSelector(store => store.dataUsersSlice);
+	const { json_files_directory: dataUser } = useSelector(
+		store => store.dataUsersSlice,
+	);
 
-	// const { data, isLoading, isSuccess, isError, error } = useGetDataUsersQuery();
 	const {
 		data: data_getUserId,
 		isError: isError_getUserId,
@@ -57,32 +58,6 @@ const Competitive = () => {
 		addMaxDate,
 		addIndex,
 	);
-
-	// useEffect(() => {
-	// 	const arrayData =
-	// 		dataUser && Object.keys(dataUser).length > 0 ? dataUser : {};
-
-	// 	if (arrayData && Object.keys(arrayData).length > 0) {
-	// 		let value;
-	// 		const convertArr = Object.keys(arrayData);
-
-	// 		if (Object.keys(arrayData).length > 0) {
-	// 			const firstEl = convertArr[0];
-
-	// 			if (firstEl in dataUser) {
-	// 				value = dataUser[firstEl];
-	// 			}
-	// 		}
-
-	// 		addThemesInd(value[0].index_number);
-	// 		addThemesInd(value[1].index_number);
-	// 	}
-
-	// 	// if (dataUser.length > 0) {
-	// 	// 	addThemesInd(dataUser[0].index_number);
-	// 	// 	addThemesInd(dataUser[1].index_number);
-	// 	// }
-	// }, [dataUser]);
 
 	useEffect(() => {
 		//TODO: ДОЖДАТЬСЯ ОТВЕТА ОТ ГРАФИКА И ПРОТЕСТИТЬ
@@ -116,7 +91,6 @@ const Competitive = () => {
 
 	if (isError_competitive || isError) {
 		const error_props = isError ? error : error_competitive;
-
 		return <NotFound error={error_props} />;
 	}
 
@@ -161,11 +135,6 @@ const Competitive = () => {
 						<CompetitiveGraphs />
 					</Suspense>
 				)}
-				{/* {isGraph.isGraph ? (
-					<СompetitiveEnvironment />
-				) : (
-					<BeforeSearch title='Конкуренты' />
-				)} */}
 			</Content>
 		</Layout>
 	);

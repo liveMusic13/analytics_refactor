@@ -1,0 +1,153 @@
+@import '@st/variables';
+@import '@st/functions';
+
+.calendar {
+	font-size: 0.8rem;
+}
+
+.calendar-header {
+	display: flex;
+	gap: adapt(8px, 1440px);
+	align-items: center;
+	margin-bottom: adapt(16px, 1440px);
+
+	&__month {
+		display: flex;
+		justify-content: space-between;
+		align-items: center;
+		border: 1px solid $color_blue;
+		color: $color_blue;
+		padding: adapt(6px, 1440px) adapt(8px, 1440px);
+		gap: adapt(10px, 1440px);
+		border-radius: adapt(4px, 1440px);
+		background-color: $color_white;
+
+		> .calendar-header__block-buttons {
+			width: adapt(18px, 1440px);
+			height: adapt(18px, 1440px);
+			position: relative;
+			background-image: url('/images/icons/arrows_calendar.png');
+			background-repeat: no-repeat;
+			background-size: cover;
+
+			> button {
+				position: absolute;
+				top: 0;
+				background-color: transparent;
+				color: $color_blue;
+				cursor: pointer;
+				width: 100%;
+				height: adapt(9px, 1440px);
+			}
+
+			> button:nth-child(2) {
+				position: absolute;
+				bottom: 0;
+				top: auto;
+				width: 100%;
+				height: adapt(9px, 1440px);
+				z-index: 3;
+			}
+		}
+	}
+
+	&__year {
+		background-color: $color_white;
+		display: flex;
+		justify-content: space-between;
+		align-items: center;
+		border: 1px solid $color_blue;
+		color: $color_blue;
+		padding: adapt(6px, 1440px) adapt(8px, 1440px);
+		gap: adapt(10px, 1440px);
+		border-radius: adapt(4px, 1440px);
+
+		> .calendar-header__block-buttons {
+			width: adapt(18px, 1440px);
+			height: adapt(18px, 1440px);
+			position: relative;
+			background-image: url('/images/icons/arrows_calendar.png');
+			background-repeat: no-repeat;
+			background-size: cover;
+
+			> button {
+				position: absolute;
+				top: 0;
+				background-color: transparent;
+				color: $color_blue;
+				cursor: pointer;
+				width: 100%;
+				height: adapt(9px, 1440px);
+			}
+
+			> button:nth-child(2) {
+				position: absolute;
+				bottom: 0;
+				top: auto;
+				width: 100%;
+				height: adapt(9px, 1440px);
+				z-index: 3;
+			}
+		}
+	}
+}
+
+.calendar-body {
+	display: flex;
+	flex-wrap: wrap;
+}
+
+.calendar-weeks {
+	display: flex;
+	align-items: center;
+	// width: 100%;
+
+	&-day {
+		display: flex;
+		align-items: center;
+		justify-content: center;
+		width: adapt(28px, 1440px);
+		height: adapt(28px, 1440px);
+		color: rgba($color: $color_black, $alpha: 0.4);
+	}
+}
+
+.calendar-grid {
+	display: grid;
+	grid-template-columns: repeat(7, 1fr);
+}
+
+.calendar-day {
+	width: adapt(28px, 1440px);
+	height: adapt(28px, 1440px);
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	color: $color_full_black;
+
+	&:hover {
+		border-radius: adapt(4px, 1440px);
+		background-color: $color_white;
+		cursor: pointer;
+		color: $color_full_black;
+	}
+}
+
+.calendar-past-day {
+	color: rgba($color: $color_black, $alpha: 0.6);
+}
+
+.calendar-out-of-range {
+	color: rgba($color: $color_black, $alpha: 0.6);
+}
+
+.intermediate-day {
+	background-color: rgba($color: $color_blue, $alpha: 0.05);
+	// border-radius: adapt(4px, 1440px);
+}
+
+.selected-day {
+	background-color: $color_blue;
+	color: $color_white;
+	border-radius: adapt(4px, 1440px);
+}

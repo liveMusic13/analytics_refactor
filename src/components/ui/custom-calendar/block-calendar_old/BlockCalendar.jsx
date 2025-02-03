@@ -4,7 +4,14 @@ import styles from './BlockCalendar.module.scss';
 import Calendar from './calendar/Calendar';
 import { colors } from '@/app.constants';
 
-const BlockCalendar = ({ setViewCalendar }) => {
+const BlockCalendar = ({ states, setViewCalendar }) => {
+	const {
+		selectedDatesFrom,
+		setSelectedDatesFrom,
+		selectedDatesTo,
+		setSelectedDatesTo,
+	} = states;
+
 	const onClick = () => {
 		setViewCalendar(false);
 	};
@@ -12,8 +19,18 @@ const BlockCalendar = ({ setViewCalendar }) => {
 	return (
 		<div className={styles.block_calendar}>
 			<div className={styles.block__calendars}>
-				<Calendar start={true} />
-				<Calendar start={false} />
+				<Calendar
+					state={{
+						selectedDates: selectedDatesFrom,
+						setSelectedDates: setSelectedDatesFrom,
+					}}
+				/>
+				<Calendar
+					state={{
+						selectedDates: selectedDatesTo,
+						setSelectedDates: setSelectedDatesTo,
+					}}
+				/>
 			</div>
 			<div className={styles.block__preview}>
 				<p className={styles.preview__date}></p>

@@ -10,7 +10,7 @@ import BackgroundLoader from '@/components/loading/background-loader/BackgroundL
 import Loader from '@/components/loading/loader/Loader';
 import NotFound from '@/components/screens/not-found/NotFound';
 import Button from '@/components/ui/button/Button';
-import CustomCalendar from '@/components/ui/custom-calendar/CustomCalendar';
+import CustomCalendar from '@/components/ui/custom-calendar/OldCustomCalendar';
 import DataForSearch from '@/components/ui/data-for-search/DataForSearch';
 import LeftMenu from '@/components/ui/left-menu/LeftMenu';
 import LeftMenuActive from '@/components/ui/left-menu/left-menu-active/LeftMenuActive';

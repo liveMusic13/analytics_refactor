@@ -69,7 +69,6 @@ const CompetitiveGraphs = () => {
 						className={styles.radio}
 						name='subcategory' // добавляем одинаковый атрибут name
 						checked={activeSubcategory === 'Socmedia'}
-						// checked={activeSubcategory === 'SMI'}
 						onChange={() => handleClickSubcategory('Socmedia')}
 					/>
 					<p className={styles.text__radio}>Соцмедиа</p>

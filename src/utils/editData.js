@@ -392,6 +392,7 @@ export const funksVoice = {
 		// Возвращаем данные серии как массив объектов
 		return Object.values(seriesData);
 	},
+
 	getCategoriesName: data => {
 		let nameCategories = [];
 

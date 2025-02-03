@@ -50,6 +50,16 @@ const DataForSearch = ({ multi }) => {
 					.flat()
 					.find(file => dataForRequest.themes_ind.includes(file.index_number))
 			: undefined;
+	const findTargetFileMultiDouble =
+		dataForRequest.themes_ind.length === 2
+			? Object.values(arrayData)
+					.flat()
+					.filter(
+						el =>
+							el.index_number === dataForRequest.themes_ind[0] ||
+							el.index_number === dataForRequest.themes_ind[1],
+					)
+			: undefined;
 
 	const findTargetFile =
 		dataForRequest.index !== undefined
@@ -59,7 +69,9 @@ const DataForSearch = ({ multi }) => {
 			: undefined;
 
 	const nameFile = multi
-		? findTargetFileMulti?.file || ''
+		? findTargetFileMultiDouble
+			? `${truncateDescription(findTargetFileMultiDouble[0].file, 15)} - ${truncateDescription(findTargetFileMultiDouble[1].file, 15)}`
+			: findTargetFileMulti?.file || ''
 		: findTargetFile?.file || '';
 
 	const numLength = multi ? 26 : 30;

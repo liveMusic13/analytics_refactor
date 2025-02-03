@@ -11,7 +11,7 @@ import Loader from '@/components/loading/loader/Loader';
 import NotFound from '@/components/screens/not-found/NotFound';
 import AdditionalParameters from '@/components/ui/additional-parameters/AdditionalParameters';
 import Button from '@/components/ui/button/Button';
-import CustomCalendar from '@/components/ui/custom-calendar/CustomCalendar';
+import CustomCalendar from '@/components/ui/custom-calendar/OldCustomCalendar';
 import DataForSearch from '@/components/ui/data-for-search/DataForSearch';
 import Input from '@/components/ui/fields/input/Input';
 import LeftMenu from '@/components/ui/left-menu/LeftMenu';
@@ -42,7 +42,7 @@ const Information = () => {
 		store => store.dataUsersSlice,
 	);
 	const dataForRequest = useSelector(state => state.dataForRequest);
-	// const { data, isLoading, isSuccess, isError, error } = useGetDataUsersQuery();
+
 	const {
 		data: data_getUserId,
 		isError: isError_getUserId,
@@ -84,7 +84,6 @@ const Information = () => {
 
 	if (isError_information || isError) {
 		const error_props = isError ? error : error_information;
-
 		return <NotFound error={error_props} />;
 	}
 
