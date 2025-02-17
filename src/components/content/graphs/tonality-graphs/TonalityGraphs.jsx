@@ -58,7 +58,7 @@ const TonalityGraphs = () => {
 				),
 			);
 		}
-	}, [activeButton]);
+	}, [activeButton, cashingData]);
 
 	const handleDownloadImage = useSaveImageGraph();
 

@@ -76,8 +76,8 @@ export const menuPageData = [
 		text: 'ИИ анализ',
 		src: '/images/icons/menu/AI.svg',
 		src_active: '/images/icons/menu/AI_active.svg',
-		// path: '/ai-analytics',
-		path: '/none',
+		path: '/ai-analytics',
+		// path: '/none',
 	},
 	{
 		id: 6,

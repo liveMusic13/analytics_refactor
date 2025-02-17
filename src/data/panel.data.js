@@ -90,3 +90,21 @@ export const dataSetButtons = [
 		title: 'Файлы кластеризации авторов',
 	},
 ];
+
+export const analysisOfThemesButtons = [
+	{
+		id: 0,
+		isCount: false,
+		title: 'Кластеризация на тематики',
+	},
+	{
+		id: 1,
+		isCount: false,
+		title: 'Выявленные темы',
+	},
+	{
+		id: 2,
+		isCount: false,
+		title: 'Анализ тематик',
+	},
+];

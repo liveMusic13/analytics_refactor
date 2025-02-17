@@ -130,6 +130,8 @@ import { useSelector } from 'react-redux';
 
 import { funksVoice } from '@/utils/editData';
 
+import { truncateDescription } from '../../../../../utils/editText';
+
 import styles from './RadialBar.module.scss';
 import { colors } from '@/app.constants';
 
@@ -137,7 +139,7 @@ HighchartsMore(Highcharts);
 HighchartsSolidGauge(Highcharts);
 
 const RadialBar = () => {
-	const { data: voiceData } = useSelector(state => state.voiceData);
+	const { values: voiceData } = useSelector(state => state.voiceData.data);
 	const [indexData, setIndexData] = useState(-1); // Индекс для отображения данных конкретного объекта
 
 	const originalColors = useRef({}); // Хранение оригинальных цветов
@@ -280,7 +282,7 @@ const RadialBar = () => {
 						className={indexData === index ? styles.name_active : styles.name}
 						onClick={() => handleButtonClick(index)}
 					>
-						{name}
+						{truncateDescription(name, 20)}
 					</button>
 				))}
 			</div>

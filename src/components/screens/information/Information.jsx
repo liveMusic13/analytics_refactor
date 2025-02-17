@@ -20,8 +20,6 @@ import LeftMenuActive from '@/components/ui/left-menu/left-menu-active/LeftMenuA
 import { useActions } from '@/hooks/useActions';
 import { useAddBaseAndDate } from '@/hooks/useAddBaseAndDate';
 
-import { funksInformationGraph } from '@/utils/editData';
-
 import { useCheckAuth } from '../../../hooks/useCheckAuth';
 import {
 	useGetUserFoldersQuery,
@@ -105,12 +103,17 @@ const Information = () => {
 						<>
 							<h3 className={styles.pageName__title}>Информационный граф</h3>
 							<p>
-								{data_information?.values?.length === 0
+								{/* {data_information?.values?.length === 0
 									? ''
 									: `${funksInformationGraph.countTextAuthors(
 											data_information?.values,
 										)} текста(ов) и ${
 											data_information?.values?.length
+										} автора(ов)`} */}
+								{data_information?.values?.length === 0
+									? ''
+									: `${data_information.num_messages} текста(ов) и ${
+											data_information?.num_unique_authors
 										} автора(ов)`}
 							</p>
 						</>

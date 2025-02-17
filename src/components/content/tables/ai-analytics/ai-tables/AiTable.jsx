@@ -12,27 +12,23 @@ import { useSelector } from 'react-redux';
 import { useActions } from '../../../../../hooks/useActions';
 import { truncateDescription } from '../../../../../utils/editText';
 import { convertUnixTimestampToDate } from '../../../../../utils/timestamp';
-import Categories from '../../../../ui/categories/Categories';
+import Button from '../../../../ui/button/Button';
 
 import styles from './AiTables.module.scss';
 
 const AiTable = () => {
-	const { get, categories } = useSelector(state => state.aiData);
-	const { texts_ids } = useSelector(state => state.dataForRequest);
+	const { aiTesting } = useSelector(state => state.aiData);
+	const { texts } = useSelector(state => state.dataForRequest);
 
-	const data = useMemo(() => get, [get]);
-	const [valueCategories, setValueCategories] = useState('');
-	const [draggedData, setDraggedData] = useState(null);
+	const data = useMemo(() => aiTesting, [aiTesting]);
 
 	const {
-		addObject_aiData,
-		addCategories_aiData,
 		addTextsIds,
 		deleteTextsIds,
 		addText_popupNormal,
 		toggle_popupNormal,
 		deleteAllTextsIds,
-		addAllTextsIds,
+		toggleIsViewPromptPopup,
 	} = useActions();
 
 	const columns = useMemo(
@@ -82,7 +78,6 @@ const AiTable = () => {
 
 	const [columnVisibility, setColumnVisibility] = useState({});
 	const [sorting, setSorting] = useState([]);
-	const [filtering, setFiltering] = useState('');
 	const countTableElemSize = [10, 15, 20];
 
 	const tableInstance = useReactTable({
@@ -94,11 +89,9 @@ const AiTable = () => {
 		getPaginationRowModel: getPaginationRowModel(),
 		state: {
 			sorting: sorting,
-			globalFilter: filtering,
 			columnVisibility: columnVisibility,
 		},
 		onSortingChange: setSorting,
-		onGlobalFilterChange: setFiltering,
 		onColumnVisibilityChange: setColumnVisibility,
 	});
 
@@ -126,86 +119,41 @@ const AiTable = () => {
 		return [1, '...', pageCount - 3, pageCount - 2, pageCount - 1, pageCount];
 	};
 
-	const handleDragStart = data => {
-		setDraggedData(data);
-	};
-
-	const handleDrop = event => {
-		event.preventDefault();
-
-		if (draggedData) {
-			const buttonText = event.target.innerText; // Получаем текст кнопки
-			const payload = {
-				text: buttonText,
-				data: draggedData,
-			};
-
-			addObject_aiData(payload); // Добавляем данные в массив кнопки
-			setDraggedData(null); // Сбрасываем перетаскиваемые данные
+	//HELP: Функция для обработки изменения чекбокса
+	const handleCheckboxChange = (id, isChecked) => {
+		if (isChecked) {
+			if (texts.length < 5) {
+				addTextsIds(id);
+			}
+		} else {
+			deleteTextsIds(id);
 		}
-	};
-
-	const addNewData = event => {
-		const target = event.target.innerText;
 	};
 
 	return (
 		<div className={styles.wrapper_table}>
 			<div className={styles.table__header}>
-				<div className={styles.header__topBlock}>
-					<div className={styles.block__globalFilter}>
-						<img src='/images/icons/input_button/search.svg' alt='search' />
-						<input
-							type='text'
-							value={filtering}
-							onChange={e => setFiltering(e.target.value)}
-							placeholder='Поиск'
-						/>
-					</div>
-					<div className={styles.block__categories}>
-						<input
-							type='text'
-							value={valueCategories}
-							onChange={e => setValueCategories(e.target.value)}
-							placeholder='Название тематики'
-						/>
-
+				<div className={styles.header__info}>
+					<h2 className={styles.header__title}>Тестирование</h2>
+					<p className={styles.header__description}>
+						Выберите до 5 текстов и запустите тестирование
+					</p>
+					<div className={styles.block__checked}>
+						<p className={styles.text}>Выбрано: {texts.length}</p>
 						<button
-							onClick={() => {
-								if (valueCategories !== '') {
-									addCategories_aiData(valueCategories);
-									setValueCategories('');
-								}
-							}}
+							className={styles.button__exit}
+							onClick={() => deleteAllTextsIds('')}
 						>
-							Добавить тематику
+							<img src='/images/icons/exit_blue.svg' alt='exit' />
 						</button>
 					</div>
 				</div>
-				<div className={styles.block__hiddenColumns}>
-					<label>
-						<input
-							{...{
-								type: 'checkbox',
-								checked: tableInstance.getIsAllColumnsVisible(),
-								onChange: tableInstance.getToggleAllColumnsVisibilityHandler(),
-							}}
-						/>
-						Все колонки
-					</label>
-					{tableInstance.getAllColumns().map(column => (
-						<label key={column.id}>
-							<input
-								{...{
-									type: 'checkbox',
-									checked: column.getIsVisible(),
-									onChange: column.getToggleVisibilityHandler(),
-								}}
-							/>
-							{column.id}
-						</label>
-					))}
-				</div>
+				<Button
+					disabled={texts.length === 0}
+					onClick={() => toggleIsViewPromptPopup(true)}
+				>
+					Тестировать
+				</Button>
 			</div>
 			<table>
 				<thead>
@@ -217,6 +165,9 @@ const AiTable = () => {
 										key={columnEl.id}
 										colSpan={columnEl.colSpan}
 										onClick={columnEl.column.getToggleSortingHandler()}
+										// style={{
+										// 	textAlign: 'le'
+										// }}
 									>
 										{flexRender(
 											columnEl.column.columnDef.header,
@@ -235,25 +186,8 @@ const AiTable = () => {
 					})}
 				</thead>
 				<tbody>
-					{Object.keys(categories).map(themes => {
-						console.log(themes, categories);
-						return (
-							<Categories
-								key={Math.random()}
-								themes={themes}
-								categories={categories}
-								addNewData={addNewData}
-								handleDrop={handleDrop}
-							/>
-						);
-					})}
-
 					{tableInstance.getRowModel().rows.map(rowEl => (
-						<tr
-							key={rowEl.id}
-							draggable
-							onDragStart={() => handleDragStart(rowEl.original)}
-						>
+						<tr key={rowEl.id}>
 							{rowEl.getVisibleCells().map(cellEl => {
 								if (cellEl.column.id === 'Чекбокс') {
 									return (
@@ -269,20 +203,15 @@ const AiTable = () => {
 											<input
 												className={styles.input__checkbox}
 												type='checkbox'
-												checked={texts_ids.some(
-													elem => elem === rowEl.original.id,
+												checked={texts.some(
+													elem => elem === rowEl.original.text,
 												)}
 												onChange={e => {
-													console.log(
+													console.log(rowEl.original);
+													handleCheckboxChange(
+														rowEl.original.text,
 														e.target.checked,
-														texts_ids,
-														texts_ids.some(elem => elem === rowEl.original.id),
 													);
-													if (e.target.checked) {
-														addTextsIds(rowEl.original.id);
-													} else {
-														deleteTextsIds(rowEl.original.id);
-													}
 												}}
 											/>
 										</td>
@@ -321,22 +250,6 @@ const AiTable = () => {
 					))}
 				</tbody>
 			</table>
-			<div className={styles.block__allInput}>
-				<input
-					className={styles.input__checkbox}
-					type='checkbox'
-					checked={texts_ids.length === get.length}
-					onChange={() => {
-						if (texts_ids.length === get.length) {
-							deleteAllTextsIds('');
-						} else {
-							addAllTextsIds(get);
-						}
-					}}
-				/>
-				<p className={styles.allInput__paragraph}>Выбрать все</p>
-			</div>
-
 			<div className={styles.block__bottom}>
 				<div className={styles.block__select}>
 					<span>Строк на странице</span>

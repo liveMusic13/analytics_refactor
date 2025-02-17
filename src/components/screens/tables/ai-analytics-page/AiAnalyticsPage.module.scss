@@ -1,3 +1,29 @@
 @import '@st/mixins';
+@import '@st/variables';
+@import '@st/functions';
 
 @include pages__styles();
+
+.block__calculation {
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	flex-direction: column;
+	gap: adapt(8px, 1440px);
+
+	// > .title__calculation {
+	// 	margin-bottom: adapt(8px, 1440px);
+	// }
+
+	> .description__calculation {
+		font-size: 0.875rem;
+		margin-bottom: adapt(8px, 1440px);
+		color: rgba($color: $color_black, $alpha: 0.6);
+	}
+
+	> .link__calculation {
+		font-size: 0.875rem;
+		color: $color_blue;
+		margin-top: adapt(8px, 1440px);
+	}
+}

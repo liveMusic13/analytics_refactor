@@ -4,6 +4,9 @@ export const API_URL = 'https://194.146.113.123/api';
 
 export const TOKEN = 'token';
 
+export const STATUSBARSTART = 'status-bar-start';
+export const PROGRESSBAR = 'progress';
+
 export const colors = {
 	color_blue: '#1760e8',
 	color_black: '#1e1e1e',

@@ -154,6 +154,8 @@ export const funksTonality = {
 			}
 		});
 
+		console.log('[objectNeg, objectPos]', [objectNeg, objectPos]);
+
 		return [objectNeg, objectPos];
 	},
 	transformAuthorsData: data => {
@@ -171,13 +173,13 @@ export const funksTonality = {
 			{
 				id: 'negative',
 				parent: 'root',
-				name: 'Negative',
+				name: 'Негатив',
 				color: negativeColor,
 			},
 			{
 				id: 'positive',
 				parent: 'root',
-				name: 'Positive',
+				name: 'Позитив',
 				color: positiveColor,
 			},
 			...negative.flatMap((item, index) => {
@@ -349,7 +351,6 @@ export const funksVoice = {
 	concatData: data => {
 		// Создаем пустой массив для объединенных данных
 		let combinedArray = [];
-		console.log(data);
 
 		// Перебираем все объекты в массиве data
 		for (const obj of data) {
@@ -359,7 +360,7 @@ export const funksVoice = {
 				combinedArray = combinedArray.concat(obj.sunkey_data);
 			}
 		}
-
+		console.log(combinedArray);
 		return combinedArray;
 	},
 	getSeriesData: data => {

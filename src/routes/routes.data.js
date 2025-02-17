@@ -11,6 +11,8 @@ import TopicAnalysisPage from '@/components/screens/tables/topic-analysis-page/T
 import UserTonality from '@/components/screens/user-tonality/UserTonality';
 import VoiceOfCustomer from '@/components/screens/voice-of-customer/VoiceOfCustomer';
 
+import AnalysisOfThemesPage from '../components/screens/tables/ai-analytics-page/analysis-of-themes/AnalysisOfThemesPage';
+
 export const routes = [
 	{
 		path: '/',
@@ -70,6 +72,11 @@ export const routes = [
 	{
 		path: '/ai-analytics',
 		component: AiAnalyticsPage,
+		isAuth: true,
+	},
+	{
+		path: '/ai-analytics/analysis-of-themes',
+		component: AnalysisOfThemesPage,
 		isAuth: true,
 	},
 	{

@@ -86,8 +86,16 @@ const DataSet = () => {
 		json_files_directory: dataUser,
 		projector_files_directory: dataUser_Projector,
 	} = useSelector(store => store.dataUsersSlice);
+
+	console.log(
+		'dataUser',
+		dataUser,
+		'dataUser_Projector',
+		dataUser_Projector || {},
+	);
+
 	const allData = Object.keys(
-		activeButton === 'Файлы данных' ? dataUser : dataUser_Projector,
+		activeButton === 'Файлы данных' ? dataUser : dataUser_Projector || {},
 	);
 
 	const [filterText, setFilterText] = useState('');
@@ -149,11 +157,12 @@ const DataSet = () => {
 							<h2 className={styles.title}>Здесь пока ничего нет</h2>
 							<p className={styles.description}>
 								Чтобы получить обработанные файлы для загрузки в Embedding
-								Projector нужно загрузить исходные файлы в разделе <br />
-								<span>Файлы для обработки</span>
+								Projector нужно запустить расчет кластеризации авторов <br />
+								{/* <span>Файлы для обработки</span> */}
 							</p>
+							{/* <button onClick={() => onClick('Файлы данных')}> */}
 							<button onClick={() => onClick('Файлы данных')}>
-								Перейти в раздел
+								Запустить расчет
 							</button>
 						</div>
 					)}

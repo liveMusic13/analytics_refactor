@@ -12,7 +12,11 @@ import useClickOutside from '../../../hooks/useClickOutside';
 import styles from './CustomCalendar.module.scss';
 import BlockCalendar from './block-calendar_old/BlockCalendar';
 
-const CustomCalendar = ({ multi }) => {
+const CustomCalendar = ({ multi, directory }) => {
+	const find_directory =
+		directory === 'bertopic'
+			? 'bertopic_files_directory'
+			: 'json_files_directory';
 	const [isViewCalendar, setViewCalendar] = useState(false);
 	const [selectedDatesFrom, setSelectedDatesFrom] = useState([]);
 	const [selectedDatesTo, setSelectedDatesTo] = useState([]);
@@ -23,7 +27,7 @@ const CustomCalendar = ({ multi }) => {
 		index: baseData,
 		themes_ind,
 	} = useSelector(state => state.dataForRequest);
-	const { json_files_directory: dataUser } = useSelector(
+	const { [find_directory]: dataUser } = useSelector(
 		store => store.dataUsersSlice,
 	);
 	const { addMinDate, addMaxDate } = useActions();
@@ -50,8 +54,6 @@ const CustomCalendar = ({ multi }) => {
 	useEffect(() => {
 		const targetBaseData = allData.filter(el => el.index_number === baseData);
 
-		console.log('targetBaseData', targetBaseData);
-
 		if (multi) {
 			handleSetSelectedDatesFrom([
 				fromTimestampToNewDateFormat(MultiDate.min_data),
@@ -60,6 +62,7 @@ const CustomCalendar = ({ multi }) => {
 			addMinDate(MultiDate.min_data);
 			addMaxDate(MultiDate.max_data);
 		} else {
+			console.log('single', targetBaseData);
 			if (targetBaseData.length > 0) {
 				handleSetSelectedDatesFrom([
 					fromTimestampToNewDateFormat(targetBaseData[0].min_data),

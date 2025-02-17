@@ -248,3 +248,23 @@
 		}
 	}
 }
+
+@mixin scrollbar {
+	&::-webkit-scrollbar {
+		width: adapt(4px, 1440px);
+	}
+
+	&::-webkit-scrollbar-track {
+		background: rgba($color: $color_blue, $alpha: 0.08);
+		border-radius: adapt(20px, 1440px);
+	}
+
+	&::-webkit-scrollbar-thumb {
+		background: $color_blue;
+		border-radius: adapt(20px, 1440px);
+	}
+
+	&::-webkit-scrollbar-thumb:hover {
+		background: rgba($color: $color_blue, $alpha: 0.8);
+	}
+}

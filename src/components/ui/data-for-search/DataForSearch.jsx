@@ -9,13 +9,17 @@ import useClickOutside from '../../../hooks/useClickOutside';
 
 import styles from './DataForSearch.module.scss';
 
-const DataForSearch = ({ multi }) => {
+const DataForSearch = ({ multi, directory }) => {
+	const find_directory =
+		directory === 'bertopic'
+			? 'bertopic_files_directory'
+			: 'json_files_directory';
 	const [isViewOptions, setViewOptions] = useState(false);
-	const { json_files_directory: dataUser } = useSelector(
+	const { [find_directory]: dataUser } = useSelector(
 		store => store.dataUsersSlice,
 	);
 	const dataForRequest = useSelector(state => state.dataForRequest);
-	const { addIndex, addThemesInd } = useActions();
+	const { addIndex, addThemesInd, addIndexDoc_Ai } = useActions();
 	const [checkedState, setCheckedState] = useState({});
 	const wrapperRef = useClickOutside(() => setViewOptions(false));
 
@@ -41,6 +45,10 @@ const DataForSearch = ({ multi }) => {
 		} else {
 			addIndex(option.index_number);
 			setViewOptions(!isViewOptions);
+
+			if (directory === 'bertopic') {
+				addIndexDoc_Ai(option.index_number);
+			}
 		}
 	};
 
@@ -72,7 +80,7 @@ const DataForSearch = ({ multi }) => {
 		? findTargetFileMultiDouble
 			? `${truncateDescription(findTargetFileMultiDouble[0].file, 15)} - ${truncateDescription(findTargetFileMultiDouble[1].file, 15)}`
 			: findTargetFileMulti?.file || ''
-		: findTargetFile?.file || '';
+		: findTargetFile?.file || findTargetFile?.['html-file'] || '';
 
 	const numLength = multi ? 26 : 30;
 
@@ -94,13 +102,13 @@ const DataForSearch = ({ multi }) => {
 			</div>
 			{isViewOptions && (
 				<div className={styles.block__options}>
-					{Object.keys(arrayData).map(group => (
+					{/* {Object.keys(arrayData).map(group => (
 						<div key={group} className={styles.group}>
 							<h3 className={styles.groupTitle}>{group}</h3>
 							{arrayData[group].map(option => (
 								<div
 									className={styles.option}
-									key={option.file}
+									key={option.file || option['html-file']}
 									onClick={() => onClick(option)}
 								>
 									{multi && (
@@ -110,11 +118,43 @@ const DataForSearch = ({ multi }) => {
 											onChange={e => e.preventDefault()}
 										/>
 									)}
-									<p>{truncateDescription(option.file, numLength)}</p>
+									<p>
+										{truncateDescription(
+											option.file || option['html-file'],
+											numLength,
+										)}
+									</p>
 								</div>
-							))}
-						</div>
-					))}
+							))} */}
+					{Object.keys(arrayData).map(group => {
+						// console.log('group', group);
+						return (
+							<div key={group} className={styles.group}>
+								<h3 className={styles.groupTitle}>{group}</h3>
+								{arrayData[group].map(option => (
+									<div
+										className={styles.option}
+										key={option.file || option['html-file']}
+										onClick={() => onClick(option)}
+									>
+										{multi && (
+											<input
+												type='checkbox'
+												checked={checkedState[option.index_number] || false}
+												onChange={e => e.preventDefault()}
+											/>
+										)}
+										<p>
+											{truncateDescription(
+												option.file || option['html-file'],
+												numLength,
+											)}
+										</p>
+									</div>
+								))}
+							</div>
+						);
+					})}
 				</div>
 			)}
 		</div>

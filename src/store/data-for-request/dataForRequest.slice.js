@@ -10,7 +10,8 @@ const initialState = {
 	repost: false,
 	SMI: false,
 	promt: null,
-	texts_ids: [],
+	// texts_ids: [],
+	texts: [],
 	infoAboutPost: false,
 };
 
@@ -39,9 +40,11 @@ export const dataForRequest = createSlice({
 			state.infoAboutPost = !state.infoAboutPost;
 		},
 		addIndex: (state, { payload }) => {
+			console.log('in redux');
 			return { ...state, index: payload };
 		},
 		addMinDate: (state, { payload }) => {
+			console.log('date', payload);
 			return { ...state, min_date: payload };
 		},
 		addMaxDate: (state, { payload }) => {
@@ -57,16 +60,16 @@ export const dataForRequest = createSlice({
 			return { ...state, promt: payload };
 		},
 		addTextsIds: (state, { payload }) => {
-			state.texts_ids.push(payload);
+			state.texts.push(payload);
 		},
 		addAllTextsIds: (state, { payload }) => {
-			state.texts_ids = payload.map(item => item.id);
+			state.texts = payload.map(item => item.id);
 		},
 		deleteAllTextsIds: (state, { payload }) => {
-			state.texts_ids = [];
+			state.texts = [];
 		},
 		deleteTextsIds: (state, { payload }) => {
-			state.texts_ids = state.texts_ids.filter(id => id !== payload);
+			state.texts = state.texts.filter(id => id !== payload);
 		},
 	},
 });

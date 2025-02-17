@@ -18,6 +18,7 @@
 	background-color: $color_blue;
 	height: 100%;
 	border-radius: adapt(20px, 1440px);
+	transition: width 0.3s ease;
 }
 
 .present {

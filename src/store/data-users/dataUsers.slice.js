@@ -14,7 +14,6 @@ export const dataUsersSlice = createSlice({
 	reducers: {
 		addData: (state, { payload }) => {
 			// state.values = payload;
-			console.log('payload.user_id', payload.user_id);
 			state.user_id = payload.user_id;
 			state.json_files_directory = payload.json_files_directory;
 			state.projector_files_directory = payload.projector_files_directory;

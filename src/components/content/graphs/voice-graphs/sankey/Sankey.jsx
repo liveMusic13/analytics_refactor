@@ -11,7 +11,7 @@ import { colors as colorsConstant } from '@/app.constants';
 HighchartsSankey(Highcharts);
 
 const Sankey = () => {
-	const { data: voiceData } = useSelector(state => state.voiceData);
+	const { values: voiceData } = useSelector(state => state.voiceData.data);
 	const cashingVoiceData = useMemo(() => voiceData, [voiceData]);
 	const { nodes, links } = funksVoice.convertDataToSankeyFormat(
 		funksVoice.concatData(cashingVoiceData),

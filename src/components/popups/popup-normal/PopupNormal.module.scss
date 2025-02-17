@@ -4,8 +4,9 @@
 .block__popup {
 	position: absolute;
 	z-index: 100000;
-	top: 15%;
-	left: 18%;
+	top: 50%;
+	left: 50%;
+	transform: translate(-50%, -50%);
 	background-color: $color_white;
 	display: flex;
 	flex-direction: column;
@@ -23,14 +24,14 @@
 			cursor: pointer;
 
 			> img {
-				width: adapt(30px, 1440px);
-				height: adapt(30px, 1440px);
+				width: adapt(16px, 1440px);
+				height: adapt(16px, 1440px);
 			}
 		}
 
 		> img {
-			width: adapt(25px, 1440px);
-			height: adapt(25px, 1440px);
+			width: adapt(12px, 1440px);
+			height: adapt(12px, 1440px);
 		}
 	}
 	> .text {

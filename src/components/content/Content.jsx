@@ -1,18 +1,12 @@
 import { useSelector } from 'react-redux';
 
-import BackgroundLoader from '@/components/loading/background-loader/BackgroundLoader';
-import PopupNormal from '@/components/popups/popup-normal/PopupNormal';
-
 import { useActions } from '@/hooks/useActions';
 
 import styles from './Content.module.scss';
 
 const Content = ({ children, graph }) => {
-	const { isPopup, description, link, time } = useSelector(
-		state => state.popupNormal,
-	);
 	const { active_menu } = useSelector(store => store.booleanValues);
-	const { default_popupNormal, defaultActiveMenu } = useActions();
+	const { defaultActiveMenu } = useActions();
 
 	const isDataSetPath = /^\/data-set(\/processed)?\/[^/]+$/.test(
 		location.pathname,
@@ -34,14 +28,6 @@ const Content = ({ children, graph }) => {
 				if (active_menu) defaultActiveMenu('');
 			}}
 		>
-			{isPopup && (
-				<>
-					<BackgroundLoader
-						onClick={() => (isPopup ? default_popupNormal('') : undefined)}
-					/>
-					<PopupNormal text={description} url={link} time={time} />
-				</>
-			)}
 			{children}
 		</div>
 	);
