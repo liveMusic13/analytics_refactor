@@ -10,7 +10,7 @@ const ProgressBar = ({ style }) => {
 			<div className={styles.block__progressBar}>
 				<div
 					className={
-						progress_load === '100'
+						progress_load === 100
 							? `${styles.progress} ${styles.green}`
 							: `${styles.progress}`
 					}
@@ -19,7 +19,7 @@ const ProgressBar = ({ style }) => {
 			</div>
 			<p
 				className={styles.present}
-				style={progress_load === '100' ? { color: '#3DCC6D' } : {}}
+				style={progress_load === 100 ? { color: '#3DCC6D' } : {}}
 			>
 				{progress_load}%
 			</p>

@@ -120,13 +120,22 @@ const AiTable = () => {
 	};
 
 	//HELP: Функция для обработки изменения чекбокса
-	const handleCheckboxChange = (id, isChecked) => {
+	// const handleCheckboxChange = (id, isChecked) => {
+	// 	if (isChecked) {
+	// 		if (texts.length < 5) {
+	// 			addTextsIds(id);
+	// 		}
+	// 	} else {
+	// 		deleteTextsIds(id);
+	// 	}
+	// };
+	const handleCheckboxChange = (obj, isChecked) => {
 		if (isChecked) {
 			if (texts.length < 5) {
-				addTextsIds(id);
+				addTextsIds(obj);
 			}
 		} else {
-			deleteTextsIds(id);
+			deleteTextsIds(obj);
 		}
 	};
 
@@ -203,12 +212,17 @@ const AiTable = () => {
 											<input
 												className={styles.input__checkbox}
 												type='checkbox'
-												checked={texts.some(elem => elem === rowEl.original.id)}
+												checked={texts.some(
+													elem => elem.id === rowEl.original.id,
+												)}
 												onChange={e => {
 													console.log(rowEl.original);
 													handleCheckboxChange(
-														// rowEl.original.text,
-														rowEl.original.id,
+														{
+															id: rowEl.original.id,
+															text: rowEl.original.text,
+														},
+														// rowEl.original.id,
 														e.target.checked,
 													);
 												}}

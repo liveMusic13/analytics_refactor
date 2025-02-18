@@ -69,7 +69,7 @@ export const dataForRequest = createSlice({
 			state.texts = [];
 		},
 		deleteTextsIds: (state, { payload }) => {
-			state.texts = state.texts.filter(id => id !== payload);
+			state.texts = state.texts.filter(el => el.id !== payload.id);
 		},
 	},
 });

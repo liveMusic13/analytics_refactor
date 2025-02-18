@@ -20,14 +20,15 @@ const AiTablePost = ({ id = '0' }) => {
 	const tableData = useMemo(() => {
 		if (!isSuccess_status || !dataForRequest?.texts) return [];
 
-		const texts = JSON.parse(data_status?.result || '{}'); //HELP: Данные для колонки "Текст"
-		const themes = dataForRequest.texts; //HELP: Данные для колонки "Тема"
+		// const texts = JSON.parse(data_status?.result || '{}'); //HELP: Данные для колонки "Текст"
+		const texts = data_status?.results; //HELP: Данные для колонки "Текст"
+		// const themes = dataForRequest.texts; //HELP: Данные для колонки "Тема"
+		const themes = data_status?.texts; //HELP: Данные для колонки "Тема"
 
 		//HELP: Объединяем данные по индексу
-		return texts.map((text, index) => {
+		return texts?.map((text, index) => {
 			return {
-				// text: text,
-				// theme: themes[index] || 'Нет данных',
+				// text: themes[index] || 'Нет данных',
 				text: themes[index] || 'Нет данных',
 				theme: text,
 			};

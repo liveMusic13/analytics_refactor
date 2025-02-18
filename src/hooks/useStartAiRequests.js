@@ -42,12 +42,13 @@ export const useStartAiRequests = () => {
 	] = useLazyGetStatusRequestQuery();
 	const [triger_data, { data_ai }] = useLazyStartDataAiQuery();
 
+	const getText = () => dataForRequest.texts.map(el => el.text);
+
 	const dataForRequestTesting = {
 		user_id: data_getUserId,
 		texts: [
-			...dataForRequest.texts,
-			...dataForRequest.texts,
-			...dataForRequest.texts,
+			// ...dataForRequest.texts,
+			...getText(),
 		],
 		system_prompt: post.system_prompt,
 		prompt_question: post.text_prompt,
@@ -90,7 +91,11 @@ export const useStartAiRequests = () => {
 				try {
 					const statusResponse = await trigger_status(taskId);
 
-					// Cookies.set(PROGRESSBAR, statusResponse.data?.progress);
+					console.log(
+						'statusResponse',
+						currentStage,
+						statusResponse?.data.final_status === 'done',
+					);
 
 					if (statusResponse.error) {
 						console.error('Status check failed:', statusResponse.error);
@@ -102,13 +107,13 @@ export const useStartAiRequests = () => {
 					// Обновляем текущий этап в зависимости от прогресса
 					switch (currentStage) {
 						case 'progress':
-							if (statusResponse.data?.progress === '100') {
+							if (statusResponse.data?.progress === 100) {
 								currentStage = 'embedding';
 							}
 							break;
 
 						case 'embedding':
-							if (statusResponse.data?.embedding_progress === '100') {
+							if (statusResponse.data?.embedding_progress === 100) {
 								currentStage = 'final';
 							}
 							break;
@@ -200,7 +205,8 @@ export const useStartAiRequests = () => {
 						console.log(
 							'Task completed!',
 							statusResponse.data,
-							JSON.parse(statusResponse.data.result),
+							// JSON.parse(statusResponse.data.result),
+							statusResponse.data.result,
 						);
 						return true; // Задача завершена
 					}
