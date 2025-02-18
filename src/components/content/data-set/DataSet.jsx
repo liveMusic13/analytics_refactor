@@ -13,6 +13,7 @@ import ProgressBar from '../../ui/progress-bar/ProgressBar';
 
 import styles from './DataSet.module.scss';
 import Folder from './folder/Folder';
+import HistoryCard from './history-card/HistoryCard';
 import NoData from './no-data/NoData';
 import { dataSetButtons } from '@/data/panel.data';
 
@@ -38,7 +39,7 @@ const DataSet = () => {
 		useGetUserFoldersQuery(data_getUserId);
 
 	const { processedData } = useSelector(state => state.folderTarget);
-	const { index_doc, post } = useSelector(state => state.aiData);
+	const { index_doc, post, progress_load } = useSelector(state => state.aiData);
 
 	useEffect(() => {
 		if (activeButton === 'Файлы данных') {
@@ -173,16 +174,28 @@ const DataSet = () => {
 				</>
 			);
 		} else if (activeButton === 'Статус расчета данных') {
-			console.log('ok');
+			const history = Object.values(arrayData).flat();
 			return (
-				<div className={styles.block__statusProgress}>
-					<h3>
-						<span>Файл:</span> {file_name['html-file']}
-					</h3>
-					<span>Запросы:</span>
-					<p>{post.system_prompt}</p>
-					<p>{post.text_prompt}</p>
-					<ProgressBar />
+				<div className={styles.wrapper_statusProgress}>
+					<div className={styles.block__history}>
+						<h2 className={styles.title__history}>История</h2>
+						{history.map(el => (
+							<HistoryCard key={el.task_id} data={el} />
+						))}
+					</div>
+					<div className={styles.block__statusProgress}>
+						{progress_load && Number(progress_load) > 0 ? (
+							<>
+								<h3>
+									<span>Файл:</span> {file_name?.['html-file']}
+								</h3>
+								<span>Запросы:</span>
+								<p>{post.system_prompt}</p>
+								<p>{post.text_prompt}</p>
+								<ProgressBar />
+							</>
+						) : null}
+					</div>
 				</div>
 			);
 		}

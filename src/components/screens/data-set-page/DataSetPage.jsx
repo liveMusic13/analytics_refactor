@@ -112,7 +112,7 @@ const DataSetPage = () => {
 			)}
 			{pathname !== '/home' && active_menu ? <LeftMenuActive /> : <LeftMenu />}
 
-			<Content>
+			<Content style={{ height: '95%' }}>
 				<div className={styles.block__pageName}>
 					<h3 className={styles.pageName__title}>Данные</h3>
 					{pathname === '/data-set' ? (

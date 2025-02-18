@@ -249,7 +249,7 @@
 	}
 }
 
-@mixin scrollbar {
+@mixin scrollbar() {
 	&::-webkit-scrollbar {
 		width: adapt(4px, 1440px);
 	}
@@ -262,6 +262,10 @@
 	&::-webkit-scrollbar-thumb {
 		background: $color_blue;
 		border-radius: adapt(20px, 1440px);
+
+		&:hover {
+			cursor: pointer;
+		}
 	}
 
 	&::-webkit-scrollbar-thumb:hover {
