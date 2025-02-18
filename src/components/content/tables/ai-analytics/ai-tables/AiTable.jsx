@@ -203,13 +203,12 @@ const AiTable = () => {
 											<input
 												className={styles.input__checkbox}
 												type='checkbox'
-												checked={texts.some(
-													elem => elem === rowEl.original.text,
-												)}
+												checked={texts.some(elem => elem === rowEl.original.id)}
 												onChange={e => {
 													console.log(rowEl.original);
 													handleCheckboxChange(
-														rowEl.original.text,
+														// rowEl.original.text,
+														rowEl.original.id,
 														e.target.checked,
 													);
 												}}
