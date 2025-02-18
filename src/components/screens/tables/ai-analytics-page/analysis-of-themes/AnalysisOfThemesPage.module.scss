@@ -53,12 +53,14 @@
 }
 
 .button__back {
+	align-self: start;
 	width: adapt(14px, 1440px);
 	height: adapt(10.89px, 1440px);
 	font-size: 0.77rem;
 	background-color: transparent;
 	display: flex;
 	align-items: center;
+	margin-top: adapt(22px, 1440px);
 
 	&:hover {
 		cursor: pointer;

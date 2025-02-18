@@ -78,8 +78,24 @@ const PopupAi = () => {
 						</>
 					)}
 					<div className={styles.block__content}>
-						<TextArea value={value_system} onChange={onChange_system} />
-						<TextArea value={value_text} onChange={onChange_text} />
+						<TextArea
+							value={value_system}
+							onChange={onChange_system}
+							style={
+								value_system === default_value_system
+									? { color: colors.grey_graph }
+									: {}
+							}
+						/>
+						<TextArea
+							value={value_text}
+							onChange={onChange_text}
+							style={
+								value_text === default_value_text
+									? { color: colors.grey_graph }
+									: {}
+							}
+						/>
 					</div>
 				</>
 			)}

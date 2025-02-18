@@ -89,6 +89,11 @@ export const dataSetButtons = [
 		isCount: false,
 		title: 'Файлы кластеризации авторов',
 	},
+	{
+		id: 2,
+		isCount: false,
+		title: 'Статус расчета данных',
+	},
 ];
 
 export const analysisOfThemesButtons = [

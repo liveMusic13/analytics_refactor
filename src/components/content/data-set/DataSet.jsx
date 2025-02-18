@@ -9,6 +9,7 @@ import {
 	useGetUserFoldersQuery,
 	useGetUserIdQuery,
 } from '../../../services/other.service';
+import ProgressBar from '../../ui/progress-bar/ProgressBar';
 
 import styles from './DataSet.module.scss';
 import Folder from './folder/Folder';
@@ -37,6 +38,7 @@ const DataSet = () => {
 		useGetUserFoldersQuery(data_getUserId);
 
 	const { processedData } = useSelector(state => state.folderTarget);
+	const { index_doc, post } = useSelector(state => state.aiData);
 
 	useEffect(() => {
 		if (activeButton === 'Файлы данных') {
@@ -77,26 +79,28 @@ const DataSet = () => {
 			setActiveButton('Файлы данных');
 		} else if (button === 'Файлы кластеризации авторов') {
 			setActiveButton('Файлы кластеризации авторов');
-		} else {
-			setActiveButton('three');
+		} else if (button === 'Статус расчета данных') {
+			setActiveButton('Статус расчета данных');
 		}
 	};
 
 	const {
 		json_files_directory: dataUser,
 		projector_files_directory: dataUser_Projector,
+		bertopic_files_directory: dataUser_bertopic,
 	} = useSelector(store => store.dataUsersSlice);
-
-	console.log(
-		'dataUser',
-		dataUser,
-		'dataUser_Projector',
-		dataUser_Projector || {},
-	);
 
 	const allData = Object.keys(
 		activeButton === 'Файлы данных' ? dataUser : dataUser_Projector || {},
 	);
+	const arrayData =
+		dataUser_bertopic && Object.keys(dataUser_bertopic).length > 0
+			? dataUser_bertopic
+			: {};
+
+	const file_name = Object.values(arrayData)
+		.flat()
+		.find(file => index_doc === file.index_number);
 
 	const [filterText, setFilterText] = useState('');
 	const getFilteredData = (data, filterText) => {
@@ -168,6 +172,19 @@ const DataSet = () => {
 					)}
 				</>
 			);
+		} else if (activeButton === 'Статус расчета данных') {
+			console.log('ok');
+			return (
+				<div className={styles.block__statusProgress}>
+					<h3>
+						<span>Файл:</span> {file_name['html-file']}
+					</h3>
+					<span>Запросы:</span>
+					<p>{post.system_prompt}</p>
+					<p>{post.text_prompt}</p>
+					<ProgressBar />
+				</div>
+			);
 		}
 	};
 
@@ -187,7 +204,7 @@ const DataSet = () => {
 				activeButton={activeButton}
 			/>
 			<div className={styles.block__content} style={styleContent}>
-				{!(activeButton === 'three') && (
+				{!(activeButton === 'Статус расчета данных') && (
 					<div className={styles.block__field}>
 						<img
 							src='/images/icons/input_button/search.svg'

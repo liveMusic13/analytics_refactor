@@ -98,10 +98,15 @@ const AnalysisOfThemesPage = () => {
 				</>
 			)}
 			{pathname !== '/home' && active_menu ? <LeftMenuActive /> : <LeftMenu />}
-			<Content>
+			<Content
+				style={
+					isSuccess_llm ? {} : { alignItems: 'start', justifyContent: 'start' }
+				}
+			>
 				<div
 					className={styles.block__pageName}
-					style={isSuccess_llm ? { height: 'auto' } : {}}
+					// style={isSuccess_llm ? { height: 'auto' } : {}}
+					style={{ height: 'auto' }}
 				>
 					<h3 className={styles.pageName__title}>Анализ тем</h3>
 				</div>

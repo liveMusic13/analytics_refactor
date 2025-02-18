@@ -112,3 +112,26 @@
 		}
 	}
 }
+
+.block__statusProgress {
+	display: flex;
+	align-items: center;
+	flex-direction: column;
+	gap: adapt(15px, 1440px);
+	max-width: adapt(500px, 1440px);
+
+	> h3 {
+		text-align: center;
+		> span {
+			font-weight: 500;
+		}
+	}
+
+	> span {
+		font-weight: 500;
+	}
+
+	> p {
+		text-align: center;
+	}
+}

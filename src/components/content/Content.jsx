@@ -4,7 +4,7 @@ import { useActions } from '@/hooks/useActions';
 
 import styles from './Content.module.scss';
 
-const Content = ({ children, graph }) => {
+const Content = ({ children, graph, style }) => {
 	const { active_menu } = useSelector(store => store.booleanValues);
 	const { defaultActiveMenu } = useActions();
 
@@ -12,18 +12,19 @@ const Content = ({ children, graph }) => {
 		location.pathname,
 	);
 
-	const style = {
+	const styleCSS = {
 		paddingRight: graph ? 'calc(28/1440 * 100vw)' : undefined,
 		// justifyContent: isFolder ? 'flex-start' : 'center',
 		alignItems: isDataSetPath ? 'flex-start' : 'center',
 		// alignItems: isFolder ? 'flex-start' : 'center',
 		overflow: isDataSetPath ? 'hidden' : 'visible',
+		...style,
 	};
 
 	return (
 		<div
 			className={styles.wrapper_content}
-			style={style}
+			style={styleCSS}
 			onClick={() => {
 				if (active_menu) defaultActiveMenu('');
 			}}

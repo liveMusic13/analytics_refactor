@@ -15,7 +15,6 @@ import ThemesIdentified from './themes-identified/ThemesIdentified';
 const AnalysisOfThemes = () => {
 	const [activeButton, setActiveButton] = useState('Кластеризация на тематики');
 
-	const dataForRequest = useSelector(state => state.dataForRequest);
 	const { bertopic_files_directory: dataUser } = useSelector(
 		store => store.dataUsersSlice,
 	);
