@@ -13,12 +13,18 @@ const initialState = {
 	// texts_ids: [],
 	texts: [],
 	infoAboutPost: false,
+	first_html_file_request: '',
+	folder_name_html_file_request: '',
 };
 
 export const dataForRequest = createSlice({
 	name: 'dataForRequest',
 	initialState,
 	reducers: {
+		addFirstHtmlFileRequest: (state, { payload }) => {
+			state.first_html_file_request = payload.file_name;
+			state.folder_name_html_file_request = payload.folder_name;
+		},
 		addThemesInd: (state, { payload }) => {
 			// Если в массиве уже два элемента, удаляем их и добавляем только новый
 			if (state.themes_ind.length === 2) {

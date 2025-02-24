@@ -13,7 +13,6 @@ import { useSaveImageGraph } from '../../../../../hooks/useSaveImageGraph';
 import { useGetUserIdQuery } from '../../../../../services/other.service';
 import { useLlmAnalyzeQuery } from '../../../../../services/tables.service';
 import { truncateDescription } from '../../../../../utils/editText';
-import { findKeyById } from '../../../../../utils/searchInData';
 import styles from '../../ai-analytics/ai-tables/AiTables.module.scss';
 
 const Analysis = () => {
@@ -21,6 +20,7 @@ const Analysis = () => {
 	const { bertopic_files_directory: dataUser } = useSelector(
 		store => store.dataUsersSlice,
 	);
+	const dataForRequest = useSelector(state => state.dataForRequest);
 
 	const handleDownloadImage = useSaveImageGraph();
 
@@ -35,8 +35,10 @@ const Analysis = () => {
 
 	const dataRequest = {
 		user_id: data_getUserId,
-		folder_name: findKeyById(index_doc, dataUser),
-		file_name: file_name?.['html-file'] || '',
+		// folder_name: findKeyById(index_doc, dataUser),
+		// file_name: file_name?.['html-file'] || '',
+		folder_name: dataForRequest.folder_name_html_file_request,
+		file_name: dataForRequest.first_html_file_request || '',
 	};
 
 	const {

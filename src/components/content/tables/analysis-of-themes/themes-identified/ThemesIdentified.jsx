@@ -12,7 +12,6 @@ import { useSelector } from 'react-redux';
 import { useGetUserIdQuery } from '../../../../../services/other.service';
 import { useLlmAnalyzeQuery } from '../../../../../services/tables.service';
 import { truncateDescription } from '../../../../../utils/editText';
-import { findKeyById } from '../../../../../utils/searchInData';
 import styles from '../../ai-analytics/ai-tables/AiTables.module.scss';
 
 const ThemesIdentified = () => {
@@ -20,6 +19,7 @@ const ThemesIdentified = () => {
 		store => store.dataUsersSlice,
 	);
 	const { index_doc } = useSelector(state => state.aiData);
+	const dataForRequest = useSelector(state => state.dataForRequest);
 
 	const { data: data_getUserId } = useGetUserIdQuery();
 
@@ -32,8 +32,10 @@ const ThemesIdentified = () => {
 
 	const dataRequest = {
 		user_id: data_getUserId,
-		folder_name: findKeyById(index_doc, dataUser),
-		file_name: file_name?.['html-file'] || '',
+		// folder_name: findKeyById(index_doc, dataUser),
+		// file_name: file_name?.['html-file'] || '',
+		folder_name: dataForRequest.folder_name_html_file_request,
+		file_name: dataForRequest.first_html_file_request || '',
 	};
 
 	const {

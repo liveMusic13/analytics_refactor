@@ -1,9 +1,7 @@
-import Cookies from 'js-cookie';
 import { useState } from 'react';
 import { useSelector } from 'react-redux';
 import { useNavigate } from 'react-router-dom';
 
-import { PROGRESSBAR, STATUSBARSTART } from '../app.constants';
 import { useGetUserIdQuery } from '../services/other.service';
 import {
 	useLazyGetStatusRequestQuery,
@@ -21,8 +19,12 @@ export const useStartAiRequests = () => {
 	const { json_files_directory: dataUser } = useSelector(
 		store => store.dataUsersSlice,
 	);
-	const { toggleBarStart, toggleIsViewPromptPopup, toggleFinalStatus } =
-		useActions();
+	const {
+		toggleBarStart,
+		toggleIsViewPromptPopup,
+		toggleFinalStatus,
+		addFirstHtmlFileRequest,
+	} = useActions();
 
 	const [isLoadingTest, setIsLoadingTest] = useState(false); //HELP: Состояние для управления лоадером
 	const [isSuccessTest, setIsSuccessTest] = useState(false);
@@ -83,8 +85,8 @@ export const useStartAiRequests = () => {
 			}
 
 			const taskId = startResponse.data.task_id;
-			const MAX_CHECKS = 100;
-			let checksCount = 0;
+			// const MAX_CHECKS = 100;
+			// let checksCount = 0;
 			let currentStage = 'progress'; // Текущий этап обработки: progress → embedding → final
 
 			const checkStatus = async () => {
@@ -128,6 +130,10 @@ export const useStartAiRequests = () => {
 						setIsSuccessAi(true);
 						// Cookies.remove(PROGRESSBAR);
 						console.log('Task fully completed!', statusResponse.data);
+						addFirstHtmlFileRequest({
+							file_name: statusResponse.data?.['html-file'],
+							folder_name: statusResponse.data?.folder_name,
+						});
 						toggleFinalStatus(true);
 						return true;
 					}
@@ -147,15 +153,15 @@ export const useStartAiRequests = () => {
 
 			// Запускаем периодические проверки
 			const intervalId = setInterval(async () => {
-				if (checksCount++ >= MAX_CHECKS) {
-					clearInterval(intervalId);
-					setIsLoadingTest(false);
-					setIsSuccessAi(false);
-					Cookies.remove(STATUSBARSTART);
-					Cookies.remove(PROGRESSBAR);
-					console.error('Maximum checks reached');
-					return;
-				}
+				// if (checksCount++ >= MAX_CHECKS) {
+				// 	clearInterval(intervalId);
+				// 	setIsLoadingTest(false);
+				// 	setIsSuccessAi(false);
+				// 	Cookies.remove(STATUSBARSTART);
+				// 	Cookies.remove(PROGRESSBAR);
+				// 	console.error('Maximum checks reached');
+				// 	return;
+				// }
 
 				const isCompleted = await checkStatus();
 				if (isCompleted) {

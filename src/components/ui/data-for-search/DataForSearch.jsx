@@ -9,7 +9,7 @@ import useClickOutside from '../../../hooks/useClickOutside';
 
 import styles from './DataForSearch.module.scss';
 
-const DataForSearch = ({ multi, directory }) => {
+const DataForSearch = ({ multi, directory, style }) => {
 	const find_directory =
 		directory === 'bertopic'
 			? 'bertopic_files_directory'
@@ -85,7 +85,7 @@ const DataForSearch = ({ multi, directory }) => {
 	const numLength = multi ? 26 : 30;
 
 	return (
-		<div className={styles.wrapper_data} ref={wrapperRef}>
+		<div className={styles.wrapper_data} ref={wrapperRef} style={style}>
 			<div
 				className={styles.block__data}
 				onClick={() => setViewOptions(!isViewOptions)}

@@ -18,6 +18,8 @@ import {
 import { useLazyLlmAnalyzeQuery } from '../../../../../services/tables.service';
 import { findKeyById } from '../../../../../utils/searchInData';
 import AnalysisOfThemes from '../../../../content/tables/analysis-of-themes/AnalysisOfThemes';
+import Button from '../../../../ui/button/Button';
+import DataForSearch from '../../../../ui/data-for-search/DataForSearch';
 import ProgressBar from '../../../../ui/progress-bar/ProgressBar';
 
 import styles from './AnalysisOfThemesPage.module.scss';
@@ -25,6 +27,7 @@ import styles from './AnalysisOfThemesPage.module.scss';
 const AnalysisOfThemesPage = () => {
 	const { pathname } = useLocation();
 	const nav = useNavigate();
+	const dataForRequest = useSelector(state => state.dataForRequest);
 	const { active_menu } = useSelector(store => store.booleanValues);
 	const { statusBarStart, finalStatus, index_doc } = useSelector(
 		state => state.aiData,
@@ -72,16 +75,41 @@ const AnalysisOfThemesPage = () => {
 
 	const file_name = Object.values(arrayData)
 		.flat()
-		.find(file => index_doc === file.index_number);
+		.find(file => dataForRequest.index === file.index_number);
+	console.log('file_name', Object.keys(arrayData));
 
 	const dataRequest = {
 		user_id: data_getUserId,
-		folder_name: findKeyById(index_doc, dataUser),
-		file_name: file_name?.['html-file'] || '',
+		// folder_name: findKeyById(index_doc, dataUser),
+		// file_name: file_name?.['html-file'] || '',
+		folder_name: dataForRequest.folder_name_html_file_request,
+		file_name: dataForRequest.first_html_file_request || '',
 	};
 
+	const dataRequestRepeat = {
+		user_id: data_getUserId,
+		folder_name: findKeyById(dataForRequest.index, dataUser),
+		// file_name: file_name?.['html-file'] || '',
+		// folder_name: dataForRequest.folder_name_html_file_request,
+		file_name: file_name?.['html-file'] || '',
+	};
+	console.log(
+		'findKeyById(dataForRequest.index, dataUser)',
+		findKeyById(dataForRequest.index, dataUser),
+	);
+
 	const onClick = () => {
+		// const dataRequest = {
+		// 	user_id: data_getUserId,
+		// 	folder_name: findKeyById(index_doc, dataUser),
+		// 	file_name: file_name?.['html-file'] || '',
+		// };
+
 		trigger(dataRequest);
+	};
+
+	const repeatData = () => {
+		trigger(dataRequestRepeat);
 	};
 
 	const handleClickBack = () => {
@@ -109,6 +137,30 @@ const AnalysisOfThemesPage = () => {
 					style={{ height: 'auto' }}
 				>
 					<h3 className={styles.pageName__title}>Анализ тем</h3>
+				</div>
+				<div
+					className={styles.block__configureSearch}
+					// style={isSuccess_aiAnalyticsGET ? {} : { alignSelf: 'center' }}
+				>
+					{isSuccess_llm && (
+						<DataForSearch
+							directory='bertopic'
+							// style={{ alignSelf: 'start', marginTop: 'calc(20/1440*100vw)' }}
+						/>
+					)}
+					{isSuccess_llm && (
+						<Button
+							style={{
+								width: 'calc(220/1440*100vw)',
+								height: 'calc(56/1440*100vw)',
+								// alignSelf: 'start',
+								// marginTop: 'calc(20/1440*100vw)',
+							}}
+							onClick={repeatData} //TODO: ДОБАВИТЬ ФУНКЦИЮ ДЛЯ ЗАПРОСА НА ПОЛУЧЕНИЕ ДАННЫХ
+						>
+							Запуск
+						</Button>
+					)}
 				</div>
 
 				{statusBarStart && !isSuccess_llm && (

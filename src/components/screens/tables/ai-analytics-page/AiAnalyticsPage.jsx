@@ -31,7 +31,7 @@ const AiAnalyticsPage = () => {
 	const nav = useNavigate();
 	const { pathname } = useLocation();
 	const { active_menu } = useSelector(store => store.booleanValues);
-	const { bertopic_files_directory: dataUser } = useSelector(
+	const { json_files_directory: dataUser } = useSelector(
 		store => store.dataUsersSlice,
 	);
 	const dataForRequest = useSelector(state => state.dataForRequest);
@@ -139,7 +139,7 @@ const AiAnalyticsPage = () => {
 					style={isSuccess_aiAnalyticsGET ? {} : { alignSelf: 'center' }}
 				>
 					{isSuccess && Object.keys(dataUser ? dataUser : {}).length > 0 && (
-						<DataForSearch directory='bertopic' />
+						<DataForSearch directory='json' />
 					)}
 					{isSuccess &&
 						dataForRequest.index !== null &&
