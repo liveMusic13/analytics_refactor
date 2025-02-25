@@ -15,20 +15,20 @@ const AnalysisOfThemes = () => {
 	const [activeButton, setActiveButton] = useState('Кластеризация на тематики');
 	const [activeSubcategory, setActiveSubcategory] = useState('Группировка тем');
 
-	const { bertopic_files_directory: dataUser } = useSelector(
-		store => store.dataUsersSlice,
-	);
+	// const { bertopic_files_directory: dataUser } = useSelector(
+	// 	store => store.dataUsersSlice,
+	// );
 	const dataForRequest = useSelector(state => state.dataForRequest);
-	const { index_doc } = useSelector(state => state.aiData);
+	// const { index_doc } = useSelector(state => state.aiData);
 
 	const { data: data_getUserId } = useGetUserIdQuery();
 
-	const arrayData =
-		dataUser && Object.keys(dataUser).length > 0 ? dataUser : {};
+	// const arrayData =
+	// 	dataUser && Object.keys(dataUser).length > 0 ? dataUser : {};
 
-	const file_name = Object.values(arrayData)
-		.flat()
-		.find(file => index_doc === file.index_number);
+	// const file_name = Object.values(arrayData)
+	// 	.flat()
+	// 	.find(file => index_doc === file.index_number);
 
 	const dataRequest = {
 		user_id: data_getUserId,
@@ -56,7 +56,7 @@ const AnalysisOfThemes = () => {
 	}, []);
 
 	const dataForPageHTML =
-		activeSubcategory === 'Первый график'
+		activeSubcategory === 'Группировка тем'
 			? 'html_content'
 			: 'html_content_dataplot';
 
@@ -82,7 +82,7 @@ const AnalysisOfThemes = () => {
 					<input
 						type='radio'
 						className={styles.radio}
-						name='subcategory' // добавляем одинаковый атрибут name
+						name='Группировка тем' // добавляем одинаковый атрибут name
 						checked={activeSubcategory === 'Группировка тем'}
 						onChange={() => handleClickSubcategory('Группировка тем')}
 					/>
@@ -100,7 +100,7 @@ const AnalysisOfThemes = () => {
 					<input
 						type='radio'
 						className={styles.radio}
-						name='subcategory' // добавляем одинаковый атрибут name
+						name='Ландшафт тем' // добавляем одинаковый атрибут name
 						checked={activeSubcategory === 'Ландшафт тем'}
 						onChange={() => handleClickSubcategory('Ландшафт тем')}
 					/>
