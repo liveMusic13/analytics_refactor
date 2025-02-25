@@ -8,6 +8,25 @@ export const truncateDescription = (description, maxLength) => {
 	return description.slice(0, maxLength) + '...';
 };
 
+export const truncateMiddle = (str, num) => {
+	//HELP: Если строка короче или равна числу, возвращаем её без изменений
+	if (str.length <= num) {
+		return str;
+	}
+
+	//HELP: Вычисляем, сколько символов взять с начала и конца
+	const half = Math.floor(num / 2);
+
+	//HELP: Берём начало строки
+	const start = str.slice(0, half);
+
+	//HELP: Берём конец строки
+	const end = str.slice(-half);
+
+	//HELP: Собираем результат: начало + многоточие + конец
+	return `${start}...${end}`;
+};
+
 export function getFirstWordAfterUnderscore(inputString) {
 	const underscoreIndex = inputString.indexOf('_');
 	if (underscoreIndex !== -1) {

@@ -6,6 +6,7 @@ import { useActions } from '@/hooks/useActions';
 import { truncateDescription } from '@/utils/editText';
 
 import useClickOutside from '../../../hooks/useClickOutside';
+import { truncateMiddle } from '../../../utils/editText';
 
 import styles from './DataForSearch.module.scss';
 
@@ -145,7 +146,7 @@ const DataForSearch = ({ multi, directory, style }) => {
 											/>
 										)}
 										<p>
-											{truncateDescription(
+											{truncateMiddle(
 												option.file || option['html-file'],
 												numLength,
 											)}

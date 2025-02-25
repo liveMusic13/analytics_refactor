@@ -13,6 +13,7 @@ import ThemesIdentified from './themes-identified/ThemesIdentified';
 
 const AnalysisOfThemes = () => {
 	const [activeButton, setActiveButton] = useState('Кластеризация на тематики');
+	const [activeSubcategory, setActiveSubcategory] = useState('Группировка тем');
 
 	const { bertopic_files_directory: dataUser } = useSelector(
 		store => store.dataUsersSlice,
@@ -50,6 +51,15 @@ const AnalysisOfThemes = () => {
 		[activeButton],
 	);
 
+	const handleClickSubcategory = useCallback(button => {
+		setActiveSubcategory(button);
+	}, []);
+
+	const dataForPageHTML =
+		activeSubcategory === 'Первый график'
+			? 'html_content'
+			: 'html_content_dataplot';
+
 	return (
 		<div className={styles.block__graph}>
 			<div className={styles.block__title}>
@@ -59,9 +69,47 @@ const AnalysisOfThemes = () => {
 					activeButton={activeButton}
 				/>
 			</div>
+			<div className={styles.block__subcategory}>
+				<div
+					className={styles.block__radio}
+					style={
+						activeButton === 'Выявленные темы' ||
+						activeButton === 'Анализ тематик'
+							? { display: 'none' }
+							: {}
+					}
+				>
+					<input
+						type='radio'
+						className={styles.radio}
+						name='subcategory' // добавляем одинаковый атрибут name
+						checked={activeSubcategory === 'Группировка тем'}
+						onChange={() => handleClickSubcategory('Группировка тем')}
+					/>
+					<p className={styles.text__radio}>Группировка тем</p>
+				</div>
+				<div
+					className={styles.block__radio}
+					style={
+						activeButton === 'Выявленные темы' ||
+						activeButton === 'Анализ тематик'
+							? { display: 'none' }
+							: {}
+					}
+				>
+					<input
+						type='radio'
+						className={styles.radio}
+						name='subcategory' // добавляем одинаковый атрибут name
+						checked={activeSubcategory === 'Ландшафт тем'}
+						onChange={() => handleClickSubcategory('Ландшафт тем')}
+					/>
+					<p className={styles.text__radio}>Ландшафт тем</p>
+				</div>
+			</div>
 			<div className={styles.container__graph} id='graph-for-download'>
 				{activeButton === 'Кластеризация на тематики' ? (
-					<HtmlRenderer htmlString={data_llm?.html_content || ''} />
+					<HtmlRenderer htmlString={data_llm?.[dataForPageHTML] || ''} />
 				) : activeButton === 'Выявленные темы' ? (
 					<ThemesIdentified />
 				) : (
