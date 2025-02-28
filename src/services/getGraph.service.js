@@ -55,7 +55,7 @@ export const getGraphService = createApi({
 		}),
 		mediaGraph: builder.query({
 			query: data =>
-				`/media-rating?index=${data.index}&min_date=${data.min_date}&max_date=${data.max_date}`,
+				`/media-rating?index=${data.index}&min_date=${data.min_range_date}&max_date=${data.max_range_date}`,
 			keepUnusedDataFor: 600,
 			async onQueryStarted(arg, { dispatch, queryFulfilled }) {
 				try {
@@ -68,7 +68,7 @@ export const getGraphService = createApi({
 		}),
 		voiceGraph: builder.query({
 			query: data =>
-				`/voice?index=${data.index}&min_date=${data.min_date}&max_date=${data.max_date}&query_str=${data.query_str}`,
+				`/voice?index=${data.index}&min_date=${data.min_range_date}&max_date=${data.max_range_date}&query_str=${data.query_str}`,
 			keepUnusedDataFor: 600,
 			async onQueryStarted(arg, { dispatch, queryFulfilled }) {
 				try {
@@ -85,8 +85,8 @@ export const getGraphService = createApi({
 				method: 'POST',
 				body: {
 					themes_ind: data.themes_ind,
-					min_date: data.min_date,
-					max_date: data.max_date,
+					min_date: data.min_range_date,
+					max_date: data.max_range_date,
 				},
 				headers: {
 					'Content-Type': 'application/json', // Указываем, что данные в формате JSON

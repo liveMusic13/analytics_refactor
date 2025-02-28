@@ -1,4 +1,4 @@
-import { Suspense, useCallback, useEffect } from 'react';
+import { Suspense, useCallback, useEffect, useState } from 'react';
 import { useSelector } from 'react-redux';
 import { useLocation } from 'react-router-dom';
 
@@ -8,9 +8,8 @@ import CompetitiveGraphs from '@/components/content/graphs/competitive-graphs/Co
 import Layout from '@/components/layout/Layout';
 import BackgroundLoader from '@/components/loading/background-loader/BackgroundLoader';
 import Loader from '@/components/loading/loader/Loader';
-import NotFound from '@/components/screens/not-found/NotFound';
 import Button from '@/components/ui/button/Button';
-import CustomCalendar from '@/components/ui/custom-calendar/OldCustomCalendar';
+import CustomCalendar from '@/components/ui/custom-calendar/CustomCalendar';
 import DataForSearch from '@/components/ui/data-for-search/DataForSearch';
 import LeftMenu from '@/components/ui/left-menu/LeftMenu';
 import LeftMenuActive from '@/components/ui/left-menu/left-menu-active/LeftMenuActive';
@@ -23,6 +22,7 @@ import {
 	useGetUserFoldersQuery,
 	useGetUserIdQuery,
 } from '../../../services/other.service';
+import NoDataRequest from '../../no-data-request/NoDataRequest';
 
 import styles from './Competitive.module.scss';
 import { useLazyCompetitiveGraphQuery } from '@/services/getGraph.service';
@@ -89,10 +89,19 @@ const Competitive = () => {
 		trigger_competitive(dataForRequest);
 	}, [dataForRequest]);
 
-	if (isError_competitive || isError) {
-		const error_props = isError ? error : error_competitive;
-		return <NotFound error={error_props} />;
-	}
+	// if (isError_competitive || isError) {
+	// 	const error_props = isError ? error : error_competitive;
+	// 	return <NotFound error={error_props} />;
+	// }
+
+	const [isNoData, setIsNoData] = useState(false);
+	useEffect(() => {
+		if (isError_competitive) {
+			setIsNoData(true);
+			const timer = setTimeout(() => setIsNoData(false), 5000);
+			return () => clearTimeout(timer);
+		}
+	}, [isError_competitive]);
 
 	return (
 		<Layout>
@@ -130,7 +139,8 @@ const Competitive = () => {
 						Запуск
 					</Button>
 				</div>
-				{isSuccess_competitive && (
+				{isNoData && <NoDataRequest />}
+				{!isNoData && isSuccess_competitive && (
 					<Suspense fallback={<Loader />}>
 						<CompetitiveGraphs />
 					</Suspense>

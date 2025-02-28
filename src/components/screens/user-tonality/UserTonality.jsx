@@ -1,4 +1,4 @@
-import { Suspense, useCallback, useMemo } from 'react';
+import { Suspense, useCallback, useEffect, useMemo, useState } from 'react';
 import { useSelector } from 'react-redux';
 import { useLocation } from 'react-router-dom';
 
@@ -8,9 +8,7 @@ import TonalityGraphs from '@/components/content/graphs/tonality-graphs/Tonality
 import Layout from '@/components/layout/Layout';
 import BackgroundLoader from '@/components/loading/background-loader/BackgroundLoader';
 import Loader from '@/components/loading/loader/Loader';
-import NotFound from '@/components/screens/not-found/NotFound';
 import Button from '@/components/ui/button/Button';
-import CustomCalendar from '@/components/ui/custom-calendar/OldCustomCalendar';
 import DataForSearch from '@/components/ui/data-for-search/DataForSearch';
 import LeftMenu from '@/components/ui/left-menu/LeftMenu';
 import LeftMenuActive from '@/components/ui/left-menu/left-menu-active/LeftMenuActive';
@@ -23,6 +21,8 @@ import {
 	useGetUserFoldersQuery,
 	useGetUserIdQuery,
 } from '../../../services/other.service';
+import NoDataRequest from '../../no-data-request/NoDataRequest';
+import CustomCalendar from '../../ui/custom-calendar/CustomCalendar';
 
 import styles from './UserTonality.module.scss';
 import { useLazyUserTonalityQuery } from '@/services/getGraph.service';
@@ -38,8 +38,8 @@ const UserTonality = () => {
 	);
 	const {
 		index: baseData,
-		min_date,
-		max_date,
+		min_range_date,
+		max_range_date,
 	} = useSelector(state => state.dataForRequest);
 
 	const [
@@ -78,29 +78,32 @@ const UserTonality = () => {
 	const data_request = useMemo(
 		() => ({
 			index: baseData,
-			min_date,
-			max_date,
+			// min_date,
+			min_date: min_range_date,
+			// max_date,
+			max_date: max_range_date,
 		}),
-		[baseData, min_date, max_date],
+		[baseData, min_range_date, max_range_date],
 	);
 
 	const getTonalityData = useCallback(() => {
 		trigger(data_request);
 	}, [data_request]);
 
-	if (isError_tonality || isError) {
-		const error_props = isError ? error : error_tonality;
+	// if (isError_tonality || isError) {
+	// 	const error_props = isError ? error : error_tonality;
 
-		return <NotFound error={error_props} />;
-	}
+	// 	return <NotFound error={error_props} />;
+	// }
 
-	console.log(
-		'test',
-		isSuccess &&
-			baseData !== null &&
-			Object.keys(dataUser ? dataUser : {}).length > 0,
-		baseData,
-	);
+	const [isNoData, setIsNoData] = useState(false);
+	useEffect(() => {
+		if (isError_tonality) {
+			setIsNoData(true);
+			const timer = setTimeout(() => setIsNoData(false), 5000);
+			return () => clearTimeout(timer);
+		}
+	}, [isError_tonality]);
 
 	return (
 		<Layout>
@@ -138,11 +141,7 @@ const UserTonality = () => {
 					{isSuccess && Object.keys(dataUser ? dataUser : {}).length > 0 && (
 						<DataForSearch />
 					)}
-					{isSuccess &&
-						baseData !== null &&
-						Object.keys(dataUser ? dataUser : {}).length > 0 && (
-							<CustomCalendar />
-						)}
+					<CustomCalendar />
 					<Button
 						style={{
 							width: 'calc(220/1440*100vw)',
@@ -153,7 +152,9 @@ const UserTonality = () => {
 						Запуск
 					</Button>
 				</div>
-				{isSuccess_tonality && (
+				{isNoData && <NoDataRequest />}
+				{/* <NoDataRequest /> */}
+				{!isNoData && isSuccess_tonality && (
 					<Suspense fallback={<Loader />}>
 						<TonalityGraphs />
 					</Suspense>

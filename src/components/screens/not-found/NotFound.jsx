@@ -8,6 +8,8 @@ const NotFound = ({ error }) => {
 	const nav = useNavigate();
 	const validError = error ? error.status >= 400 && error.status < 500 : '404';
 
+	console.log(error);
+
 	return (
 		<div className={styles.wrapper_notFound}>
 			<img

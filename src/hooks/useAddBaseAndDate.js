@@ -16,7 +16,7 @@ export const useAddBaseAndDate = (
 	const dataUserJson = useMemo(() => JSON.stringify(dataUser), [dataUser]);
 	const newDataJson = useMemo(() => (data ? JSON.stringify(data) : ''), [data]);
 
-	const { addThemesInd } = useActions();
+	const { addThemesInd, addMinRangeDate, addMaxRangeDate } = useActions();
 
 	// Обновление данных при успешном запросе
 	useEffect(() => {
@@ -32,9 +32,11 @@ export const useAddBaseAndDate = (
 				console.log('dsdf', targetData);
 				addMinDate(targetData[0].min_data);
 				addMaxDate(targetData[0].max_data);
+				addMinRangeDate(targetData[0].min_data);
+				addMaxRangeDate(targetData[0].max_data);
 			}
 		},
-		[addMinDate, addMaxDate],
+		[addMinDate, addMaxDate, addMinRangeDate, addMaxRangeDate],
 	);
 
 	// Находим массив, содержащий хотя бы один объект
@@ -51,12 +53,16 @@ export const useAddBaseAndDate = (
 				2,
 	);
 
+	const findNewDataFolder = Object.values(dataUser)
+		.flat()
+		.find(el => el.index_number === baseData);
+
 	useEffect(() => {
 		// if (dataUser.length > 0) {
 		if (foundArray) {
 			addIndex(foundArray[0].index_number || 0);
 			updateDates([foundArray[0]]);
-			if (foundTwoArray.length === 2)
+			if (foundTwoArray && foundTwoArray.length === 2)
 				// console.log('foundTwoArray', foundTwoArray);
 				addThemesInd([
 					foundTwoArray[0].index_number,
@@ -66,4 +72,15 @@ export const useAddBaseAndDate = (
 			// updateDates([dataUser[0]]);
 		}
 	}, [dataUser]);
+
+	useEffect(() => {
+		//HELP: Для установления новой даты при выборе нового файла для запроса
+		if (findNewDataFolder) {
+			addMinRangeDate(findNewDataFolder.min_data);
+			addMaxRangeDate(findNewDataFolder.max_data);
+			addMinDate(findNewDataFolder.min_data);
+			addMaxDate(findNewDataFolder.max_data);
+			// updateDates(findNewDataFolder);
+		}
+	}, [baseData]);
 };

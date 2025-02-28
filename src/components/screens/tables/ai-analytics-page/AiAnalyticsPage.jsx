@@ -1,3 +1,4 @@
+import { useEffect, useState } from 'react';
 import { useSelector } from 'react-redux';
 import { useLocation, useNavigate } from 'react-router-dom';
 
@@ -7,7 +8,7 @@ import Layout from '@/components/layout/Layout';
 import BackgroundLoader from '@/components/loading/background-loader/BackgroundLoader';
 import Loader from '@/components/loading/loader/Loader';
 import Button from '@/components/ui/button/Button';
-import CustomCalendar from '@/components/ui/custom-calendar/OldCustomCalendar';
+import CustomCalendar from '@/components/ui/custom-calendar/CustomCalendar';
 import DataForSearch from '@/components/ui/data-for-search/DataForSearch';
 import LeftMenu from '@/components/ui/left-menu/LeftMenu';
 import LeftMenuActive from '@/components/ui/left-menu/left-menu-active/LeftMenuActive';
@@ -20,10 +21,10 @@ import {
 } from '../../../../services/other.service';
 import { useLazyAiAnalyticsGETQuery } from '../../../../services/tables.service';
 import AiAnalytics from '../../../content/tables/ai-analytics/AiAnalytics';
+import NoDataRequest from '../../../no-data-request/NoDataRequest';
 import PopupAi from '../../../popups/popup-ai/PopupAi';
 import PopupNormal from '../../../popups/popup-normal/PopupNormal';
 import Input from '../../../ui/fields/input/Input';
-import NotFound from '../../not-found/NotFound';
 
 import styles from './AiAnalyticsPage.module.scss';
 
@@ -90,10 +91,19 @@ const AiAnalyticsPage = () => {
 		addQueryStr(e.target.value);
 	};
 
-	if (isError || isError_aiAnalyticsGET) {
-		const error_props = isError ? error : error_aiAnalyticsGET;
-		return <NotFound error={error_props} />;
-	}
+	// if (isError || isError_aiAnalyticsGET) {
+	// 	const error_props = isError ? error : error_aiAnalyticsGET;
+	// 	return <NotFound error={error_props} />;
+	// }
+
+	const [isNoData, setIsNoData] = useState(false);
+	useEffect(() => {
+		if (isError_aiAnalyticsGET) {
+			setIsNoData(true);
+			const timer = setTimeout(() => setIsNoData(false), 5000);
+			return () => clearTimeout(timer);
+		}
+	}, [isError_aiAnalyticsGET]);
 
 	if (statusBarStart) {
 		nav('/ai-analytics/analysis-of-themes');
@@ -171,8 +181,10 @@ const AiAnalyticsPage = () => {
 						Запуск
 					</Button>
 				</div>
-
-				{isSuccess_aiAnalyticsGET && !statusBarStart && <AiAnalytics />}
+				{isNoData && <NoDataRequest />}
+				{!isNoData && isSuccess_aiAnalyticsGET && !statusBarStart && (
+					<AiAnalytics />
+				)}
 			</Content>
 		</Layout>
 	);

@@ -1,4 +1,4 @@
-import { Suspense, useCallback } from 'react';
+import { Suspense, useCallback, useEffect, useState } from 'react';
 import { useSelector } from 'react-redux';
 import { useLocation } from 'react-router-dom';
 
@@ -8,9 +8,8 @@ import MediaGraphs from '@/components/content/graphs/media-graphs/MediaGraphs';
 import Layout from '@/components/layout/Layout';
 import BackgroundLoader from '@/components/loading/background-loader/BackgroundLoader';
 import Loader from '@/components/loading/loader/Loader';
-import NotFound from '@/components/screens/not-found/NotFound';
 import Button from '@/components/ui/button/Button';
-import CustomCalendar from '@/components/ui/custom-calendar/OldCustomCalendar';
+import CustomCalendar from '@/components/ui/custom-calendar/CustomCalendar';
 import DataForSearch from '@/components/ui/data-for-search/DataForSearch';
 import LeftMenu from '@/components/ui/left-menu/LeftMenu';
 import LeftMenuActive from '@/components/ui/left-menu/left-menu-active/LeftMenuActive';
@@ -23,6 +22,7 @@ import {
 	useGetUserFoldersQuery,
 	useGetUserIdQuery,
 } from '../../../services/other.service';
+import NoDataRequest from '../../no-data-request/NoDataRequest';
 
 import styles from './MediaRating.module.scss';
 import { useLazyMediaGraphQuery } from '@/services/getGraph.service';
@@ -73,11 +73,20 @@ const MediaRating = () => {
 		trigger(dataForRequest);
 	}, [dataForRequest]);
 
-	if (isError_media || isError) {
-		const error_props = isError ? error : error_media;
+	// if (isError_media || isError) {
+	// 	const error_props = isError ? error : error_media;
 
-		return <NotFound error={error_props} />;
-	}
+	// 	return <NotFound error={error_props} />;
+	// }
+
+	const [isNoData, setIsNoData] = useState(false);
+	useEffect(() => {
+		if (isError_media) {
+			setIsNoData(true);
+			const timer = setTimeout(() => setIsNoData(false), 5000);
+			return () => clearTimeout(timer);
+		}
+	}, [isError_media]);
 
 	return (
 		<Layout>
@@ -125,7 +134,8 @@ const MediaRating = () => {
 						Запуск
 					</Button>
 				</div>
-				{isSuccess_media && (
+				{isNoData && <NoDataRequest />}
+				{!isNoData && isSuccess_media && (
 					<Suspense fallback={<Loader />}>
 						<MediaGraphs />
 					</Suspense>

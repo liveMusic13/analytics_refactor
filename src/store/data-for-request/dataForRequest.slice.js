@@ -5,6 +5,8 @@ const initialState = {
 	themes_ind: [],
 	min_date: null,
 	max_date: null,
+	min_range_date: null,
+	max_range_date: null,
 	query_str: '',
 	post: false,
 	repost: false,
@@ -55,6 +57,13 @@ export const dataForRequest = createSlice({
 		},
 		addMaxDate: (state, { payload }) => {
 			return { ...state, max_date: payload };
+		},
+		addMinRangeDate: (state, { payload }) => {
+			console.log('date', payload);
+			return { ...state, min_range_date: payload };
+		},
+		addMaxRangeDate: (state, { payload }) => {
+			return { ...state, max_range_date: payload };
 		},
 		addQueryStr: (state, { payload }) => {
 			return { ...state, query_str: payload };

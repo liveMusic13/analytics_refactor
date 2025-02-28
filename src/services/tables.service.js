@@ -23,7 +23,7 @@ export const tablesService = createApi({
 	endpoints: builder => ({
 		topicAnalysis: builder.query({
 			query: data =>
-				`/themes?index=${data.index}&min_date=${data.min_date}&max_date=${data.max_date}`,
+				`/themes?index=${data.index}&min_date=${data.min_range_date}&max_date=${data.max_range_date}`,
 			keepUnusedDataFor: 600,
 			// Этот метод позволит диспатчить данные в другой срез стора
 			async onQueryStarted(arg, { dispatch, queryFulfilled }) {
@@ -43,13 +43,13 @@ export const tablesService = createApi({
 			query: data => {
 				if (data.query_str) {
 					return {
-						url: `/ai-analytics?index=${data.index}&min_date=${data.min_date}&max_date=${data.max_date}&query_str=${data.query_str}`,
+						url: `/ai-analytics?index=${data.index}&min_date=${data.min_range_date}&max_date=${data.max_range_date}&query_str=${data.query_str}`,
 						method: 'GET',
 						keepUnusedDataFor: 600,
 					};
 				} else {
 					return {
-						url: `/ai-analytics?index=${data.index}&min_date=${data.min_date}&max_date=${data.max_date}`,
+						url: `/ai-analytics?index=${data.index}&min_date=${data.min_range_date}&max_date=${data.max_range_date}`,
 						method: 'GET',
 						keepUnusedDataFor: 600,
 					};

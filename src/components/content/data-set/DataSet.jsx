@@ -40,6 +40,7 @@ const DataSet = () => {
 
 	const { processedData } = useSelector(state => state.folderTarget);
 	const { index_doc, post, progress_load } = useSelector(state => state.aiData);
+	const dataForRequest = useSelector(state => state.dataForRequest);
 
 	useEffect(() => {
 		if (activeButton === 'Файлы данных') {
@@ -99,9 +100,9 @@ const DataSet = () => {
 			? dataUser_bertopic
 			: {};
 
-	const file_name = Object.values(arrayData)
+	const file_name = Object.values(dataUser)
 		.flat()
-		.find(file => index_doc === file.index_number);
+		.find(file => dataForRequest.index === file.index_number);
 
 	const [filterText, setFilterText] = useState('');
 	const getFilteredData = (data, filterText) => {
@@ -126,6 +127,8 @@ const DataSet = () => {
 	const handleInputChange = event => {
 		setFilterText(event.target.value);
 	};
+
+	console.log('file_name', file_name, index_doc);
 
 	const renderContent = (activeButton, allData) => {
 		if (activeButton === 'Файлы данных') {
@@ -179,7 +182,7 @@ const DataSet = () => {
 				<div className={styles.wrapper_statusProgress}>
 					<div className={styles.block__history}>
 						<h2 className={styles.title__history}>История</h2>
-						{history.map(el => (
+						{history.reverse().map(el => (
 							<HistoryCard key={el.task_id} data={el} />
 						))}
 					</div>
@@ -187,7 +190,8 @@ const DataSet = () => {
 						{progress_load && Number(progress_load) > 0 ? (
 							<>
 								<h3>
-									<span>Файл:</span> {file_name?.['html-file']}
+									{/* <span>Файл:</span> {file_name?.['html-file']} */}
+									<span>Файл:</span> {file_name?.file}
 								</h3>
 								<span>Запросы:</span>
 								<p>{post.system_prompt}</p>

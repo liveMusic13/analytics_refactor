@@ -1,4 +1,4 @@
-import { Suspense, useCallback } from 'react';
+import { Suspense, useCallback, useEffect, useState } from 'react';
 import { useSelector } from 'react-redux';
 import { useLocation } from 'react-router-dom';
 
@@ -8,10 +8,9 @@ import InformationGraphs from '@/components/content/graphs/information-graphs/In
 import Layout from '@/components/layout/Layout';
 import BackgroundLoader from '@/components/loading/background-loader/BackgroundLoader';
 import Loader from '@/components/loading/loader/Loader';
-import NotFound from '@/components/screens/not-found/NotFound';
 import AdditionalParameters from '@/components/ui/additional-parameters/AdditionalParameters';
 import Button from '@/components/ui/button/Button';
-import CustomCalendar from '@/components/ui/custom-calendar/OldCustomCalendar';
+import CustomCalendar from '@/components/ui/custom-calendar/CustomCalendar';
 import DataForSearch from '@/components/ui/data-for-search/DataForSearch';
 import Input from '@/components/ui/fields/input/Input';
 import LeftMenu from '@/components/ui/left-menu/LeftMenu';
@@ -25,6 +24,7 @@ import {
 	useGetUserFoldersQuery,
 	useGetUserIdQuery,
 } from '../../../services/other.service';
+import NoDataRequest from '../../no-data-request/NoDataRequest';
 
 import styles from './Information.module.scss';
 import { useLazyInformationGraphQuery } from '@/services/getGraph.service';
@@ -80,10 +80,19 @@ const Information = () => {
 		addQueryStr(e.target.value);
 	};
 
-	if (isError_information || isError) {
-		const error_props = isError ? error : error_information;
-		return <NotFound error={error_props} />;
-	}
+	// if (isError_information || isError) {
+	// 	const error_props = isError ? error : error_information;
+	// 	return <NotFound error={error_props} />;
+	// }
+
+	const [isNoData, setIsNoData] = useState(false);
+	useEffect(() => {
+		if (isError_information) {
+			setIsNoData(true);
+			const timer = setTimeout(() => setIsNoData(false), 5000);
+			return () => clearTimeout(timer);
+		}
+	}, [isError_information]);
 
 	return (
 		<Layout>
@@ -159,7 +168,8 @@ const Information = () => {
 						Запуск
 					</Button>
 				</div>
-				{isSuccess_information && (
+				{isNoData && <NoDataRequest />}
+				{!isNoData && isSuccess_information && (
 					<Suspense fallback={<Loader />}>
 						<InformationGraphs />
 					</Suspense>

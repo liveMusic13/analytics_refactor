@@ -4,43 +4,6 @@ import Cookies from 'js-cookie';
 import { API_URL, TOKEN } from '../app.constants';
 import { actions as dataUsersAction } from '../store/data-users/dataUsers.slice';
 
-const customBaseQuery = async args => {
-	const { url, headers = new Headers(), responseType = 'json', ...rest } = args;
-
-	// Добавляем токен авторизации
-	const token = Cookies.get('TOKEN');
-	if (token) {
-		headers.set('Authorization', `Bearer ${token}`);
-	}
-
-	try {
-		const response = await fetch(`${API_URL}${url}`, { headers, ...rest });
-
-		if (!response.ok) {
-			throw new Error('Ошибка загрузки');
-		}
-
-		// Проверяем Content-Type
-		const contentType = response.headers.get('Content-Type');
-
-		if (responseType === 'blob') {
-			return { data: await response.blob() };
-		} else if (contentType && contentType.includes('application/json')) {
-			return { data: await response.json() };
-		} else {
-			// Если не JSON, возвращаем текст
-			return { data: await response.text() };
-		}
-	} catch (error) {
-		return {
-			error: {
-				status: error.status || 'FETCH_ERROR',
-				message: error.message,
-			},
-		};
-	}
-};
-
 export const dataSetService = createApi({
 	reducerPath: 'dataSetService',
 	baseQuery: fetchBaseQuery({
@@ -53,7 +16,6 @@ export const dataSetService = createApi({
 			return headers;
 		},
 	}),
-	// baseQuery: customBaseQuery,
 	endpoints: builder => ({
 		// fileRename: builder.query({
 		// 	query: data => {

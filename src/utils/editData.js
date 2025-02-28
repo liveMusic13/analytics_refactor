@@ -238,8 +238,8 @@ export const funksInformationGraph = {
 	modifyParams: params => {
 		const data = {
 			index: params.index,
-			min_date: params.min_date,
-			max_date: params.max_date,
+			min_date: params.min_range_date,
+			max_date: params.max_range_date,
 			post: params.post,
 			repost: params.repost,
 			SMI: params.SMI,

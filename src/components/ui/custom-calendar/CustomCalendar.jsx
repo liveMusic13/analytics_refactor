@@ -2,6 +2,10 @@ import { useState } from 'react';
 import { useSelector } from 'react-redux';
 
 import useClickOutside from '../../../hooks/useClickOutside';
+import {
+	convertDateFormat,
+	convertFromTimestampToRegular,
+} from '../../../utils/timestamp';
 
 import styles from './CustomCalendar.module.scss';
 import BlockCalendar from './block-calendar/BlockCalendar';
@@ -22,7 +26,7 @@ const CustomCalendar = ({ multi }) => {
 					{/* <p>Здесь будет отображаться выбранная дата</p> */}
 					<p>
 						{min_date
-							? `${min_date} - ${max_date}`
+							? `${convertDateFormat(convertFromTimestampToRegular(min_date))} - ${convertDateFormat(convertFromTimestampToRegular(max_date))}`
 							: 'Здесь будет отображаться выбранная дата'}
 					</p>
 				</div>

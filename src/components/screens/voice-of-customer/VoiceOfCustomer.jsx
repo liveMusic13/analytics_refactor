@@ -1,4 +1,4 @@
-import { Suspense, useCallback } from 'react';
+import { Suspense, useCallback, useEffect, useState } from 'react';
 import { useSelector } from 'react-redux';
 import { useLocation } from 'react-router-dom';
 
@@ -8,9 +8,8 @@ import VoiceGraph from '@/components/content/graphs/voice-graphs/VoiceGraph';
 import Layout from '@/components/layout/Layout';
 import BackgroundLoader from '@/components/loading/background-loader/BackgroundLoader';
 import Loader from '@/components/loading/loader/Loader';
-import NotFound from '@/components/screens/not-found/NotFound';
 import Button from '@/components/ui/button/Button';
-import CustomCalendar from '@/components/ui/custom-calendar/OldCustomCalendar';
+import CustomCalendar from '@/components/ui/custom-calendar/CustomCalendar';
 import DataForSearch from '@/components/ui/data-for-search/DataForSearch';
 import Input from '@/components/ui/fields/input/Input';
 import LeftMenu from '@/components/ui/left-menu/LeftMenu';
@@ -24,6 +23,7 @@ import {
 	useGetUserFoldersQuery,
 	useGetUserIdQuery,
 } from '../../../services/other.service';
+import NoDataRequest from '../../no-data-request/NoDataRequest';
 
 import styles from './VoiceOfCustomer.module.scss';
 import { useLazyVoiceGraphQuery } from '@/services/getGraph.service';
@@ -79,11 +79,21 @@ const VoiceOfCustomer = () => {
 		trigger(dataForRequest);
 	}, [dataForRequest]);
 
-	if (isError_voice || isError) {
-		const error_props = isError ? error : error_voice;
+	// if (isError_voice || isError) {
+	// 	const error_props = isError ? error : error_voice;
 
-		return <NotFound error={error_props} />;
-	}
+	// 	return <NotFound error={error_props} />;
+	// }
+
+	const [isNoData, setIsNoData] = useState(false);
+	useEffect(() => {
+		if (isError_voice) {
+			setIsNoData(true);
+			const timer = setTimeout(() => setIsNoData(false), 5000);
+			return () => clearTimeout(timer);
+		}
+	}, [isError_voice]);
+
 	return (
 		<Layout>
 			{(isLoading || isLoading_voice) && (
@@ -144,7 +154,8 @@ const VoiceOfCustomer = () => {
 						Запуск
 					</Button>
 				</div>
-				{isSuccess_voice && (
+				{isNoData && <NoDataRequest />}
+				{!isNoData && isSuccess_voice && (
 					<Suspense fallback={<Loader />}>
 						<VoiceGraph />
 					</Suspense>
