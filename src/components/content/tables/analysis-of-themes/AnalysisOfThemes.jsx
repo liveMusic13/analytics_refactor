@@ -1,4 +1,4 @@
-import { useCallback, useState } from 'react';
+import { useCallback, useEffect, useState } from 'react';
 import { useSelector } from 'react-redux';
 
 import { analysisOfThemesButtons } from '../../../../data/panel.data';
@@ -15,25 +15,13 @@ const AnalysisOfThemes = () => {
 	const [activeButton, setActiveButton] = useState('Кластеризация на тематики');
 	const [activeSubcategory, setActiveSubcategory] = useState('Группировка тем');
 
-	// const { bertopic_files_directory: dataUser } = useSelector(
-	// 	store => store.dataUsersSlice,
-	// );
 	const dataForRequest = useSelector(state => state.dataForRequest);
-	// const { index_doc } = useSelector(state => state.aiData);
+	const { finalStatus } = useSelector(state => state.aiData);
 
 	const { data: data_getUserId } = useGetUserIdQuery();
 
-	// const arrayData =
-	// 	dataUser && Object.keys(dataUser).length > 0 ? dataUser : {};
-
-	// const file_name = Object.values(arrayData)
-	// 	.flat()
-	// 	.find(file => index_doc === file.index_number);
-
 	const dataRequest = {
 		user_id: data_getUserId,
-		// folder_name: findKeyById(index_doc, dataUser),
-		// file_name: file_name?.['html-file'] || '',
 		folder_name: dataForRequest.folder_name_html_file_request,
 		file_name: dataForRequest.first_html_file_request || '',
 	};
@@ -42,7 +30,12 @@ const AnalysisOfThemes = () => {
 		data: data_llm,
 		isLoading: isLoading_llm,
 		isSuccess: isSuccess_llm,
+		refetch,
 	} = useLlmAnalyzeQuery(dataRequest);
+
+	useEffect(() => {
+		if (finalStatus) refetch();
+	}, [finalStatus]);
 
 	const handleClick = useCallback(
 		but => {

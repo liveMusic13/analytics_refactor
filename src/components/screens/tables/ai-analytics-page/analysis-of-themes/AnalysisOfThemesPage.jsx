@@ -44,7 +44,8 @@ const AnalysisOfThemesPage = () => {
 	const { data, isError, error, isLoading, isSuccess } =
 		useGetUserFoldersQuery(data_getUserId);
 
-	const { addMinDate, addMaxDate, toggleBarStart } = useActions();
+	const { addMinDate, addMaxDate, toggleBarStart, toggleFinalStatus } =
+		useActions();
 
 	//HELP: Функция для обновления min/max даты
 	const updateDates = useCallback(
@@ -76,12 +77,9 @@ const AnalysisOfThemesPage = () => {
 	const file_name = Object.values(arrayData)
 		.flat()
 		.find(file => dataForRequest.index === file.index_number);
-	console.log('file_name', Object.keys(arrayData));
 
 	const dataRequest = {
 		user_id: data_getUserId,
-		// folder_name: findKeyById(index_doc, dataUser),
-		// file_name: file_name?.['html-file'] || '',
 		folder_name: dataForRequest.folder_name_html_file_request,
 		file_name: dataForRequest.first_html_file_request || '',
 	};
@@ -89,22 +87,10 @@ const AnalysisOfThemesPage = () => {
 	const dataRequestRepeat = {
 		user_id: data_getUserId,
 		folder_name: findKeyById(dataForRequest.index, dataUser),
-		// file_name: file_name?.['html-file'] || '',
-		// folder_name: dataForRequest.folder_name_html_file_request,
 		file_name: file_name?.['html-file'] || '',
 	};
-	console.log(
-		'findKeyById(dataForRequest.index, dataUser)',
-		findKeyById(dataForRequest.index, dataUser),
-	);
 
 	const onClick = () => {
-		// const dataRequest = {
-		// 	user_id: data_getUserId,
-		// 	folder_name: findKeyById(index_doc, dataUser),
-		// 	file_name: file_name?.['html-file'] || '',
-		// };
-
 		trigger(dataRequest);
 	};
 
@@ -114,6 +100,7 @@ const AnalysisOfThemesPage = () => {
 
 	const handleClickBack = () => {
 		toggleBarStart(false);
+		toggleFinalStatus(false);
 		nav('/');
 	};
 
@@ -156,7 +143,7 @@ const AnalysisOfThemesPage = () => {
 								// alignSelf: 'start',
 								// marginTop: 'calc(20/1440*100vw)',
 							}}
-							onClick={repeatData} //TODO: ДОБАВИТЬ ФУНКЦИЮ ДЛЯ ЗАПРОСА НА ПОЛУЧЕНИЕ ДАННЫХ
+							onClick={repeatData}
 						>
 							Запуск
 						</Button>

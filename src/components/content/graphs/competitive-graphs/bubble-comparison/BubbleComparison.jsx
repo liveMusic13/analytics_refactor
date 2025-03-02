@@ -36,11 +36,11 @@ const BubbleComparison = ({ one, activeSubcategory }) => {
 			plotOptions: {
 				packedbubble: {
 					minSize: '10%',
-					maxSize: '80%',
+					maxSize: '40%',
 					zMin: 0,
 					zMax: 1000,
 					layoutAlgorithm: {
-						gravitationalConstant: 0.05,
+						gravitationalConstant: 0.01,
 						splitSeries: true,
 						seriesInteraction: false,
 						dragBetweenSeries: true,
