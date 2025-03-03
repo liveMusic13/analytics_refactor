@@ -25,6 +25,7 @@ import NoDataRequest from '../../../no-data-request/NoDataRequest';
 import PopupAi from '../../../popups/popup-ai/PopupAi';
 import PopupNormal from '../../../popups/popup-normal/PopupNormal';
 import Input from '../../../ui/fields/input/Input';
+import QueryStringHelp from '../../../ui/query-string-help/QueryStringHelp';
 
 import styles from './AiAnalyticsPage.module.scss';
 
@@ -171,6 +172,7 @@ const AiAnalyticsPage = () => {
 								: dataForRequest.query_str
 						}
 					/>
+					<QueryStringHelp />
 					<Button
 						style={{
 							width: 'calc(220/1440*100vw)',

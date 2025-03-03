@@ -14,9 +14,7 @@ const Content = ({ children, graph, style }) => {
 
 	const styleCSS = {
 		paddingRight: graph ? 'calc(28/1440 * 100vw)' : undefined,
-		// justifyContent: isFolder ? 'flex-start' : 'center',
 		alignItems: isDataSetPath ? 'flex-start' : 'center',
-		// alignItems: isFolder ? 'flex-start' : 'center',
 		overflow: isDataSetPath ? 'hidden' : 'visible',
 		...style,
 	};

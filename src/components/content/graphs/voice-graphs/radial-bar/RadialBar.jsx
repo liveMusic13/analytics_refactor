@@ -33,33 +33,6 @@ const RadialBar = () => {
 		return funksVoice.getCategoryData(resultData);
 	}, [resultData]);
 
-	// const seriesData = useMemo(() => {
-	// 	// Генерация данных для series
-	// 	const series = funksVoice.getSeriesData(resultData);
-
-	// 	// Сортировка данных по убыванию
-	// 	series.forEach(serie => {
-	// 		serie.data.sort((a, b) => b - a);
-	// 	});
-
-	// 	// Сохранение оригинальных цветов
-	// 	series.forEach((serie, index) => {
-	// 		if (!originalColors.current[serie.name]) {
-	// 			originalColors.current[serie.name] =
-	// 				Highcharts.getOptions().colors[
-	// 					index % Highcharts.getOptions().colors.length
-	// 				];
-	// 		}
-	// 		serie.color = originalColors.current[serie.name];
-	// 	});
-	// 	console.log('colors', series);
-	// 	return series;
-	// }, [resultData]);
-
-	// Highcharts.setOptions({
-	// 	colors: [colors.grey_graph, colors.green_graph, colors.red_graph], // Изначально устанавливаем цвета
-	// });
-
 	const seriesData = useMemo(() => {
 		const tonalityColorMap = {
 			Позитив: colors.green_graph,
@@ -179,7 +152,6 @@ const RadialBar = () => {
 				))}
 			</div>
 			<HighchartsReact
-				// key={Math.random()}
 				highcharts={Highcharts}
 				options={options}
 				containerProps={{ style: { width: '100%', height: '100%' } }}

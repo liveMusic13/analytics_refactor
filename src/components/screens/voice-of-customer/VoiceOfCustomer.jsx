@@ -24,6 +24,7 @@ import {
 	useGetUserIdQuery,
 } from '../../../services/other.service';
 import NoDataRequest from '../../no-data-request/NoDataRequest';
+import QueryStringHelp from '../../ui/query-string-help/QueryStringHelp';
 
 import styles from './VoiceOfCustomer.module.scss';
 import { useLazyVoiceGraphQuery } from '@/services/getGraph.service';
@@ -144,6 +145,7 @@ const VoiceOfCustomer = () => {
 								: dataForRequest.query_str
 						}
 					/>
+					<QueryStringHelp />
 					<Button
 						style={{
 							width: 'calc(220/1440*100vw)',

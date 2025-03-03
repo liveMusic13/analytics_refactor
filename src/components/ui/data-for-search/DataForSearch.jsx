@@ -79,7 +79,7 @@ const DataForSearch = ({ multi, directory, style }) => {
 
 	const nameFile = multi
 		? findTargetFileMultiDouble
-			? `${truncateDescription(findTargetFileMultiDouble[0]?.file, 15)} - ${truncateDescription(findTargetFileMultiDouble[1]?.file, 15)}`
+			? `${truncateDescription(findTargetFileMultiDouble[0]?.file || '', 15)} - ${truncateDescription(findTargetFileMultiDouble[1]?.file || '', 15)}`
 			: findTargetFileMulti?.file || ''
 		: findTargetFile?.file || findTargetFile?.['html-file'] || '';
 
