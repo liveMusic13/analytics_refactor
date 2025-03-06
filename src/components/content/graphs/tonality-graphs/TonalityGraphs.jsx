@@ -105,6 +105,7 @@ const TonalityGraphs = () => {
 							isViewSource={isViewSource}
 							data={data}
 							setData={setData}
+							activeButton={activeButton}
 						/>
 					</Suspense>
 				)}

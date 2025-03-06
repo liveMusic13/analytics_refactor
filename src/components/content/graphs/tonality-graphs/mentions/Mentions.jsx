@@ -1,4 +1,4 @@
-import { useCallback, useMemo, useState } from 'react';
+import { useCallback, useEffect, useMemo, useState } from 'react';
 import { Cell, Pie, PieChart, ResponsiveContainer } from 'recharts';
 
 import { useCheckWidth } from '@/hooks/useCheckWidth';
@@ -6,7 +6,7 @@ import { useCheckWidth } from '@/hooks/useCheckWidth';
 import styles from './Mentions.module.scss';
 import { renderActiveShape } from './RenderActiveShape';
 
-const Mentions = ({ isViewSource, data, setData }) => {
+const Mentions = ({ isViewSource, data, setData, activeButton }) => {
 	const { windowSize } = useCheckWidth();
 
 	const innerRadius = useMemo(
@@ -20,6 +20,8 @@ const Mentions = ({ isViewSource, data, setData }) => {
 
 	const [activeIndex, setActiveIndex] = useState(0);
 	const [deletedData, setDeletedData] = useState([]);
+
+	useEffect(() => setDeletedData([]), [activeButton]); //HELP: Для того чтобы список удаления (в пояснениях к графику) очищался при переключении графика
 
 	const onPieEnter = useCallback((_, index) => {
 		setActiveIndex(index);

@@ -13,7 +13,9 @@ import BlockCalendar from './block-calendar/BlockCalendar';
 const CustomCalendar = ({ multi }) => {
 	const [isViewCalendar, setViewCalendar] = useState(false);
 	const wrapperRef = useClickOutside(() => setViewCalendar(false));
-	const { min_date, max_date } = useSelector(state => state.dataForRequest);
+	const { min_date, max_date, max_range_date, min_range_date } = useSelector(
+		state => state.dataForRequest,
+	);
 
 	return (
 		<div className={styles.wrapper_calendar} ref={wrapperRef}>
@@ -25,9 +27,12 @@ const CustomCalendar = ({ multi }) => {
 					<h2>Период</h2>
 					{/* <p>Здесь будет отображаться выбранная дата</p> */}
 					<p>
-						{min_date
+						{/* {min_date
 							? `${convertDateFormat(convertFromTimestampToRegular(min_date))} - ${convertDateFormat(convertFromTimestampToRegular(max_date))}`
-							: 'Здесь будет отображаться выбранная дата'}
+							: 'Здесь будет отображаться выбранная дата'} */}
+						{min_range_date && max_range_date
+							? `${convertDateFormat(convertFromTimestampToRegular(min_range_date))} - ${convertDateFormat(convertFromTimestampToRegular(max_range_date))}`
+							: 'нету данных'}
 					</p>
 				</div>
 				<img

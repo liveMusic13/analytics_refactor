@@ -38,7 +38,7 @@ const PanelTargetGraph = ({
 					}
 					onClick={() => handleClick(but.title)}
 				>
-					{but.title}{' '}
+					{but.title}
 					{but.isCount
 						? but.title === 'Негативные упоминания'
 							? `(${dataCounters.negative})`

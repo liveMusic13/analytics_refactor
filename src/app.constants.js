@@ -1,6 +1,6 @@
-export const API_URL = 'https://194.146.113.123/api';
+// export const API_URL = 'https://194.146.113.123/api';
 // export const API_URL = 'https://194.146.113.123:5000';
-// export const API_URL = 'https://tsapi.headsmade.com';
+export const API_URL = 'https://tellscope.headsmade.com/api';
 
 export const TOKEN = 'token';
 
