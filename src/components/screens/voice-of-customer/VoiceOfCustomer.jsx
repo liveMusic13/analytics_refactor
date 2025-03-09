@@ -115,7 +115,10 @@ const VoiceOfCustomer = () => {
 							<p></p>
 						</>
 					) : (
-						<BeforeSearch title='Голос клиента' />
+						<BeforeSearch
+							title='Голос клиента'
+							link='https://tsdoc.headsmade.com/en/voice-of-customer'
+						/>
 					)}
 				</div>
 				<div

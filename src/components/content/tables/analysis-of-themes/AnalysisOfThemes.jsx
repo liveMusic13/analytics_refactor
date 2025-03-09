@@ -11,7 +11,7 @@ import styles from './AnalysisOfThemes.module.scss';
 import Analysis from './ayalysis/Analysis';
 import ThemesIdentified from './themes-identified/ThemesIdentified';
 
-const AnalysisOfThemes = () => {
+const AnalysisOfThemes = ({ data_llm }) => {
 	const [activeButton, setActiveButton] = useState('Кластеризация на тематики');
 	const [activeSubcategory, setActiveSubcategory] = useState('Группировка тем');
 
@@ -27,7 +27,7 @@ const AnalysisOfThemes = () => {
 	};
 
 	const {
-		data: data_llm,
+		// data: data_llm,
 		isLoading: isLoading_llm,
 		isSuccess: isSuccess_llm,
 		refetch,
@@ -104,9 +104,9 @@ const AnalysisOfThemes = () => {
 				{activeButton === 'Кластеризация на тематики' ? (
 					<HtmlRenderer htmlString={data_llm?.[dataForPageHTML] || ''} />
 				) : activeButton === 'Выявленные темы' ? (
-					<ThemesIdentified />
+					<ThemesIdentified data_llm={data_llm} />
 				) : (
-					<Analysis />
+					<Analysis data_llm={data_llm} />
 				)}
 			</div>
 		</div>

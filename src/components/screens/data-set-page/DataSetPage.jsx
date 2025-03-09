@@ -116,9 +116,11 @@ const DataSetPage = () => {
 				<div className={styles.block__pageName}>
 					<h3 className={styles.pageName__title}>Данные</h3>
 					{pathname === '/data-set' ? (
-						<button className={styles.button__title} onClick={onClick}>
-							Создать папку
-						</button>
+						buttonTarget !== 'Файлы данных' ? null : (
+							<button className={styles.button__title} onClick={onClick}>
+								Создать папку
+							</button>
+						)
 					) : (
 						<button className={`${styles.button__title} ${styles.download}`}>
 							<input

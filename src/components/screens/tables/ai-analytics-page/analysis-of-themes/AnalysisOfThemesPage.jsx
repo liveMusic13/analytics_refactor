@@ -1,5 +1,5 @@
 // import { useAddBaseAndDate } from '../../../../../hooks/useAddBaseAndDate';
-import { useCallback, useEffect } from 'react';
+import { useCallback, useEffect, useState } from 'react';
 import { useSelector } from 'react-redux';
 import { useLocation, useNavigate } from 'react-router-dom';
 
@@ -18,6 +18,7 @@ import {
 import { useLazyLlmAnalyzeQuery } from '../../../../../services/tables.service';
 import { findKeyById } from '../../../../../utils/searchInData';
 import AnalysisOfThemes from '../../../../content/tables/analysis-of-themes/AnalysisOfThemes';
+import NoDataRequest from '../../../../no-data-request/NoDataRequest';
 import Button from '../../../../ui/button/Button';
 import DataForSearch from '../../../../ui/data-for-search/DataForSearch';
 import ProgressBar from '../../../../ui/progress-bar/ProgressBar';
@@ -29,23 +30,32 @@ const AnalysisOfThemesPage = () => {
 	const nav = useNavigate();
 	const dataForRequest = useSelector(state => state.dataForRequest);
 	const { active_menu } = useSelector(store => store.booleanValues);
-	const { statusBarStart, finalStatus, index_doc } = useSelector(
-		state => state.aiData,
-	);
+	const { statusBarStart, finalStatus, index_doc, isOpenSaveData } =
+		useSelector(state => state.aiData);
 	const { bertopic_files_directory: dataUser } = useSelector(
 		store => store.dataUsersSlice,
 	);
 	const [
 		trigger,
-		{ data: data_llm, isLoading: isLoading_llm, isSuccess: isSuccess_llm },
+		{
+			data: data_llm,
+			isLoading: isLoading_llm,
+			isSuccess: isSuccess_llm,
+			isError: isError_llm,
+		},
 	] = useLazyLlmAnalyzeQuery();
 
 	const { data: data_getUserId } = useGetUserIdQuery();
 	const { data, isError, error, isLoading, isSuccess } =
 		useGetUserFoldersQuery(data_getUserId);
 
-	const { addMinDate, addMaxDate, toggleBarStart, toggleFinalStatus } =
-		useActions();
+	const {
+		addMinDate,
+		addMaxDate,
+		toggleBarStart,
+		toggleFinalStatus,
+		setIsOpenSaveData,
+	} = useActions();
 
 	//HELP: Функция для обновления min/max даты
 	const updateDates = useCallback(
@@ -96,6 +106,7 @@ const AnalysisOfThemesPage = () => {
 
 	const repeatData = () => {
 		trigger(dataRequestRepeat);
+		setIsOpenSaveData(false);
 	};
 
 	const handleClickBack = () => {
@@ -103,6 +114,15 @@ const AnalysisOfThemesPage = () => {
 		toggleFinalStatus(false);
 		nav('/');
 	};
+
+	const [isNoData, setIsNoData] = useState(false);
+	useEffect(() => {
+		if (isError_llm) {
+			setIsNoData(true);
+			const timer = setTimeout(() => setIsNoData(false), 5000);
+			return () => clearTimeout(timer);
+		}
+	}, [isError_llm]);
 
 	return (
 		<Layout>
@@ -118,30 +138,18 @@ const AnalysisOfThemesPage = () => {
 					isSuccess_llm ? {} : { alignItems: 'start', justifyContent: 'start' }
 				}
 			>
-				<div
-					className={styles.block__pageName}
-					// style={isSuccess_llm ? { height: 'auto' } : {}}
-					style={{ height: 'auto' }}
-				>
+				<div className={styles.block__pageName} style={{ height: 'auto' }}>
 					<h3 className={styles.pageName__title}>Анализ тем</h3>
 				</div>
-				<div
-					className={styles.block__configureSearch}
-					// style={isSuccess_aiAnalyticsGET ? {} : { alignSelf: 'center' }}
-				>
-					{isSuccess_llm && (
-						<DataForSearch
-							directory='bertopic'
-							// style={{ alignSelf: 'start', marginTop: 'calc(20/1440*100vw)' }}
-						/>
+				<div className={styles.block__configureSearch}>
+					{(isSuccess_llm || isOpenSaveData) && (
+						<DataForSearch directory='bertopic' />
 					)}
-					{isSuccess_llm && (
+					{(isSuccess_llm || isOpenSaveData) && (
 						<Button
 							style={{
 								width: 'calc(220/1440*100vw)',
 								height: 'calc(56/1440*100vw)',
-								// alignSelf: 'start',
-								// marginTop: 'calc(20/1440*100vw)',
 							}}
 							onClick={repeatData}
 						>
@@ -176,7 +184,17 @@ const AnalysisOfThemesPage = () => {
 						</div>
 					</>
 				)}
-				{isSuccess_llm && <AnalysisOfThemes />}
+				{isNoData && (
+					<NoDataRequest
+						style={{
+							position: 'absolute',
+							top: '55%',
+							left: '50%',
+							transform: 'translateX(-50%)',
+						}}
+					/>
+				)}
+				{isSuccess_llm && <AnalysisOfThemes data_llm={data_llm} />}
 			</Content>
 		</Layout>
 	);

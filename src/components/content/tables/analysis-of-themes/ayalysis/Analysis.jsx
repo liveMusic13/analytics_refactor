@@ -9,43 +9,32 @@ import {
 import { useMemo, useState } from 'react';
 import { useSelector } from 'react-redux';
 
-import { useSaveImageGraph } from '../../../../../hooks/useSaveImageGraph';
 import { useGetUserIdQuery } from '../../../../../services/other.service';
-import { useLlmAnalyzeQuery } from '../../../../../services/tables.service';
+import { exportToExcel } from '../../../../../utils/downloadData';
 import { truncateDescription } from '../../../../../utils/editText';
 import styles from '../../ai-analytics/ai-tables/AiTables.module.scss';
 
-const Analysis = () => {
-	const { index_doc } = useSelector(state => state.aiData);
-	const { bertopic_files_directory: dataUser } = useSelector(
-		store => store.dataUsersSlice,
-	);
+const Analysis = ({ data_llm }) => {
 	const dataForRequest = useSelector(state => state.dataForRequest);
-
-	const handleDownloadImage = useSaveImageGraph();
 
 	const { data: data_getUserId } = useGetUserIdQuery();
 
-	const arrayData =
-		dataUser && Object.keys(dataUser).length > 0 ? dataUser : {};
-
-	const file_name = Object.values(arrayData)
-		.flat()
-		.find(file => index_doc === file.index_number);
-
 	const dataRequest = {
 		user_id: data_getUserId,
-		// folder_name: findKeyById(index_doc, dataUser),
-		// file_name: file_name?.['html-file'] || '',
 		folder_name: dataForRequest.folder_name_html_file_request,
 		file_name: dataForRequest.first_html_file_request || '',
 	};
 
-	const {
-		data: data_llm,
-		isLoading: isLoading_llm,
-		isSuccess: isSuccess_llm,
-	} = useLlmAnalyzeQuery(dataRequest);
+	// const { data: data_llm, refetch } = useLlmAnalyzeQuery(dataRequest);
+
+	// const [
+	// 	trigger,
+	// 	{
+	// 		isLoading: isLoading_llm,
+	// 		isSuccess: isSuccess_llm,
+	// 		isError: isError_llm,
+	// 	},
+	// ] = useLazyLlmAnalyzeQuery();
 
 	const columns = useMemo(
 		() => [
@@ -109,6 +98,7 @@ const Analysis = () => {
 	const tableInstance = useReactTable({
 		columns,
 		data: data_llm?.full_data || [],
+		// data: tableData,
 		getCoreRowModel: getCoreRowModel(),
 		getPaginationRowModel: getPaginationRowModel(),
 		getFilteredRowModel: getFilteredRowModel(),
@@ -162,7 +152,9 @@ const Analysis = () => {
 
 				<button
 					className={styles.button__settings}
-					onClick={() => handleDownloadImage('graph-for-download')}
+					onClick={() =>
+						exportToExcel(data_llm?.full_data || [], 'Анализ тематик')
+					}
 				>
 					<img src='/images/icons/setting/upload_active.svg' alt='icon' />
 				</button>

@@ -128,7 +128,10 @@ const Information = () => {
 							</p>
 						</>
 					) : (
-						<BeforeSearch title='Информационный граф' />
+						<BeforeSearch
+							title='Информационный граф'
+							link='https://tsdoc.headsmade.com/en/information-graf'
+						/>
 					)}
 				</div>
 				<div

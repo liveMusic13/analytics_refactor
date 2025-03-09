@@ -1,6 +1,6 @@
 import { useEffect, useState } from 'react';
 import { useSelector } from 'react-redux';
-import { useLocation, useNavigate } from 'react-router-dom';
+import { Link, useLocation, useNavigate } from 'react-router-dom';
 
 import Content from '@/components/content/Content';
 import BeforeSearch from '@/components/content/before-search/BeforeSearch';
@@ -51,6 +51,7 @@ const AiAnalyticsPage = () => {
 		addPromt,
 		default_popupNormal,
 		addQueryStr,
+		setIsOpenSaveData,
 	} = useActions();
 
 	const {
@@ -141,10 +142,20 @@ const AiAnalyticsPage = () => {
 					{isSuccess_aiAnalyticsGET ? (
 						<h3 className={styles.pageName__title}>ИИ Анализ</h3>
 					) : (
-						<BeforeSearch title='ИИ Анализ' />
+						<BeforeSearch
+							title='ИИ Анализ'
+							link='https://tsdoc.headsmade.com/en/analysis-of-themes'
+						/>
 					)}
 				</div>
-
+				{!statusBarStart && (
+					<Link
+						to='/ai-analytics/analysis-of-themes'
+						onClick={() => setIsOpenSaveData(true)}
+					>
+						Использовать готовые данные
+					</Link>
+				)}
 				<div
 					className={styles.block__configureSearch}
 					style={isSuccess_aiAnalyticsGET ? {} : { alignSelf: 'center' }}

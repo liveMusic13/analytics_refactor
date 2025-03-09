@@ -7,43 +7,12 @@ import {
 	useReactTable,
 } from '@tanstack/react-table';
 import { useMemo, useState } from 'react';
-import { useSelector } from 'react-redux';
 
-import { useGetUserIdQuery } from '../../../../../services/other.service';
-import { useLlmAnalyzeQuery } from '../../../../../services/tables.service';
+import { exportToExcel } from '../../../../../utils/downloadData';
 import { truncateDescription } from '../../../../../utils/editText';
 import styles from '../../ai-analytics/ai-tables/AiTables.module.scss';
 
-const ThemesIdentified = () => {
-	const { bertopic_files_directory: dataUser } = useSelector(
-		store => store.dataUsersSlice,
-	);
-	const { index_doc } = useSelector(state => state.aiData);
-	const dataForRequest = useSelector(state => state.dataForRequest);
-
-	const { data: data_getUserId } = useGetUserIdQuery();
-
-	const arrayData =
-		dataUser && Object.keys(dataUser).length > 0 ? dataUser : {};
-
-	const file_name = Object.values(arrayData)
-		.flat()
-		.find(file => index_doc === file.index_number);
-
-	const dataRequest = {
-		user_id: data_getUserId,
-		// folder_name: findKeyById(index_doc, dataUser),
-		// file_name: file_name?.['html-file'] || '',
-		folder_name: dataForRequest.folder_name_html_file_request,
-		file_name: dataForRequest.first_html_file_request || '',
-	};
-
-	const {
-		data: data_llm,
-		isLoading: isLoading_llm,
-		isSuccess: isSuccess_llm,
-	} = useLlmAnalyzeQuery(dataRequest);
-
+const ThemesIdentified = ({ data_llm }) => {
 	const columns = useMemo(
 		() => [
 			{
@@ -129,6 +98,19 @@ const ThemesIdentified = () => {
 
 	return (
 		<div className={styles.wrapper_table} style={{ marginTop: '0' }}>
+			<div
+				className={styles.table__header}
+				style={{ justifyContent: 'flex-end' }}
+			>
+				<button
+					className={styles.button__settings}
+					onClick={() =>
+						exportToExcel(data_llm?.aggregated_data || [], 'Выявленные темы')
+					}
+				>
+					<img src='/images/icons/setting/upload_active.svg' alt='icon' />
+				</button>
+			</div>
 			<table>
 				<thead>
 					{tableInstance.getHeaderGroups().map(headerGroup => (

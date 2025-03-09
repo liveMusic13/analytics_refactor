@@ -2,7 +2,7 @@ import { Link } from 'react-router-dom';
 
 import styles from './BeforeSearch.module.scss';
 
-const BeforeSearch = ({ title }) => {
+const BeforeSearch = ({ title, link }) => {
 	return (
 		<div className={styles.wrapper_before}>
 			<div className={styles.block__description}>
@@ -11,7 +11,11 @@ const BeforeSearch = ({ title }) => {
 					Для отображения данных выберите необходимые параметры и нажмите кнопку
 					«Запуск»
 				</p>
-				<Link to='/faq' className={styles.detail}>
+				<Link
+					to={link ? link : '/faq'}
+					target='_blank'
+					className={styles.detail}
+				>
 					Подробнее о работе со страницей
 				</Link>
 			</div>

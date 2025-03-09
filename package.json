@@ -15,6 +15,7 @@
     "@tanstack/react-table": "^8.20.5",
     "@trivago/prettier-plugin-sort-imports": "^4.3.0",
     "axios": "^1.7.7",
+    "file-saver": "^2.0.5",
     "highcharts": "^11.4.8",
     "highcharts-react-official": "^3.2.1",
     "html2canvas": "^1.4.1",
@@ -27,7 +28,8 @@
     "react-router-dom": "^6.26.2",
     "react-zoom-pan-pinch": "^3.6.1",
     "recharts": "^2.13.0",
-    "sass": "^1.79.1"
+    "sass": "^1.79.1",
+    "xlsx": "^0.18.5"
   },
   "devDependencies": {
     "@eslint/js": "^9.9.0",

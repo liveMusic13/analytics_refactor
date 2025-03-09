@@ -120,7 +120,10 @@ const Competitive = () => {
 					{isSuccess_competitive ? (
 						<h3 className={styles.pageName__title}>Конкуренты</h3>
 					) : (
-						<BeforeSearch title='Конкуренты' />
+						<BeforeSearch
+							title='Конкуренты'
+							link='https://tsdoc.headsmade.com/en/competitors'
+						/>
 					)}
 				</div>
 				<div

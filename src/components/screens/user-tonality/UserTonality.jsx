@@ -131,7 +131,10 @@ const UserTonality = () => {
 							</p>
 						</>
 					) : (
-						<BeforeSearch title='Тональный ландшафт' />
+						<BeforeSearch
+							title='Тональный ландшафт'
+							link='https://tsdoc.headsmade.com/en/user-tonality'
+						/>
 					)}
 				</div>
 				<div

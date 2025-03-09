@@ -108,7 +108,10 @@ const MediaRating = () => {
 							<p></p>
 						</>
 					) : (
-						<BeforeSearch title='Медиа рейтинг' />
+						<BeforeSearch
+							title='Медиа рейтинг'
+							link='https://tsdoc.headsmade.com/en/media-rating'
+						/>
 					)}
 				</div>
 

@@ -17,6 +17,7 @@ const initialState = {
 	statusBarStart: false,
 	finalStatus: false,
 	index_doc: null,
+	isOpenSaveData: false,
 };
 
 export const aiData = createSlice({
@@ -31,6 +32,9 @@ export const aiData = createSlice({
 		},
 		toggleBarStart: (state, { payload }) => {
 			state.statusBarStart = payload;
+		},
+		setIsOpenSaveData: (state, { payload }) => {
+			state.isOpenSaveData = payload;
 		},
 		setProgressLoad: (state, { payload }) => {
 			state.progress_load = payload;

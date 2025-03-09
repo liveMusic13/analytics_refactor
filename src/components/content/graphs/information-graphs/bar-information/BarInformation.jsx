@@ -1,217 +1,3 @@
-// import Highcharts from 'highcharts';
-// import HighchartsReact from 'highcharts-react-official';
-// import { useEffect, useState } from 'react';
-// import './App.css';
-// const BarInformation = () => {
-// 	const startYear = 1960;
-// 	const endYear = 2022;
-// 	const nbr = 20;
-// 	const [dataset, setDataset] = useState(null);
-// 	const [year, setYear] = useState(startYear);
-// 	const [timer, setTimer] = useState(null);
-// 	const [options, setOptions] = useState({});
-// 	const getData = year => {
-// 		if (!dataset) return [];
-// 		const output = Object.entries(dataset)
-// 			.map(([countryName, countryData]) => [
-// 				countryName,
-// 				Number(countryData[year]),
-// 			])
-// 			.sort((a, b) => b[1] - a[1]);
-// 		return [output[0], output.slice(1, nbr)];
-// 	};
-// 	const getSubtitle = year => {
-// 		const topData = getData(year);
-// 		if (!topData || !topData[0]) return '';
-// 		const population = (topData[0][1] / 1e9).toFixed(2);
-// 		return `<span style="font-size: 80px">${year}</span>
-//          <br>
-//          <span style="font-size: 22px">
-//              Total: <b>${population}</b> billion
-//          </span>`;
-// 	};
-// 	const updateChart = newYear => {
-// 		const topData = getData(newYear);
-// 		setOptions(prevOptions => ({
-// 			...prevOptions,
-// 			subtitle: {
-// 				text: getSubtitle(newYear),
-// 			},
-// 			series: [
-// 				{
-// 					...prevOptions.series?.[0],
-// 					name: newYear,
-// 					data: topData[1],
-// 				},
-// 			],
-// 		}));
-// 	};
-// 	const handleRangeChange = e => {
-// 		const newYear = parseInt(e.target.value, 10);
-// 		setYear(newYear);
-// 		updateChart(newYear);
-// 	};
-// 	const pause = () => {
-// 		if (timer) {
-// 			clearInterval(timer);
-// 			setTimer(null);
-// 		}
-// 	};
-// 	const play = () => {
-// 		pause();
-// 		const newTimer = setInterval(() => {
-// 			setYear(prevYear => {
-// 				if (prevYear >= endYear) {
-// 					pause();
-// 					return prevYear;
-// 				}
-// 				const nextYear = prevYear + 1;
-// 				updateChart(nextYear);
-// 				return nextYear;
-// 			});
-// 		}, 500);
-// 		setTimer(newTimer);
-// 	};
-// 	const handlePlayPause = () => {
-// 		if (timer) {
-// 			pause();
-// 		} else {
-// 			play();
-// 		}
-// 	};
-// 	useEffect(() => {
-// 		fetch('https://demo-live-data.highcharts.com/population.json')
-// 			.then(response => response.json())
-// 			.then(data => {
-// 				setDataset(data);
-// 				const initialData = getData(startYear);
-// 				setOptions({
-// 					chart: {
-// 						animation: { duration: 500 },
-// 						marginRight: 50,
-// 						type: 'bar',
-// 					},
-// 					title: {
-// 						text: null,
-// 					},
-// 					subtitle: {
-// 						useHTML: true,
-// 						text: getSubtitle(startYear),
-// 						floating: true,
-// 						align: 'right',
-// 						verticalAlign: 'middle',
-// 						y: -80,
-// 						x: -100,
-// 					},
-// 					legend: {
-// 						enabled: false,
-// 					},
-// 					xAxis: {
-// 						type: 'category',
-// 					},
-// 					yAxis: {
-// 						opposite: true,
-// 						tickPixelInterval: 150,
-// 						title: {
-// 							text: null,
-// 						},
-// 					},
-// 					plotOptions: {
-// 						series: {
-// 							animation: false,
-// 							groupPadding: 0,
-// 							pointPadding: 0.1,
-// 							borderWidth: 0,
-// 							colorByPoint: true,
-// 							dataSorting: {
-// 								enabled: true,
-// 								matchByName: true,
-// 							},
-// 							type: 'bar',
-// 							dataLabels: {
-// 								enabled: true,
-// 							},
-// 						},
-// 					},
-// 					series: [
-// 						{
-// 							type: 'bar',
-// 							name: startYear,
-// 							data: initialData[1],
-// 						},
-// 					],
-// 					responsive: {
-// 						rules: [
-// 							{
-// 								condition: {
-// 									maxWidth: 750,
-// 								},
-// 								chartOptions: {
-// 									xAxis: {
-// 										visible: false,
-// 									},
-// 									subtitle: {
-// 										x: 0,
-// 									},
-// 									plotOptions: {
-// 										series: {
-// 											dataLabels: [
-// 												{
-// 													enabled: true,
-// 													y: 8,
-// 												},
-// 												{
-// 													enabled: true,
-// 													format: '{point.name}',
-// 													y: -8,
-// 													style: {
-// 														fontWeight: 'normal',
-// 														opacity: 0.7,
-// 													},
-// 												},
-// 											],
-// 										},
-// 									},
-// 								},
-// 							},
-// 						],
-// 					},
-// 				});
-// 			});
-// 		return () => pause();
-// 	}, []);
-// 	return (
-// 		<figure className='highcharts-figure'>
-// 			<div id='parent-container'>
-// 				<div id='play-controls'>
-// 					<button
-// 						id='play-pause-button'
-// 						onClick={handlePlayPause}
-// 						title={timer ? 'pause' : 'play'}
-// 					>
-// 						{timer ? 'Pause' : 'Play'}
-// 					</button>
-// 					<input
-// 						id='play-range'
-// 						type='range'
-// 						value={year}
-// 						min={startYear}
-// 						max={endYear}
-// 						onChange={handleRangeChange}
-// 					/>
-// 				</div>
-// 				<HighchartsReact
-// 					highcharts={Highcharts}
-// 					options={options}
-// 					containerProps={{ id: 'container' }}
-// 				/>
-// 			</div>
-// 			<p className='highcharts-description'>
-// 				Bar chart showing the world population by countries from 1960 to 2022.
-// 			</p>
-// 		</figure>
-// 	);
-// };
 import Highcharts from 'highcharts';
 import HighchartsReact from 'highcharts-react-official';
 import { useEffect, useRef, useState } from 'react';
@@ -236,6 +22,14 @@ const BarInformation = () => {
 
 	let firstObjectKey = Object.keys(data)[0];
 	let firstObjectValue = data[firstObjectKey];
+
+	console.log(
+		'data',
+		data,
+		convertFromTimestampToRegular(firstObjectValue[0].year),
+		convertFromTimestampToRegular(firstObjectValue[1].year),
+		convertFromTimestampToRegular(firstObjectValue[2].year),
+	);
 
 	const nbr = 20;
 	const startStep = 0;
@@ -334,7 +128,7 @@ const BarInformation = () => {
 		)}</span>
         <br>
         <span style="font-size: 22px">
-            Total: <b>: ${population}</b>
+            Лидер: <b>: ${population}</b>
         </span>`;
 	};
 
@@ -366,10 +160,18 @@ const BarInformation = () => {
 		xAxis: {
 			type: 'category',
 		},
+		// xAxis: {
+		// 	type: 'category',
+		// 	labels: {
+		// 		enabled: false, // Скрываем подписи оси X
+		// 	},
+		// 	lineWidth: 0, // Убираем линию оси X
+		// 	tickLength: 0, // Убираем засечки (маленькие черточки)
+		// },
 		yAxis: {
-			type: 'datetime',
-			opposite: true,
-			tickPixelInterval: 150,
+			// type: 'datetime',
+			// opposite: true,
+			// tickPixelInterval: 150,
 			title: {
 				text: null,
 			},
