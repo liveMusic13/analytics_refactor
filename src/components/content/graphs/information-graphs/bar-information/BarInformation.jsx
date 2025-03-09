@@ -23,14 +23,6 @@ const BarInformation = () => {
 	let firstObjectKey = Object.keys(data)[0];
 	let firstObjectValue = data[firstObjectKey];
 
-	console.log(
-		'data',
-		data,
-		convertFromTimestampToRegular(firstObjectValue[0].year),
-		convertFromTimestampToRegular(firstObjectValue[1].year),
-		convertFromTimestampToRegular(firstObjectValue[2].year),
-	);
-
 	const nbr = 20;
 	const startStep = 0;
 	const endStep = Object.keys(data[firstObjectKey]).length - 1;
