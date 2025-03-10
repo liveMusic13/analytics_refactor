@@ -3,6 +3,7 @@
 
 .wrapper_graf {
 	display: flex;
+	flex-direction: column;
 	gap: adapt(20px, 1440px);
 	width: 100%;
 

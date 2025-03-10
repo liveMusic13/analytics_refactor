@@ -120,7 +120,7 @@ const BarInformation = () => {
 		)}</span>
         <br>
         <span style="font-size: 22px">
-            Лидер: <b>: ${population}</b>
+            Лидер: <b>${population}</b>
         </span>`;
 	};
 

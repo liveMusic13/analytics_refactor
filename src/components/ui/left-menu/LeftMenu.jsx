@@ -113,7 +113,19 @@ const LeftMenu = () => {
 											if (itemMenu.id === 1) toggleActiveMenu('');
 											if (itemMenu.id === 2) logoutHandler();
 
-											if (!(itemMenu.path === '/none') && itemMenu.path) {
+											if (itemMenu.title === 'FAQ') {
+												window.open(
+													itemMenu.path,
+													'_blank',
+													'noopener,noreferrer',
+												);
+											}
+
+											if (
+												!(itemMenu.path === '/none') &&
+												itemMenu.path &&
+												itemMenu.title !== 'FAQ'
+											) {
 												navigate(itemMenu.path);
 											}
 										}}

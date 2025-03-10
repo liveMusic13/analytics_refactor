@@ -95,7 +95,7 @@ export const menuSettings = [
 		title: 'FAQ',
 		src: '/images/icons/menu/FAQ.svg',
 		src_active: '/images/icons/menu/FAQ_active.svg',
-		path: '/faq',
+		path: 'https://tsdoc.headsmade.com/en/home',
 	},
 	{
 		id: 1,
