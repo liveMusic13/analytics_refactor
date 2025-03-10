@@ -40,7 +40,17 @@ const LeftMenu = () => {
 											className={styles.menu__item}
 											onClick={() => {
 												if (itemMenu.id === 1) toggleActiveMenu('');
-												itemMenu.path ? navigate(itemMenu.path) : undefined;
+												// itemMenu.path ? navigate(itemMenu.path) : undefined;
+
+												if (itemMenu.path && itemMenu.title !== 'FAQ') {
+													navigate(itemMenu.path);
+												} else if (itemMenu.path && itemMenu.title === 'FAQ') {
+													window.open(
+														itemMenu.path,
+														'_blank',
+														'noopener,noreferrer',
+													);
+												}
 											}}
 										>
 											<img src={itemMenu.src} alt='change_menu' />
