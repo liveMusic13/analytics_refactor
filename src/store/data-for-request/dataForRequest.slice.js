@@ -2,6 +2,7 @@ import { createSlice } from '@reduxjs/toolkit';
 
 const initialState = {
 	index: null,
+	name_index_file: '',
 	themes_ind: [],
 	min_date: null,
 	max_date: null,
@@ -50,6 +51,9 @@ export const dataForRequest = createSlice({
 		addIndex: (state, { payload }) => {
 			console.log('in redux');
 			return { ...state, index: payload };
+		},
+		addNameIndexFile: (state, { payload }) => {
+			return { ...state, name_index_file: payload };
 		},
 		addMinDate: (state, { payload }) => {
 			console.log('date', payload);

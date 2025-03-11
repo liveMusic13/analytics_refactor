@@ -59,6 +59,7 @@ export const useAddBaseAndDate = (
 
 	useEffect(() => {
 		// if (dataUser.length > 0) {
+
 		if (foundArray) {
 			addIndex(foundArray[0].index_number || 0);
 			updateDates([foundArray[0]]);

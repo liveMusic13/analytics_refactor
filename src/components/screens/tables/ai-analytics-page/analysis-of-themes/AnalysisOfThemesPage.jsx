@@ -86,7 +86,11 @@ const AnalysisOfThemesPage = () => {
 
 	const file_name = Object.values(arrayData)
 		.flat()
-		.find(file => dataForRequest.index === file.index_number);
+		.find(
+			file =>
+				dataForRequest.index === file.index_number &&
+				file['model-file'] === dataForRequest.name_index_file,
+		);
 
 	const dataRequest = {
 		user_id: data_getUserId,

@@ -20,7 +20,8 @@ const DataForSearch = ({ multi, directory, style }) => {
 		store => store.dataUsersSlice,
 	);
 	const dataForRequest = useSelector(state => state.dataForRequest);
-	const { addIndex, addThemesInd, addIndexDoc_Ai } = useActions();
+	const { addIndex, addThemesInd, addIndexDoc_Ai, addNameIndexFile } =
+		useActions();
 	const [checkedState, setCheckedState] = useState({});
 	const wrapperRef = useClickOutside(() => setViewOptions(false));
 
@@ -49,6 +50,8 @@ const DataForSearch = ({ multi, directory, style }) => {
 
 			if (directory === 'bertopic') {
 				addIndexDoc_Ai(option.index_number);
+				///test
+				addNameIndexFile(option['model-file']);
 			}
 		}
 	};
@@ -103,32 +106,7 @@ const DataForSearch = ({ multi, directory, style }) => {
 			</div>
 			{isViewOptions && (
 				<div className={styles.block__options}>
-					{/* {Object.keys(arrayData).map(group => (
-						<div key={group} className={styles.group}>
-							<h3 className={styles.groupTitle}>{group}</h3>
-							{arrayData[group].map(option => (
-								<div
-									className={styles.option}
-									key={option.file || option['html-file']}
-									onClick={() => onClick(option)}
-								>
-									{multi && (
-										<input
-											type='checkbox'
-											checked={checkedState[option.index_number] || false}
-											onChange={e => e.preventDefault()}
-										/>
-									)}
-									<p>
-										{truncateDescription(
-											option.file || option['html-file'],
-											numLength,
-										)}
-									</p>
-								</div>
-							))} */}
 					{Object.keys(arrayData).map(group => {
-						// console.log('group', group);
 						return (
 							<div key={group} className={styles.group}>
 								<h3 className={styles.groupTitle}>{group}</h3>
