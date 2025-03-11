@@ -19,6 +19,7 @@
 		border: 1px solid $color_blue;
 		color: $color_blue;
 		padding: adapt(6px, 1440px) adapt(8px, 1440px);
+		width: adapt(138px, 1920px);
 		gap: adapt(10px, 1440px);
 		border-radius: adapt(4px, 1440px);
 		background-color: $color_white;
@@ -129,6 +130,7 @@
 
 .currentMonth {
 	// background-color: #f9f9f9;
+	font-weight: 600;
 
 	&:hover {
 		background-color: #e6f7ff;
@@ -155,6 +157,7 @@
 }
 
 .disabled {
+	font-weight: 400;
 	color: rgba($color: $color_black, $alpha: 0.6);
 
 	&:hover {
