@@ -123,6 +123,7 @@ const AnalysisOfThemesPage = () => {
 	useEffect(() => {
 		if (isError_llm) {
 			setIsNoData(true);
+			setIsOpenSaveData(true);
 			const timer = setTimeout(() => setIsNoData(false), 5000);
 			return () => clearTimeout(timer);
 		}
@@ -147,7 +148,12 @@ const AnalysisOfThemesPage = () => {
 				</div>
 				<div className={styles.block__configureSearch}>
 					{(isSuccess_llm || isOpenSaveData) && (
-						<DataForSearch directory='bertopic' />
+						<DataForSearch
+							directory='bertopic'
+							style={{
+								width: '100%',
+							}}
+						/>
 					)}
 					{(isSuccess_llm || isOpenSaveData) && (
 						<Button

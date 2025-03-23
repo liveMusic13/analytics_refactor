@@ -96,7 +96,12 @@ const DataForSearch = ({ multi, directory, style }) => {
 			>
 				<div className={styles.block__description}>
 					<h2>Выберите необходимую базу</h2>
-					<p>{truncateDescription(nameFile, 30)}</p>
+					<p>
+						{' '}
+						{directory === 'bertopic'
+							? nameFile
+							: truncateDescription(nameFile, 30)}
+					</p>
 				</div>
 				<img
 					className={styles.data__arrow}
@@ -124,10 +129,12 @@ const DataForSearch = ({ multi, directory, style }) => {
 											/>
 										)}
 										<p>
-											{truncateMiddle(
-												option.file || option['html-file'],
-												numLength,
-											)}
+											{directory === 'bertopic'
+												? option.file || option['html-file']
+												: truncateMiddle(
+														option.file || option['html-file'],
+														numLength,
+													)}
 										</p>
 									</div>
 								))}
