@@ -9,7 +9,7 @@ import styles from './BlockCalendar.module.scss';
 import Calendar from './calendar/Calendar';
 import { colors } from '@/app.constants';
 
-const BlockCalendar = ({ setViewCalendar }) => {
+const BlockCalendar = ({ multi, setViewCalendar }) => {
 	const { addMinRangeDate, addMaxRangeDate } = useActions();
 
 	const [dateCalendar, setDateCalendar] = useState({

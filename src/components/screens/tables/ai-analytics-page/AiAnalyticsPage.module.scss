@@ -27,3 +27,52 @@
 		margin-top: adapt(8px, 1440px);
 	}
 }
+
+.info__message {
+	display: flex;
+	gap: adapt(8px, 1440px);
+	font-size: 0.875rem;
+	align-items: center;
+	max-width: fit-content;
+	background-color: $color_grey_white;
+	color: $color_black;
+	padding: adapt(6px, 1440px) adapt(16px, 1440px);
+	border-radius: adapt(6px, 1440px);
+}
+
+.info__icon {
+	font-size: 1rem;
+}
+
+.info__text {
+}
+
+.info__link {
+	color: #3b82f6;
+	text-decoration: none;
+	font-weight: 500;
+	position: relative;
+	transition: color 0.2s ease;
+
+	&::after {
+		content: '';
+		position: absolute;
+		width: 100%;
+		height: 2px; // обязательно указываем единицы измерения
+		bottom: -2px;
+		left: 0;
+		background-color: #3b82f6;
+		transform: scaleX(0);
+		transform-origin: bottom right;
+		transition: transform 0.3s ease;
+	}
+
+	&:hover {
+		color: #2563eb;
+
+		&::after {
+			transform: scaleX(1);
+			transform-origin: bottom left;
+		}
+	}
+}

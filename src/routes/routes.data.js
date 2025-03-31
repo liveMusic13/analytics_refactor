@@ -7,7 +7,6 @@ import Home from '@/components/screens/home/Home';
 import Information from '@/components/screens/information/Information';
 import MediaRating from '@/components/screens/media-rating/MediaRating';
 import AiAnalyticsPage from '@/components/screens/tables/ai-analytics-page/AiAnalyticsPage';
-import TopicAnalysisPage from '@/components/screens/tables/topic-analysis-page/TopicAnalysisPage';
 import UserTonality from '@/components/screens/user-tonality/UserTonality';
 import VoiceOfCustomer from '@/components/screens/voice-of-customer/VoiceOfCustomer';
 
@@ -62,11 +61,6 @@ export const routes = [
 	{
 		path: '/data-set/processed/:id',
 		component: DataSetPage,
-		isAuth: true,
-	},
-	{
-		path: '/topic-analysis',
-		component: TopicAnalysisPage,
 		isAuth: true,
 	},
 	{

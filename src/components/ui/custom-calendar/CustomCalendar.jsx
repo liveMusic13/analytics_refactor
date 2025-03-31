@@ -25,11 +25,7 @@ const CustomCalendar = ({ multi }) => {
 			>
 				<div className={styles.block__description}>
 					<h2>Период</h2>
-					{/* <p>Здесь будет отображаться выбранная дата</p> */}
 					<p>
-						{/* {min_date
-							? `${convertDateFormat(convertFromTimestampToRegular(min_date))} - ${convertDateFormat(convertFromTimestampToRegular(max_date))}`
-							: 'Здесь будет отображаться выбранная дата'} */}
 						{min_range_date && max_range_date
 							? `${convertDateFormat(convertFromTimestampToRegular(min_range_date))} - ${convertDateFormat(convertFromTimestampToRegular(max_range_date))}`
 							: 'нету данных'}

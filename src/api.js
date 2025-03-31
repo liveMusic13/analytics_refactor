@@ -33,7 +33,7 @@ $axios.interceptors.response.use(
 			if (error.response.status === 401) {
 				//HELP: Удаляем просроченный токен
 				Cookies.remove(TOKEN);
-
+				console.log('token');
 				// // Перенаправляем на страницу авторизации
 				// // Используйте window.location для надежности
 				// window.location.href = '/login'; // Укажите ваш путь к странице логина

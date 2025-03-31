@@ -149,12 +149,19 @@ const AiAnalyticsPage = () => {
 					)}
 				</div>
 				{!statusBarStart && (
-					<Link
-						to='/ai-analytics/analysis-of-themes'
-						onClick={() => setIsOpenSaveData(true)}
-					>
-						Использовать готовые данные
-					</Link>
+					<div className={styles.info__message}>
+						<span className={styles.info__icon}>ℹ️</span>
+						<span className={styles.info__text}>
+							Доступны ранее проанализированные данные:
+						</span>
+						<Link
+							to='/ai-analytics/analysis-of-themes'
+							onClick={() => setIsOpenSaveData(true)}
+							className={styles.info__link}
+						>
+							Открыть готовые
+						</Link>
+					</div>
 				)}
 				<div
 					className={styles.block__configureSearch}

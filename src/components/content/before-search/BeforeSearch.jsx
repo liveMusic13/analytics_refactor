@@ -16,7 +16,12 @@ const BeforeSearch = ({ title, link }) => {
 					target='_blank'
 					className={styles.detail}
 				>
-					Подробнее о работе со страницей
+					<img
+						src='/images/icons/for_info.svg'
+						alt='img'
+						className={styles.image}
+					/>
+					<span>Экскурсия по странице</span>
 				</Link>
 			</div>
 		</div>

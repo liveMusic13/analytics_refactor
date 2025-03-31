@@ -13,15 +13,6 @@ const Calendar = ({ start, callbackDate }) => {
 	const [currentDate, setCurrentDate] = useState(new Date(toLocalDate * 1000));
 
 	const {
-		// formatDate,
-		// getDaysInMonth,
-		// getStartDayOfWeek,
-		// handleDateClick,
-		// setRange,
-		// isInRange,
-		// changeMonth,
-		// changeYear,
-		// isDisabled,
 		getDaysInMonth,
 		getStartDayOfWeek,
 		formatDate,

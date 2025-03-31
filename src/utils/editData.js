@@ -12,14 +12,14 @@ export const groupByFirstWord = dataArray => {
 };
 
 export const convertDataMultiCalendar = (index1, index2, dataObject) => {
-	// Преобразуем объект в массив всех элементов из всех вложенных массивов
+	//HELP: Преобразуем объект в массив всех элементов из всех вложенных массивов
 	const allItems = Object.values(dataObject).flat(); // Собираем все элементы из вложенных массивов
-
-	// Находим объекты по значениям index_number
+	//HELP: Находим объекты по значениям index_number
 	const obj1 = allItems.find(item => item.index_number === index1);
 	const obj2 = allItems.find(item => item.index_number === index2);
 
-	// Проверяем, существуют ли оба объекта
+	// console.log('test', index1, index2, allItems, obj1, obj2);
+	//HELP: Проверяем, существуют ли оба объекта
 	if (!obj1 || !obj2) {
 		return {
 			min_data: 0,
@@ -30,11 +30,11 @@ export const convertDataMultiCalendar = (index1, index2, dataObject) => {
 	const { min_data: minData1, max_data: maxData1 } = obj1;
 	const { min_data: minData2, max_data: maxData2 } = obj2;
 
-	// Находим пересечение временных промежутков
+	//HELP: Находим пересечение временных промежутков
 	const overlapStart = Math.max(minData1, minData2);
 	const overlapEnd = Math.min(maxData1, maxData2);
 
-	// Проверяем, есть ли пересечение
+	//HELP: Проверяем, есть ли пересечение
 	if (overlapStart <= overlapEnd) {
 		return {
 			min_data: overlapStart,
