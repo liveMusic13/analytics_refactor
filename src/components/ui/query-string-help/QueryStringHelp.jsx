@@ -9,12 +9,8 @@ const QueryStringHelp = () => {
 	const offMouse = () => setIsHelp(false);
 
 	return (
-		<div
-			className={styles.block__queryStr}
-			// onMouseEnter={onMouse}
-			// onMouseLeave={offMouse}
-		>
-			<h1 onMouseEnter={onMouse}>Примеры запросов</h1>
+		<div className={styles.block__queryStr}>
+			<h1 onMouseEnter={onMouse}>?</h1>
 			{isHelp && (
 				<div
 					className={styles['tooltip-manual']}

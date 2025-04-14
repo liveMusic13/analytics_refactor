@@ -7,6 +7,7 @@ import {
 	actions as aiDataAction,
 } from '../store/ai-data/aiData.slice';
 import { actions as topicAnalysisDataAction } from '../store/topic-analysis-data/topicAnalysisData.slice';
+import { findKeyById } from '../utils/searchInData';
 
 export const tablesService = createApi({
 	reducerPath: 'tablesService',
@@ -83,10 +84,26 @@ export const tablesService = createApi({
 		getStatusRequest: builder.query({
 			query: id => `/status/${id}`,
 			// Этот метод позволит диспатчить данные в другой срез стора
-			async onQueryStarted(arg, { dispatch, queryFulfilled }) {
+			async onQueryStarted(arg, { dispatch, getState, queryFulfilled }) {
 				try {
 					const { data } = await queryFulfilled; // Дожидаемся выполнения запроса
-					dispatch(actions.setProgressLoad(data.progress)); // Диспатчим результат в другой срез
+					const dataForRequest = getState().dataForRequest;
+					const aiData = getState().aiData;
+					const dataUsersSlice = getState().dataUsersSlice;
+
+					const object = {
+						progress_load: data.progress,
+						folder_name: findKeyById(
+							dataForRequest.index,
+							dataUsersSlice.json_files_directory,
+						),
+						index: dataForRequest.index,
+						user_id: dataUsersSlice.user_id,
+						promt_question: aiData.post.text_prompt,
+						system_prompt: aiData.post.system_prompt,
+					};
+					console.log('object', object);
+					dispatch(actions.setProgressLoad(object)); // Диспатчим результат в другой срез
 				} catch (error) {
 					console.log('Ошибка запроса:', error);
 				}

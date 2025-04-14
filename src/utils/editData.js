@@ -420,40 +420,12 @@ export const funksVoice = {
 
 		return { nodes, links };
 	},
-	// generateColorsForObjects: array => {
-	// 	const fixedColors = {
-	// 		Нейтрал: '#667085',
-	// 		Негатив: '#D92D20',
-	// 		Позитив: '#039855',
-	// 		Пост: '#FD853A',
-	// 		Комментарий: '#FEB173',
-	// 		name: '#2E90FA', // Специальный цвет для первого узла с именем 'name'
-	// 	};
 
-	// 	const colors = [];
-	// 	const hueStep = Math.floor(360 / array.length); // Разделите 360 (полный круг цветов) на количество объектов
-
-	// 	for (let i = 0; i < array.length; i++) {
-	// 		const nodeName = array[i].id;
-
-	// 		// Если для узла есть фиксированный цвет, используем его
-	// 		if (fixedColors[nodeName]) {
-	// 			colors.push(fixedColors[nodeName]);
-	// 		} else {
-	// 			// Если нет, генерируем цвет HSL
-	// 			const hue = hueStep * i;
-	// 			const color = `hsl(${hue}, 100%, 50%)`;
-	// 			colors.push(color);
-	// 		}
-	// 	}
-
-	// 	return colors;
-	// },
 	generateColorsForObjects: array => {
 		const fixedColors = {
-			Нейтрал: '#667085',
-			Негатив: '#D92D20',
-			Позитив: '#039855',
+			Нейтральная: '#667085',
+			Негативная: '#D92D20',
+			Позитивная: '#039855',
 			Пост: '#FD853A',
 			Комментарий: '#FEB173',
 		};

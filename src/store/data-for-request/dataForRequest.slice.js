@@ -63,7 +63,7 @@ export const dataForRequest = createSlice({
 			return { ...state, max_date: payload };
 		},
 		addMinRangeDate: (state, { payload }) => {
-			console.log('date', payload);
+			// console.log('date', payload);
 			return { ...state, min_range_date: payload };
 		},
 		addMaxRangeDate: (state, { payload }) => {

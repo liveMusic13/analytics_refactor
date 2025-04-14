@@ -3,12 +3,21 @@
 @import '@st/mixins';
 
 .block__queryStr {
-	position: absolute;
-	bottom: adapt(-20px, 1440px);
-	right: adapt(240px, 1440px);
+	// position: absolute;
+	// bottom: adapt(-20px, 1440px);
+	// right: adapt(240px, 1440px);
+	align-self: center;
 	color: rgba($color: $color_black, $alpha: 0.5);
 
 	> h1 {
+		width: adapt(20px, 1440px);
+		height: adapt(20px, 1440px);
+		border-radius: 50%;
+		display: flex;
+		align-items: center;
+		justify-content: center;
+		background-color: #eee;
+
 		&:hover {
 			cursor: pointer;
 		}

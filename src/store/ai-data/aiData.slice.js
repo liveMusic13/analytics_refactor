@@ -18,12 +18,16 @@ const initialState = {
 	finalStatus: false,
 	index_doc: null,
 	isOpenSaveData: false,
+	arrProgressLoads: [],
 };
 
 export const aiData = createSlice({
 	name: 'aiData',
 	initialState,
 	reducers: {
+		arrAddProgressLoad: (state, { payload }) => {
+			state.arrProgressLoads.push(payload);
+		},
 		addIndexDoc_Ai: (state, { payload }) => {
 			state.index_doc = payload;
 		},
@@ -37,7 +41,36 @@ export const aiData = createSlice({
 			state.isOpenSaveData = payload;
 		},
 		setProgressLoad: (state, { payload }) => {
-			state.progress_load = payload;
+			// state.progress_load = payload;
+			// Находим индекс объекта, который нужно обновить
+			const indexToUpdate = state.arrProgressLoads.findIndex(
+				el =>
+					Number(el.index) === Number(payload.index) &&
+					el.folder_name === payload.folder_name &&
+					Number(el.user_id) === Number(payload.user_id) &&
+					el.promt_question === payload.promt_question &&
+					el.system_prompt === payload.system_prompt,
+			);
+
+			if (indexToUpdate !== -1) {
+				// Создаем новый объект с обновленным полем
+				const updatedObject = {
+					...state.arrProgressLoads[indexToUpdate],
+					progress_load: payload.progress_load, // Обновляем progress_load числовым значением
+				};
+
+				console.log('in redux', payload, [
+					...state.arrProgressLoads.slice(0, indexToUpdate), // Элементы до обновляемого
+					updatedObject, // Новый объект
+					...state.arrProgressLoads.slice(indexToUpdate + 1), // Элементы после обновляемого
+				]);
+				// Обновляем массив, заменяя старый объект на новый
+				state.arrProgressLoads = [
+					...state.arrProgressLoads.slice(0, indexToUpdate), // Элементы до обновляемого
+					updatedObject, // Новый объект
+					...state.arrProgressLoads.slice(indexToUpdate + 1), // Элементы после обновляемого
+				];
+			}
 		},
 		setSystemPrompt: (state, { payload }) => {
 			state.post.system_prompt = payload;
@@ -64,35 +97,6 @@ export const aiData = createSlice({
 		addAiDataPOST_aiData: (state, { payload }) => {
 			state.post = payload;
 		},
-
-		// addObject_aiData: (state, { payload }) => {
-		// 	state.categories[payload.text].push(payload.data);
-		// },
-		// addCategories_aiData: (state, { payload }) => {
-		// 	state.categories[payload] = [];
-		// },
-		// updateCategoryArray_aiData: (state, { payload }) => {
-		// 	const { oldName, newName, newArray } = payload;
-
-		// 	if (state.categories[oldName]) {
-		// 		// Создаем новую запись с новым именем и данными
-		// 		state.categories[newName] = newArray;
-		// 		// Удаляем старую запись
-		// 		delete state.categories[oldName];
-		// 	} else {
-		// 		console.warn(`Category with key "${oldName}" not found.`);
-		// 	}
-		// },
-		// deleteCategoryArray_aiData: (state, { payload }) => {
-		// 	const updatedCategories = { ...state.categories };
-		// 	for (const key in updatedCategories) {
-		// 		if (updatedCategories.hasOwnProperty(key) && key === payload) {
-		// 			delete updatedCategories[key];
-		// 			break; // Прерываем цикл после первого совпадения
-		// 		}
-		// 	}
-		// 	state.categories = updatedCategories;
-		// },
 	},
 });
 

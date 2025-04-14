@@ -30,8 +30,15 @@ const AnalysisOfThemesPage = () => {
 	const nav = useNavigate();
 	const dataForRequest = useSelector(state => state.dataForRequest);
 	const { active_menu } = useSelector(store => store.booleanValues);
-	const { statusBarStart, finalStatus, index_doc, isOpenSaveData } =
-		useSelector(state => state.aiData);
+	const {
+		statusBarStart,
+		finalStatus,
+		index_doc,
+		isOpenSaveData,
+		progress_load,
+		arrProgressLoads,
+	} = useSelector(state => state.aiData);
+
 	const { bertopic_files_directory: dataUser } = useSelector(
 		store => store.dataUsersSlice,
 	);
@@ -185,7 +192,13 @@ const AnalysisOfThemesPage = () => {
 									? 'Результат анализа доступен по нажатию на кнопку'
 									: ' Вы можете покинуть страницу и вернуться к ней в любое время без потери прогресса.  Результат анализа доступен в разделе Анализ тем'}
 							</p>
-							<ProgressBar />
+
+							<ProgressBar
+								progress_load={
+									arrProgressLoads[arrProgressLoads.length - 1]
+										?.progress_load || 0
+								}
+							/>
 							{finalStatus && (
 								<button onClick={onClick} className={styles.button}>
 									Показать данные

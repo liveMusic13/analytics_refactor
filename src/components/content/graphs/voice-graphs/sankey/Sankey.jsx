@@ -65,6 +65,7 @@ const Sankey = () => {
 
 	return (
 		<HighchartsReact
+			// key={Math.random()}
 			highcharts={Highcharts}
 			options={options}
 			containerProps={{ style: { width: '100%' } }}

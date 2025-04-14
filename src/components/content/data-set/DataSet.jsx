@@ -39,7 +39,9 @@ const DataSet = () => {
 		useGetUserFoldersQuery(data_getUserId);
 
 	const { processedData } = useSelector(state => state.folderTarget);
-	const { index_doc, post, progress_load } = useSelector(state => state.aiData);
+	const { index_doc, post, arrProgressLoads } = useSelector(
+		state => state.aiData,
+	);
 	const dataForRequest = useSelector(state => state.dataForRequest);
 
 	useEffect(() => {
@@ -187,18 +189,25 @@ const DataSet = () => {
 						))}
 					</div>
 					<div className={styles.block__statusProgress}>
-						{progress_load && Number(progress_load) > 0 ? (
-							<>
-								<h3>
-									{/* <span>Файл:</span> {file_name?.['html-file']} */}
-									<span>Файл:</span> {file_name?.file}
-								</h3>
-								<span>Запросы:</span>
-								<p>{post.system_prompt}</p>
-								<p>{post.text_prompt}</p>
-								<ProgressBar />
-							</>
-						) : null}
+						{arrProgressLoads.length > 0 &&
+							arrProgressLoads.map((el, ind) => {
+								if (Number(el.progress_load) > 0) {
+									return (
+										<div key={ind}>
+											<h3>
+												{/* <span>Файл:</span> {file_name?.['html-file']} */}
+												<span>Файл:</span> {el?.file}
+											</h3>
+											<span>Запросы:</span>
+											<p>{el.system_prompt}</p>
+											<p>{el.promt_question}</p>
+											<ProgressBar progress_load={el.progress_load} />
+										</div>
+									);
+								} else {
+									return null;
+								}
+							})}
 					</div>
 				</div>
 			);
@@ -244,3 +253,16 @@ const DataSet = () => {
 };
 
 export default DataSet;
+
+// {progress_load && Number(progress_load) > 0 ? (
+// 	<>
+// 		<h3>
+// 			{/* <span>Файл:</span> {file_name?.['html-file']} */}
+// 			<span>Файл:</span> {file_name?.file}
+// 		</h3>
+// 		<span>Запросы:</span>
+// 		<p>{post.system_prompt}</p>
+// 		<p>{post.text_prompt}</p>
+// 		<ProgressBar  />
+// 	</>
+// ) : null}

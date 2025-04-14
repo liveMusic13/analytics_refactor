@@ -24,6 +24,7 @@ export const useStartAiRequests = () => {
 		toggleIsViewPromptPopup,
 		toggleFinalStatus,
 		addFirstHtmlFileRequest,
+		arrAddProgressLoad,
 	} = useActions();
 
 	const [isLoadingTest, setIsLoadingTest] = useState(false); //HELP: Состояние для управления лоадером
@@ -76,6 +77,14 @@ export const useStartAiRequests = () => {
 			// Cookies.set(STATUSBARSTART, 'true');
 			setIsLoadingTest(true);
 			const startResponse = await triger_data(dataForRequestAi);
+			arrAddProgressLoad({
+				progress_load: 0,
+				folder_name: dataForRequestAi.folder_name,
+				index: dataForRequestAi.index,
+				user_id: dataForRequestAi.user_id,
+				promt_question: dataForRequestAi.promt_question,
+				system_prompt: dataForRequestAi.system_prompt,
+			});
 
 			if (!startResponse.data?.task_id) {
 				setIsLoadingTest(false);

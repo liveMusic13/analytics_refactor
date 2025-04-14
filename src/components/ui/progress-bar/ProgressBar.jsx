@@ -1,10 +1,6 @@
-import { useSelector } from 'react-redux';
-
 import styles from './ProgressBar.module.scss';
 
-const ProgressBar = ({ style }) => {
-	const { progress_load } = useSelector(state => state.aiData);
-
+const ProgressBar = ({ style, progress_load }) => {
 	return (
 		<div className={styles.wrapper_progressBar} style={style}>
 			<div className={styles.block__progressBar}>

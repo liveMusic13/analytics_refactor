@@ -23,21 +23,6 @@ export const useAddBaseAndDate = (
 
 	const { addThemesInd, addMinRangeDate, addMaxRangeDate } = useActions();
 	const dataForRequest = useSelector(state => state.dataForRequest);
-	// themes_ind
-	console.log(
-		'obj1',
-		pathname,
-		dataUser.test,
-		// dataUser?.test[1],
-		// convertFromTimestampToRegular(dataUser?.test[1]?.min_data),
-		// convertFromTimestampToRegular(dataUser?.test[1]?.max_data),
-	);
-	console.log(
-		'obj2',
-		// dataUser?.test[0],
-		// convertFromTimestampToRegular(dataUser?.test[0]?.min_data),
-		// convertFromTimestampToRegular(dataUser?.test[0]?.max_data),
-	);
 
 	// Обновление данных при успешном запросе
 	useEffect(() => {
@@ -100,7 +85,7 @@ export const useAddBaseAndDate = (
 					dataForRequest.themes_ind[1],
 					dataUser,
 				);
-				console.log('result', result);
+				// console.log('result', result);
 				if (result.min_data !== 0 && result.max_data !== 0) {
 					addMinRangeDate(result.min_data);
 					addMaxRangeDate(result.max_data);
